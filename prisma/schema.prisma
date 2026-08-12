@@ -1,0 +1,186 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+enum EnrollmentStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum EnquiryStatus {
+  NEW
+  IN_PROGRESS
+  CONVERTED
+  CLOSED
+}
+
+enum EnquiryType {
+  ENQUIRY
+  FREE_COUNSELLING
+}
+
+model User {
+  id             String       @id @default(cuid())
+  name           String
+  email          String       @unique
+  password       String
+  phone          String?
+  city           String?
+  education      String?
+  graduationYear String?
+  careerInterest String?
+  role           Role         @default(STUDENT)
+  avatar         String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  enrollments    Enrollment[]
+  reviews        Review[]
+}
+
+model Domain {
+  id            String   @id @default(cuid())
+  name          String
+  slug          String   @unique
+  headline      String
+  description   String
+  iconName      String   @default("Code")
+  image         String?
+  subcategories String   @default("[]")
+  featured      Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  courses       Course[]
+}
+
+model Course {
+  id                  String       @id @default(cuid())
+  title               String
+  slug                String       @unique
+  headline            String
+  description         String
+  domainId            String
+  domain              Domain       @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  duration            String
+  fee                 Float
+  discountFee         Float?
+  level               String
+  mode                String
+  badge               String?
+  categoryTag         String?
+  rating              Float        @default(4.8)
+  totalStudents       Int          @default(100)
+  syllabus            String
+  careerRoles         String
+  highlights          String
+  placementAssistance Boolean      @default(true)
+  featured            Boolean      @default(false)
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+  enrollments         Enrollment[]
+  enquiries           Enquiry[]
+  reviews             Review[]
+}
+
+model Enrollment {
+  id          String           @id @default(cuid())
+  userId      String
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId    String
+  course      Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  status      EnrollmentStatus @default(ACTIVE)
+  progress    Int              @default(0)
+  batchTiming String?
+  mode        String?
+  enrolledAt  DateTime         @default(now())
+}
+
+model Enquiry {
+  id               String        @id @default(cuid())
+  name             String
+  email            String
+  phone            String
+  courseId         String?
+  course           Course?       @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  domain           String?
+  type             EnquiryType   @default(ENQUIRY)
+  preferredContact String?
+  preferredDate    String?
+  preferredTime    String?
+  message          String
+  status           EnquiryStatus @default(NEW)
+  notes            String?
+  createdAt        DateTime      @default(now())
+}
+
+model Review {
+  id                 String   @id @default(cuid())
+  userId             String?
+  user               User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userName           String
+  userRole           String
+  company            String?
+  previousBackground String?
+  avatar             String?
+  courseId           String
+  course             Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  rating             Int      @default(5)
+  comment            String
+  approved           Boolean  @default(true)
+  createdAt          DateTime @default(now())
+}
+
+model Blog {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  category    String
+  image       String
+  authorName  String
+  authorTitle String
+  authorPhoto String
+  readTime    String
+  summary     String
+  content     String
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  category    String
+  date        String
+  time        String
+  location    String
+  speakerName String
+  speakerRole String
+  speakerFoto String
+  description String
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model SiteSettings {
+  id          String @id @default("default")
+  phone       String @default("+91 9876543210")
+  email       String @default("contact@apexinstitute.com")
+  address     String @default("Apex Tower, Outer Ring Road, HSR Layout, Bangalore 560102")
+  workingHours String @default("Mon - Sat: 9:00 AM - 8:00 PM")
+  facebookUrl String @default("https://facebook.com")
+  twitterUrl  String @default("https://twitter.com")
+  linkedinUrl String @default("https://linkedin.com")
+  youtubeUrl  String @default("https://youtube.com")
+  whatsappNo  String @default("+919876543210")
+}
