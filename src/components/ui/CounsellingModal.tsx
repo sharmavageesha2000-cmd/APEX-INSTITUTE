@@ -65,8 +65,8 @@ export const CounsellingModal: React.FC<CounsellingModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md animate-fadeIn">
-      <div className="bg-white border border-purple-100 w-full max-w-lg p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6 relative overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-md animate-fadeIn">
+      <div className="bg-white border border-purple-100 w-full max-w-lg max-w-[calc(100vw-1.5rem)] max-h-[90vh] overflow-y-auto p-5 sm:p-8 rounded-3xl shadow-2xl space-y-6 relative">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 text-slate-500 hover:text-slate-900 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-colors"

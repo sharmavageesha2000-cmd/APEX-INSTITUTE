@@ -56,8 +56,8 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md animate-fadeIn">
-      <div className="bg-white border border-purple-100 rounded-3xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-md animate-fadeIn">
+      <div className="bg-white border border-purple-100 rounded-3xl max-w-lg max-h-[90vh] overflow-y-auto w-full p-5 sm:p-8 relative shadow-2xl">
         {/* Decorative Background Glow */}
         <div className="absolute -top-24 -right-24 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
 

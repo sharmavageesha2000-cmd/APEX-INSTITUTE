@@ -9,67 +9,92 @@ import {
   Linkedin,
   Twitter,
   Facebook,
+  Instagram,
   Youtube,
   Sparkles,
 } from 'lucide-react';
 import { ApexLogo } from '../ui/ApexLogo';
+import { FooterStarField } from './FooterStarField';
 
 export const Footer = () => {
   return (
-    <footer className="bg-white border-t border-purple-100 pt-16 pb-12 text-xs text-slate-600 shadow-inner">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <footer 
+      className="relative overflow-hidden border-t border-purple-300/40 pt-16 pb-12 text-xs shadow-inner"
+      style={{
+        background: 'linear-gradient(to top, #130728 0%, #200c40 18%, #391768 38%, #5d2b99 60%, #8956c8 78%, #baa0e8 92%, #e5d7f8 100%)',
+      }}
+    >
+      {/* Background Animated Small Silver Shining Stars */}
+      <FooterStarField />
+
+      {/* Main Content Layer */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Column 1: Brand Info */}
           <div className="lg:col-span-2 space-y-4">
-            <Link href="/">
-              <ApexLogo size="md" showSubtitle={true} />
+            <Link href="/" className="inline-block">
+              <ApexLogo size="md" showSubtitle={true} theme="dark" />
             </Link>
 
-            <p className="text-slate-600 leading-relaxed max-w-sm font-medium">
+            <p className="text-white/95 leading-relaxed max-w-sm font-medium drop-shadow-xs">
               Apex Tech Institute is India&apos;s premier job-oriented career accelerator. We empower students and young working professionals through hands-on bootcamps, live cloud labs, senior 1-on-1 mentorship, and corporate placement support.
             </p>
 
             <div className="flex items-center gap-2 pt-2">
-              <span className="bg-purple-100 text-purple-800 text-[10px] font-extrabold px-3 py-1 rounded-full border border-purple-200 flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-purple-600" />
+              <span className="bg-white/15 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full border border-white/25 flex items-center gap-1.5 shadow-sm">
+                <ShieldCheck className="w-3.5 h-3.5 text-purple-200 shrink-0" />
                 <span>ISO 9001:2026 Certified Institute</span>
               </span>
             </div>
 
-            {/* Social Icons with Authentic Brand Colors */}
+            {/* Social Icons with Authentic Original Brand Colors */}
             <div className="flex items-center gap-2.5 pt-2">
               {[
                 {
                   name: 'LinkedIn',
                   icon: Linkedin,
                   href: 'https://linkedin.com',
-                  bg: 'bg-[#0A66C2]/10 hover:bg-[#0A66C2]',
-                  border: 'border-[#0A66C2]/30',
-                  color: 'text-[#0A66C2] hover:text-white',
+                  bg: 'bg-white',
+                  border: 'border-white/80',
+                  color: 'text-[#0A66C2]',
+                  hoverBg: 'hover:bg-[#0A66C2] hover:text-white hover:border-[#0A66C2]',
                 },
                 {
                   name: 'Twitter',
                   icon: Twitter,
                   href: 'https://twitter.com',
-                  bg: 'bg-[#1DA1F2]/10 hover:bg-[#1DA1F2]',
-                  border: 'border-[#1DA1F2]/30',
-                  color: 'text-[#1DA1F2] hover:text-white',
+                  bg: 'bg-white',
+                  border: 'border-white/80',
+                  color: 'text-[#1DA1F2]',
+                  hoverBg: 'hover:bg-[#1DA1F2] hover:text-white hover:border-[#1DA1F2]',
                 },
                 {
                   name: 'Facebook',
                   icon: Facebook,
                   href: 'https://facebook.com',
-                  bg: 'bg-[#1877F2]/10 hover:bg-[#1877F2]',
-                  border: 'border-[#1877F2]/30',
-                  color: 'text-[#1877F2] hover:text-white',
+                  bg: 'bg-white',
+                  border: 'border-white/80',
+                  color: 'text-[#1877F2]',
+                  hoverBg: 'hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2]',
+                },
+                {
+                  name: 'Instagram',
+                  icon: Instagram,
+                  href: 'https://instagram.com',
+                  bg: 'bg-white',
+                  border: 'border-white/80',
+                  color: 'text-[#E1306C]',
+                  hoverBg: 'hover:bg-gradient-to-tr hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF] hover:text-white hover:border-transparent',
+                  isInstagram: true,
                 },
                 {
                   name: 'YouTube',
                   icon: Youtube,
                   href: 'https://youtube.com',
-                  bg: 'bg-[#FF0000]/10 hover:bg-[#FF0000]',
-                  border: 'border-[#FF0000]/30',
-                  color: 'text-[#FF0000] hover:text-white',
+                  bg: 'bg-white',
+                  border: 'border-white/80',
+                  color: 'text-[#FF0000]',
+                  hoverBg: 'hover:bg-[#FF0000] hover:text-white hover:border-[#FF0000]',
                 },
               ].map((soc, i) => {
                 const Icon = soc.icon;
@@ -81,9 +106,55 @@ export const Footer = () => {
                     rel="noreferrer"
                     title={soc.name}
                     aria-label={soc.name}
-                    className={`p-2.5 rounded-xl border transition-all duration-300 shadow-xs flex items-center justify-center ${soc.bg} ${soc.border} ${soc.color}`}
+                    className={`p-2.5 rounded-xl border ${soc.bg} ${soc.border} ${soc.color} ${soc.hoverBg} transition-all duration-300 shadow-md flex items-center justify-center hover:scale-110 group`}
                   >
-                    <Icon className="w-4 h-4" />
+                    {soc.isInstagram ? (
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="w-4 h-4 transition-colors"
+                      >
+                        <defs>
+                          <linearGradient id={`igGrad-${i}`} x1="0%" y1="100%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor="#f09433" />
+                            <stop offset="25%" stopColor="#e6683c" />
+                            <stop offset="50%" stopColor="#dc2743" />
+                            <stop offset="75%" stopColor="#cc2366" />
+                            <stop offset="100%" stopColor="#bc1888" />
+                          </linearGradient>
+                        </defs>
+                        <rect
+                          width="20"
+                          height="20"
+                          x="2"
+                          y="2"
+                          rx="5"
+                          ry="5"
+                          stroke={`url(#igGrad-${i})`}
+                          className="group-hover:stroke-white transition-colors"
+                        />
+                        <path
+                          d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                          stroke={`url(#igGrad-${i})`}
+                          className="group-hover:stroke-white transition-colors"
+                        />
+                        <line
+                          x1="17.5"
+                          x2="17.51"
+                          y1="6.5"
+                          y2="6.5"
+                          stroke={`url(#igGrad-${i})`}
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          className="group-hover:stroke-white transition-colors"
+                        />
+                      </svg>
+                    ) : (
+                      <Icon className="w-4 h-4 transition-colors" />
+                    )}
                   </a>
                 );
               })}
@@ -92,132 +163,146 @@ export const Footer = () => {
 
           {/* Column 2: Quick Links */}
           <div className="space-y-3">
-            <h3 className="font-extrabold text-slate-900 text-sm uppercase tracking-wider">Quick Links</h3>
-            <ul className="space-y-2 font-bold text-slate-600">
+            <h3 className="font-extrabold text-white text-sm uppercase tracking-wider drop-shadow-xs">Quick Links</h3>
+            <ul className="space-y-2 font-medium text-purple-100/95">
               <li>
-                <Link href="/" className="hover:text-purple-700 transition-colors">Home</Link>
+                <Link href="/" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Home</Link>
               </li>
               <li>
-                <Link href="/courses" className="hover:text-purple-700 transition-colors">Explore All Courses</Link>
+                <Link href="/courses" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Explore All Courses</Link>
               </li>
               <li>
-                <Link href="/domains" className="hover:text-purple-700 transition-colors">10 Career Domains</Link>
+                <Link href="/domains" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">10 Career Domains</Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-purple-700 transition-colors">About Us</Link>
+                <Link href="/about" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">About Us</Link>
               </li>
               <li>
-                <Link href="/placements" className="hover:text-purple-700 transition-colors">Placement Record</Link>
+                <Link href="/placements" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Placement Record</Link>
               </li>
               <li>
-                <Link href="/success-stories" className="hover:text-purple-700 transition-colors">Success Stories</Link>
+                <Link href="/skill-passport" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-flex items-center gap-1.5 text-purple-100">
+                  <span>Student Skill Passport</span>
+                  <span className="text-[9px] bg-pink-500 text-white px-1.5 py-0.2 rounded-full border border-pink-400/50 font-bold shadow-xs">NEW</span>
+                </Link>
               </li>
               <li>
-                <Link href="/blog" className="hover:text-purple-700 transition-colors">Blog & Resources</Link>
+                <Link href="/success-stories" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Success Stories</Link>
               </li>
               <li>
-                <Link href="/events" className="hover:text-purple-700 transition-colors">Workshops & Events</Link>
+                <Link href="/blog" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Blog & Resources</Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-purple-700 transition-colors">Contact Us</Link>
+                <Link href="/events" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Workshops & Events</Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Contact Us</Link>
               </li>
             </ul>
           </div>
 
           {/* Column 3: Popular Domains */}
           <div className="space-y-3">
-            <h3 className="font-extrabold text-slate-900 text-sm uppercase tracking-wider">Popular Domains</h3>
-            <ul className="space-y-2 font-bold text-slate-600">
+            <h3 className="font-extrabold text-white text-sm uppercase tracking-wider drop-shadow-xs">Popular Domains</h3>
+            <ul className="space-y-2 font-medium text-purple-100/95">
               <li>
-                <Link href="/domains/information-technology" className="hover:text-purple-700 transition-colors">Information Technology</Link>
+                <Link href="/domains/information-technology" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Information Technology</Link>
               </li>
               <li>
-                <Link href="/domains/ai-machine-learning" className="hover:text-purple-700 transition-colors">AI & Machine Learning</Link>
+                <Link href="/domains/ai-machine-learning" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">AI & Machine Learning</Link>
               </li>
               <li>
-                <Link href="/domains/data-analytics" className="hover:text-purple-700 transition-colors">Data & Analytics</Link>
+                <Link href="/domains/data-analytics" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Data & Analytics</Link>
               </li>
               <li>
-                <Link href="/domains/digital-marketing" className="hover:text-purple-700 transition-colors">Digital Marketing</Link>
+                <Link href="/domains/digital-marketing" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Digital Marketing</Link>
               </li>
               <li>
-                <Link href="/domains/ui-ux-design" className="hover:text-purple-700 transition-colors">UI/UX & Product Design</Link>
+                <Link href="/domains/ui-ux-design" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">UI/UX & Product Design</Link>
               </li>
               <li>
-                <Link href="/domains/management-business" className="hover:text-purple-700 transition-colors">Management & Business</Link>
+                <Link href="/domains/management-business" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Management & Business</Link>
               </li>
               <li>
-                <Link href="/domains/finance-accounting" className="hover:text-purple-700 transition-colors">Finance & Accounting</Link>
+                <Link href="/domains/finance-accounting" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Finance & Accounting</Link>
               </li>
               <li>
-                <Link href="/domains/career-professional-programs" className="hover:text-purple-700 transition-colors">Career Switch Bootcamps</Link>
+                <Link href="/domains/career-professional-programs" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Career Switch Bootcamps</Link>
               </li>
             </ul>
           </div>
 
           {/* Column 4: Student & Contact Links */}
           <div className="space-y-3">
-            <h3 className="font-extrabold text-slate-900 text-sm uppercase tracking-wider">Student Portal</h3>
-            <ul className="space-y-2 font-bold text-slate-600">
+            <h3 className="font-extrabold text-white text-sm uppercase tracking-wider drop-shadow-xs">Student Portal</h3>
+            <ul className="space-y-2 font-medium text-purple-100/95">
               <li>
-                <Link href="/login" className="hover:text-purple-700 transition-colors">Student Login</Link>
+                <Link href="/login" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Student Login</Link>
               </li>
               <li>
-                <Link href="/register" className="hover:text-purple-700 transition-colors">Student Registration</Link>
+                <Link href="/register" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Student Registration</Link>
               </li>
               <li>
-                <Link href="/dashboard" className="hover:text-purple-700 transition-colors">Student Dashboard</Link>
+                <Link href="/dashboard" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Student Dashboard</Link>
               </li>
               <li>
-                <Link href="/career-finder" className="hover:text-purple-700 transition-colors flex items-center gap-1 text-purple-700 font-extrabold">
-                  <Sparkles className="w-3.5 h-3.5 text-pink-600" />
+                <Link href="/career-finder" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-flex items-center gap-1 text-pink-300 font-semibold">
+                  <Sparkles className="w-3.5 h-3.5 text-pink-300" />
                   <span>Career Path Finder</span>
                 </Link>
               </li>
               <li>
-                <Link href="/compare" className="hover:text-purple-700 transition-colors">Course Comparison</Link>
+                <Link href="/compare" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Course Comparison</Link>
               </li>
               <li>
-                <Link href="/search" className="hover:text-purple-700 transition-colors">Global Search</Link>
+                <Link href="/search" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Global Search</Link>
               </li>
               <li>
-                <Link href="/admin" className="hover:text-emerald-700 transition-colors">Admin Portal</Link>
+                <Link href="/admin" className="hover:text-emerald-200 hover:translate-x-1 transition-all duration-200 inline-block text-emerald-300 font-semibold">Admin Portal</Link>
               </li>
             </ul>
           </div>
         </div>
 
         {/* Contact Strip */}
-        <div className="pt-8 border-t border-slate-200 grid grid-cols-1 md:grid-cols-3 gap-4 text-slate-700 font-bold">
-          <div className="flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-purple-600 shrink-0" />
-            <span>Apex Tower, Outer Ring Road, HSR Layout, Bangalore 560102</span>
+        <div className="pt-8 border-t border-white/20 grid grid-cols-1 md:grid-cols-3 gap-4 text-white font-medium">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-white/15 border border-white/25 flex items-center justify-center shrink-0">
+              <MapPin className="w-4 h-4 text-purple-200 shrink-0" />
+            </div>
+            <span className="text-white drop-shadow-xs">Apex Tower, Outer Ring Road, HSR Layout, Bangalore 560102</span>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Phone className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span>Hotline: +91 9876543210 • Mon-Sat 9 AM - 8 PM</span>
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-white/15 border border-white/25 flex items-center justify-center shrink-0">
+              <Phone className="w-4 h-4 text-emerald-300 shrink-0" />
+            </div>
+            <span className="text-white drop-shadow-xs">Hotline: +91 9876543210 • Mon-Sat 9 AM - 8 PM</span>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Mail className="w-4 h-4 text-pink-600 shrink-0" />
-            <span>Support: contact@apexinstitute.com</span>
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-white/15 border border-white/25 flex items-center justify-center shrink-0">
+              <Mail className="w-4 h-4 text-pink-300 shrink-0" />
+            </div>
+            <span className="text-white drop-shadow-xs">Support: contact@apexinstitute.com</span>
           </div>
         </div>
 
         {/* Bottom Copyright */}
-        <div className="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500 font-medium">
+        <div className="pt-6 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-purple-200/90 font-medium text-center sm:text-left">
           <div>
             © {new Date().getFullYear()} Apex Tech Institute. All rights reserved. ISO 9001:2026 Certified Educational Provider.
           </div>
-          <div className="flex gap-4 font-bold">
-            <Link href="/sitemap.xml" className="hover:underline">XML Sitemap</Link>
-            <Link href="/robots.txt" className="hover:underline">Robots.txt</Link>
-            <Link href="/contact" className="hover:underline">Privacy Policy</Link>
-            <Link href="/contact" className="hover:underline">Terms of Service</Link>
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-x-4 gap-y-2 font-semibold text-center sm:text-right">
+            <Link href="/sitemap.xml" className="hover:text-white transition-colors">XML Sitemap</Link>
+            <Link href="/robots.txt" className="hover:text-white transition-colors">Robots.txt</Link>
+            <Link href="/contact" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/contact" className="hover:text-white transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>
     </footer>
   );
 };
+
+

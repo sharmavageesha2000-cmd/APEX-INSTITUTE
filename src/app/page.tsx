@@ -9,7 +9,7 @@ export default async function HomePage() {
   const reviews = await getReviews();
 
   return (
-    <div className="pb-20 overflow-hidden">
+    <div className="overflow-hidden">
       <HomeClientWrapper
         domains={domains}
         featuredCourses={featuredCourses}

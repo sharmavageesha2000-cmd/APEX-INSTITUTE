@@ -7,6 +7,8 @@ import { DynamicIcon } from '../ui/IconHelper';
 import { CourseCard } from '../ui/CourseCard';
 import { EnquiryModal } from '../ui/EnquiryModal';
 import { AIDomainAdvisorCard } from './AIDomainAdvisorCard';
+import { getDomainCertificates } from '@/lib/domain-certificates';
+import { DomainCertificateCard } from './DomainCertificateCard';
 import {
   Sparkles,
   BookOpen,
@@ -16,6 +18,7 @@ import {
   ArrowRight,
   Send,
   Award,
+  ShieldCheck,
 } from 'lucide-react';
 
 interface DomainDetailsClientProps {
@@ -118,6 +121,33 @@ export const DomainDetailsClient: React.FC<DomainDetailsClientProps> = ({
                 <CheckCircle2 className="w-4 h-4 text-pink-600 shrink-0" />
                 <span>{sub}</span>
               </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── OFFICIAL DOMAIN CERTIFICATE & ACCREDITATIONS ────────────── */}
+        <div className="space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-amber-900 bg-amber-100 px-3.5 py-1 rounded-full border border-amber-300 shadow-xs mb-1">
+                <ShieldCheck className="w-4 h-4 text-amber-700" />
+                <span>Official Govt., AICTE & NSDC Certification</span>
+              </div>
+              <h2 className="text-2xl font-black text-slate-900">
+                Official Certification Included in {domain.name}
+              </h2>
+              <p className="text-xs text-slate-600 font-medium">
+                Upon course completion, graduates receive an industry-recognized credential approved by Govt. of India, AICTE, NSDC & ISO 9001:2026.
+              </p>
+            </div>
+            <span className="text-xs text-emerald-800 font-black bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full shrink-0">
+              ✓ 100% Lifetime Verifiable
+            </span>
+          </div>
+
+          <div>
+            {getDomainCertificates(domain.slug, domain.name).slice(0, 1).map((cert) => (
+              <DomainCertificateCard key={cert.id} cert={cert} domainName={domain.name} />
             ))}
           </div>
         </div>

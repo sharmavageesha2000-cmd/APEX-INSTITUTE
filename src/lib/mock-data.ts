@@ -228,7 +228,7 @@ export const INITIAL_DOMAINS: Domain[] = [
       'Career Guidance',
     ],
     featured: true,
-    courseCount: 2,
+    courseCount: 0,
   },
 ];
 
@@ -379,7 +379,7 @@ export const INITIAL_COURSES: Course[] = [
     slug: 'generative-ai-llm-agent-engineering',
     headline: 'Master Python, PyTorch, LangChain, RAG Architecture & OpenAI Agents',
     description: 'Learn how to fine-tune transformers, build vector search databases (Pinecone, Chroma), engineer custom RAG pipelines, and deploy autonomous AI agents for enterprise business workflows.',
-    image: 'https://images.unsplash.com/photo-1677442136019-21780efad99a?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/generative-ai-banner.jpg',
     domainId: 'dom-2',
     domainName: 'Artificial Intelligence & Machine Learning',
     domainSlug: 'ai-machine-learning',
@@ -789,62 +789,598 @@ export const INITIAL_COURSES: Course[] = [
     ],
   },
   {
-    id: 'course-10',
-    title: '100% Placement Guaranteed Career Switch Track',
-    slug: '100-percent-placement-career-switch-track',
-    headline: 'Guaranteed 1-on-1 Mentorship, Corporate Referral Drives & Job Acceleration',
-    description: 'Our premier flagship career switch program designed for graduates and working professionals changing tracks into high-paying software, data, or AI engineering jobs.',
-    domainId: 'dom-10',
-    domainName: 'Career & Professional Programs',
-    domainSlug: 'career-professional-programs',
-    duration: '6 Months',
-    fee: 60000,
-    discountFee: 44999,
+    id: 'course-11',
+    title: 'UI/UX Design Systems & Product Strategy Masterclass',
+    slug: 'ui-ux-design-systems-product-strategy-masterclass',
+    headline: 'Master Figma 5.0, UX Research, Design Tokens, Interactive Prototypes & Portfolio Strategy',
+    description: 'Learn end-to-end user experience and product interface design. Master user psychology, wireframing, component design systems, auto layout, usability testing, and create 3 industry-ready Figma portfolio case studies.',
+    image: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?q=80&w=1000&auto=format&fit=crop',
+    domainId: 'dom-5',
+    domainName: 'UI/UX & Design',
+    domainSlug: 'ui-ux-design',
+    duration: '4 Months',
+    fee: 38000,
+    discountFee: 27999,
     level: 'Beginner to Advanced',
-    mode: 'Live Bootcamp + Placement Cell',
-    badge: '100% Placement Call',
-    categoryTag: 'JOB_ORIENTED',
-    rating: 5.0,
-    totalStudents: 1580,
+    mode: 'Live Interactive Studio + Figma Labs',
+    badge: 'Flagship Bestseller',
+    categoryTag: 'TRENDING',
+    rating: 4.9,
+    totalStudents: 1120,
     placementAssistance: true,
     featured: true,
-    highlights: ['Guaranteed Referral Drives with 40+ Corporate Partners', 'Daily Senior Mentor Code Reviews & Mock Technical Interviews'],
+    highlights: [
+      'Master Figma Auto Layout 5.0, Variables & Design Tokens',
+      'Build 3 Complete Industry Portfolio Case Studies',
+      '1-on-1 Portfolio & UX Research Critique from Staff Designers',
+      '100% Placement Assistance with 35+ Top Design Studios',
+    ],
     instructor: {
-      name: 'Rohan Deshmukh',
-      title: 'Ex-Amazon Senior Staff Engineer',
-      experience: '11+ Years Full Stack Experience',
-      expertise: ['Career Coaching', 'System Design', 'React', 'Node.js'],
-      photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
+      name: 'Siddharth Nair',
+      title: 'Staff Product Designer at Zomato (Ex-Swiggy)',
+      experience: '10+ Years Experience in Mobile App UX & Design Systems',
+      expertise: ['Figma', 'UX Research', 'Design Systems', 'Micro-Interactions', 'Design Tokens'],
+      photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop',
+      linkedin: 'https://linkedin.com',
     },
-    prerequisites: ['Commitment to study 15+ hours per week'],
-    whoShouldTake: ['College graduates and professionals seeking guaranteed software job calls'],
-    toolsCovered: ['Git', 'React', 'Next.js', 'PostgreSQL', 'Docker', 'System Design'],
+    prerequisites: [
+      'No prior design or coding experience required',
+      'Basic familiarity with operating Mac or Windows laptop',
+    ],
+    whoShouldTake: [
+      'Students and graduates wanting to become UI/UX Designers & Product Designers',
+      'Frontend developers wanting to master product interface & design systems',
+      'Graphic designers & traditional marketers switching to digital UX',
+    ],
+    toolsCovered: ['Figma', 'FigJam', 'Protopie', 'Maze UX Testing', 'Adobe Illustrator', 'Zeplin', 'Miro'],
     projects: [
       {
-        title: 'Production SaaS Application Portfolio',
-        description: 'Complete capstone project portfolio reviewed directly by hiring managers.',
-        techStack: ['React', 'Next.js', 'Node.js', 'PostgreSQL'],
+        title: 'FinTech Mobile Banking SuperApp UX & Design System',
+        description: 'Complete iOS & Android UI kit with dark/light theme variables, 40+ atomic components, interactive payment micro-animations, and prototype user testing.',
+        techStack: ['Figma', 'FigJam', 'Protopie', 'Maze'],
+      },
+      {
+        title: 'AI Enterprise SaaS Control Center & Analytics Dashboard',
+        description: 'Responsive web application dashboard with complex data visualization charts, design tokens, auto layout components, and WCAG 2.2 accessibility compliance.',
+        techStack: ['Figma', 'Design Tokens', 'Miro'],
       },
     ],
     faqs: [
       {
-        question: 'What is the placement guarantee policy?',
-        answer: 'We provide direct interview calls until you secure a job offer meeting our minimum CTC threshold.',
+        question: 'Do I need a graphics tablet or expensive software?',
+        answer: 'No! Figma runs in any modern browser and is completely free for individual learning.',
+      },
+      {
+        question: 'Will Apex Institute help build my Behance & Dribbble portfolio?',
+        answer: 'Yes! Our mentors guide you through structuring case studies with user research, wireframes, and high-fidelity prototypes.',
       },
     ],
     careerRoles: [
       {
-        title: 'Software Development Engineer (SDE-1)',
-        avgSalary: '₹7.5 LPA - ₹18 LPA',
-        hiringCompanies: ['Amazon', 'Swiggy', 'Zomato', 'Paytm'],
+        title: 'UI/UX Designer',
+        avgSalary: '₹6.5 LPA - ₹15 LPA',
+        hiringCompanies: ['Zomato', 'Swiggy', 'Razorpay', 'CRED', 'Flipkart'],
+      },
+      {
+        title: 'Product Designer',
+        avgSalary: '₹8.0 LPA - ₹18 LPA',
+        hiringCompanies: ['MakeMyTrip', 'Ola', 'Paytm', 'Thoughtworks'],
       },
     ],
     syllabus: [
       {
         moduleNumber: 1,
-        title: 'Module 1 — Engineering Fundamentals & DSA',
+        title: 'Module 1 — User Psychology, UX Research & Problem Validation',
         duration: '4 Weeks',
-        topics: ['Data Structures', 'Algorithms', 'Big-O Notation'],
+        topics: [
+          'Design Thinking Frameworks & Empathy Mapping',
+          'Qualitative User Interviews & Quantitative Surveys',
+          'Creating Realistic User Personas & Customer Journey Maps',
+          'Information Architecture (IA), Card Sorting & Site Maps',
+        ],
+        practicalLab: 'Comprehensive UX Research & Problem Benchmark Study for E-Commerce App',
+      },
+      {
+        moduleNumber: 2,
+        title: 'Module 2 — Wireframing, Figma Basics & Visual Hierarchy',
+        duration: '4 Weeks',
+        topics: [
+          'Low-Fidelity Paper Wireframes & Digital Sketching',
+          'Figma Interface, Vector Networks & Frame Grids',
+          'Typography Scale, Color Theory & Visual Weight',
+          'Mobile-First Responsive Layouts & Breakpoints',
+        ],
+        practicalLab: 'Low-Fi & High-Fi Mobile App Wireframe Flow',
+      },
+      {
+        moduleNumber: 3,
+        title: 'Module 3 — Design Systems, Auto Layout 5.0 & Component Tokens',
+        duration: '4 Weeks',
+        topics: ['Atomic Design Principles (Atoms, Molecules, Organisms)', 'Figma Auto Layout 5.0 (Flex, Grid, Absolute Positioning)', 'Component Variants, Properties & Nested Instances', 'Variables, Dark Mode Modes & Design Tokens (Color, Spacing, Radius)'],
+        practicalLab: 'Enterprise Mobile & Web Design System UI Kit with 50+ Components',
+      },
+      {
+        moduleNumber: 4,
+        title: 'Module 4 — Interactive Prototyping, Usability Testing & Portfolio',
+        duration: '4 Weeks',
+        topics: ['Smart Animate, Micro-Interactions & State Transitions', 'Maze & Lookback Remote Usability Testing Sessions', 'Developer Handoff, Inspect Panel & CSS Export Specs', 'Building & Publishing Industry-Ready Case Studies on Behance & Notion'],
+        practicalLab: 'Final Production Capstone: Interactive FinTech App Portfolio Case Study',
+      },
+    ],
+  },
+  {
+    id: 'course-12',
+    title: 'Advanced Figma Design Systems & Micro-Interactions',
+    slug: 'advanced-figma-design-systems-micro-interactions',
+    headline: 'Build Scalable Enterprise UI Kits, Variables, Component Tokens & Smart Animations',
+    description: 'Specialized masterclass for designers and developers looking to master enterprise Figma design systems, component variants, variable modes, micro-interactions, and seamless developer handoff.',
+    image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=1000&auto=format&fit=crop',
+    domainId: 'dom-5',
+    domainName: 'UI/UX & Design',
+    domainSlug: 'ui-ux-design',
+    duration: '2 Months',
+    fee: 28000,
+    discountFee: 18999,
+    level: 'Intermediate to Advanced',
+    mode: 'Live Interactive Studio',
+    badge: 'High Demand',
+    categoryTag: 'JOB_ORIENTED',
+    rating: 4.8,
+    totalStudents: 740,
+    placementAssistance: true,
+    featured: false,
+    highlights: [
+      'Master Enterprise Design Token Tokens & Variables',
+      'Create Complex Micro-Interactions with Protopie & Lottie',
+      'Seamless Developer Handoff with Storybook Alignment',
+    ],
+    instructor: {
+      name: 'Ananya Roy',
+      title: 'Lead Design System Specialist at Razorpay',
+      experience: '7+ Years Crafting Scalable Component Libraries',
+      expertise: ['Design Systems', 'Figma Variables', 'Storybook', 'Micro-Interactions'],
+      photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop',
+    },
+    prerequisites: ['Basic familiarity with Figma interface'],
+    whoShouldTake: ['UI/UX Designers, Product Managers, and Frontend Engineers wanting to master design systems'],
+    toolsCovered: ['Figma Variables', 'Protopie', 'Lottie', 'Storybook', 'GitLab Tokens'],
+    projects: [
+      {
+        title: 'Multi-Brand Cross-Platform Design System',
+        description: 'Design system featuring light, dark, and high-contrast variable modes synced to Tailwind CSS tokens.',
+        techStack: ['Figma', 'Tokens Studio', 'Protopie'],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is this course suitable for frontend developers?',
+        answer: 'Yes! Engineers learn how design tokens translate into React/Tailwind CSS components.',
+      },
+    ],
+    careerRoles: [
+      {
+        title: 'Design System Engineer / Architect',
+        avgSalary: '₹9.0 LPA - ₹20 LPA',
+        hiringCompanies: ['Razorpay', 'Atlassian', 'Microsoft', 'Postman'],
+      },
+    ],
+    syllabus: [
+      {
+        moduleNumber: 1,
+        title: 'Module 1 — Design System Architecture & Token Structure',
+        duration: '3 Weeks',
+        topics: ['Token Naming Conventions (Global, Alias, Component Tokens)', 'Figma Variables & Primitive Tokens', 'Color Palettes, Typography Systems & Spatial Grids'],
+        practicalLab: 'Core Design Token Architecture Setup',
+      },
+      {
+        moduleNumber: 2,
+        title: 'Module 2 — Advanced Components, Variants & Slots',
+        duration: '3 Weeks',
+        topics: ['Complex Component Variants & Boolean Properties', 'Slot Components & Structural Layout Flexibility', 'Component Documentation & Governance Guidelines'],
+        practicalLab: 'Enterprise Button, Form, Modal & Navigation Library',
+      },
+      {
+        moduleNumber: 3,
+        title: 'Module 3 — Micro-Interactions, Animate & Developer Handoff',
+        duration: '2 Weeks',
+        topics: ['Protopie Micro-Interactions & Physics Animations', 'Exporting Lottie JSON for Mobile & Web Apps', 'Aligning Figma Tokens with Storybook & React Props'],
+        practicalLab: 'Fully Interactive Multi-State Component Library & Specs Handoff',
+      },
+    ],
+  },
+  {
+    id: 'course-13',
+    title: 'Performance Marketing, Meta Ads & Google Ads Mastery',
+    slug: 'performance-marketing-meta-ads-google-ads-mastery',
+    headline: 'Master Media Buying, Conversion Rate Optimization (CRO), Funnel Architecture & AI Copywriting',
+    description: 'Learn how to run scalable, profitable ad campaigns across Meta (Facebook/Instagram), Google Performance Max, LinkedIn Ads, and TikTok. Master ROAS scaling, A/B testing creatives, landing page CRO, and Google Analytics 4.',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop',
+    domainId: 'dom-4',
+    domainName: 'Digital Marketing',
+    domainSlug: 'digital-marketing',
+    duration: '4 Months',
+    fee: 35000,
+    discountFee: 24999,
+    level: 'Beginner to Advanced',
+    mode: 'Live Interactive Online + Live Ad Accounts',
+    badge: 'High ROAS Track',
+    categoryTag: 'JOB_ORIENTED',
+    rating: 4.9,
+    totalStudents: 1350,
+    placementAssistance: true,
+    featured: true,
+    highlights: [
+      'Manage Live Ad Spend & Real Ad Accounts',
+      'Master Meta Pixel, Conversions API & GA4 Tracking',
+      'Scale E-Commerce & Lead Gen ROAS to 3.5x+',
+      '100% Placement Support with 40+ Top Media Agencies',
+    ],
+    instructor: {
+      name: 'Karan Malhotra',
+      title: 'VP of Growth Marketing at Nykaa (Ex-Dentsu)',
+      experience: '9+ Years Managing ₹50Cr+ Annual Media Spend',
+      expertise: ['Meta Ads', 'Google Ads PMax', 'GA4', 'Conversion Rate Optimization', 'Media Buying'],
+      photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=200&auto=format&fit=crop',
+      linkedin: 'https://linkedin.com',
+    },
+    prerequisites: [
+      'Basic understanding of internet & social media',
+      'No prior marketing experience required',
+    ],
+    whoShouldTake: [
+      'Fresh graduates seeking roles as Performance Marketers & Growth Specialists',
+      'Business owners & entrepreneurs wanting to scale online sales & leads',
+      'Marketing professionals looking to transition into high-paying paid ads',
+    ],
+    toolsCovered: ['Meta Ads Manager', 'Google Ads Console', 'Google Analytics 4', 'Hotjar', 'Triple Whale', 'Canva Pro', 'ChatGPT for Ads'],
+    projects: [
+      {
+        title: 'D2C E-Commerce Brand Growth Scaling Campaign',
+        description: 'Setup live Meta & Google Ads campaigns, design high-converting video creatives, configure CAPI event tracking, and optimize ROAS to 4.2x.',
+        techStack: ['Meta Ads', 'Google Ads', 'GA4', 'Shopify Analytics'],
+      },
+      {
+        title: 'High-Ticket B2B Lead Generation Funnel & Landing Page CRO',
+        description: 'Build automated Google Search ad campaign, landing page lead magnet, and email retargeting funnel with full conversion tracking.',
+        techStack: ['Google Ads', 'Google Tag Manager', 'Hotjar'],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Do students get access to live ad accounts for practice?',
+        answer: 'Yes! We provide real demo budgets and ad manager sandboxes for live campaign optimization.',
+      },
+      {
+        question: 'Is Google Analytics 4 (GA4) certification included?',
+        answer: 'Yes, we prepare students for the official Google Ads & GA4 certification exams.',
+      },
+    ],
+    careerRoles: [
+      {
+        title: 'Performance Marketer',
+        avgSalary: '₹6.0 LPA - ₹14 LPA',
+        hiringCompanies: ['Nykaa', 'Lenskart', 'Zomato', 'Publicis Media', 'Performics'],
+      },
+      {
+        title: 'Digital Growth Manager',
+        avgSalary: '₹8.0 LPA - ₹18 LPA',
+        hiringCompanies: ['Swiggy', 'Paytm', 'Mamaearth', 'Schbang'],
+      },
+    ],
+    syllabus: [
+      {
+        moduleNumber: 1,
+        title: 'Module 1 — Marketing Funnels & Customer Acquisition Strategy',
+        duration: '4 Weeks',
+        topics: [
+          'TOFU, MOFU, BOFU Customer Funnel Architecture',
+          'Customer Acquisition Cost (CAC) vs Lifetime Value (LTV)',
+          'High-Converting Ad Copywriting with AI Prompts',
+          'Competitor Ad Spying & Market Research (Meta Ad Library)',
+        ],
+        practicalLab: 'End-to-End Campaign Strategy & Offer Blueprint',
+      },
+      {
+        moduleNumber: 2,
+        title: 'Module 2 — Meta Ads (Facebook & Instagram) Scaling Blueprint',
+        duration: '4 Weeks',
+        topics: ['Meta Business Manager & Ad Account Structure', 'Custom Audiences, Lookalikes & Broad Targeting', 'Dynamic Product Ads (DPA) & Carousel Creatives', 'Meta Conversions API (CAPI) & Server-Side Tracking'],
+        practicalLab: 'Live Meta Ad Campaign Creation, Testing & ROAS Scaling',
+      },
+      {
+        moduleNumber: 3,
+        title: 'Module 3 — Google Ads, Search, Display & Performance Max',
+        duration: '4 Weeks',
+        topics: ['Google Search Keyword Match Types & Negative Keywords', 'Quality Score Optimization & Bidding Strategies (tCPA, tROAS)', 'Performance Max (PMax) Campaign Architecture', 'YouTube In-Stream Video Ads & Retargeting'],
+        practicalLab: 'High-Intent Google Search & PMax Ad Campaign Launch',
+      },
+      {
+        moduleNumber: 4,
+        title: 'Module 4 — GA4 Analytics, Landing Page CRO & Agency Client Pitch',
+        duration: '4 Weeks',
+        topics: ['Google Analytics 4 Custom Events & Funnel Exploration', 'Landing Page Heatmaps (Hotjar) & A/B Split Testing', 'Media Budget Allocation & Client Pitch Preparation', 'Official Google Ads & Meta Certified Professional Exams'],
+        practicalLab: 'Final Capstone: Multi-Channel Performance Marketing Strategy & GA4 Audit',
+      },
+    ],
+  },
+  {
+    id: 'course-14',
+    title: 'SEO, Content Strategy & Growth Hacking Masterclass',
+    slug: 'seo-content-strategy-growth-hacking-masterclass',
+    headline: 'Rank #1 on Google with Technical SEO, Topic Clusters, Backlinks & Generative AI Content',
+    description: 'Master organic traffic growth. Learn technical website audits, Keyword Research, Content Velocity with AI tools, Programmatic SEO, Link Building, and Google Search Console.',
+    image: 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?q=80&w=1000&auto=format&fit=crop',
+    domainId: 'dom-4',
+    domainName: 'Digital Marketing',
+    domainSlug: 'digital-marketing',
+    duration: '3 Months',
+    fee: 30000,
+    discountFee: 21999,
+    level: 'Beginner to Intermediate',
+    mode: 'Live Online Studio',
+    badge: 'Organic Growth',
+    categoryTag: 'POPULAR',
+    rating: 4.8,
+    totalStudents: 890,
+    placementAssistance: true,
+    featured: false,
+    highlights: [
+      'Master Ahrefs, SEMrush & Screaming Frog Audits',
+      'Programmatic SEO & AI Content Workflows',
+      'High-Authority Link Building Strategies',
+    ],
+    instructor: {
+      name: 'Megha Sharma',
+      title: 'Head of Organic Growth at Freshworks',
+      experience: '8+ Years Driving Organic Search Traffic',
+      expertise: ['Technical SEO', 'Keyword Research', 'Content Clusters', 'Ahrefs'],
+      photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
+    },
+    prerequisites: ['Basic internet and blogging familiarity'],
+    whoShouldTake: ['SEO Specialists, Content Creators, Bloggers, and Digital Marketers'],
+    toolsCovered: ['Ahrefs', 'SEMrush', 'Screaming Frog', 'Google Search Console', 'SurferSEO', 'ChatGPT', 'WordPress'],
+    projects: [
+      {
+        title: 'Full Website Technical SEO Audit & Ranking Blueprint',
+        description: 'Comprehensive audit resolving crawl errors, Core Web Vitals, schema markup, and keyword gap analysis.',
+        techStack: ['Screaming Frog', 'Ahrefs', 'Google Search Console'],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Will I learn how to use AI for SEO content creation?',
+        answer: 'Yes! We cover ethical AI content generation, EEAT guidelines, and human editing workflows.',
+      },
+    ],
+    careerRoles: [
+      {
+        title: 'SEO Specialist / Strategist',
+        avgSalary: '₹5.0 LPA - ₹12 LPA',
+        hiringCompanies: ['Freshworks', 'Zoho', 'iProspect', 'Dentsu'],
+      },
+    ],
+    syllabus: [
+      {
+        moduleNumber: 1,
+        title: 'Module 1 — Keyword Research & On-Page SEO Foundations',
+        duration: '4 Weeks',
+        topics: ['Search Intent Analysis (Informational, Transactional)', 'Ahrefs & SEMrush Keyword Difficulty & Volume Analysis', 'Title Tags, Meta Descriptions & H1-H6 Hierarchy', 'Content Topic Clusters & Pillar Page Architecture'],
+        practicalLab: 'Keyword Opportunity & Content Pillar Map for SaaS',
+      },
+      {
+        moduleNumber: 2,
+        title: 'Module 2 — Technical SEO, Core Web Vitals & Schema Markup',
+        duration: '4 Weeks',
+        topics: ['Screaming Frog Crawl Audits & 404/301 Redirects', 'XML Sitemap, Robots.txt & Canonical Tag Optimization', 'Google Core Web Vitals (LCP, INP, CLS)', 'JSON-LD Structured Data Schema Markup (FAQ, Article, Product)'],
+        practicalLab: 'Technical Site Audit & Fix Plan for Live Domain',
+      },
+      {
+        moduleNumber: 3,
+        title: 'Module 3 — Off-Page SEO, Link Building & AI Content Velocity',
+        duration: '4 Weeks',
+        topics: ['High-Authority Backlink Acquisition Strategies (Digital PR, Skyscraper)', 'Google Search Console Performance Diagnostics', 'Generative AI Content Velocity & EEAT Guidelines', 'Local SEO & Google Business Profile Optimization'],
+        practicalLab: 'Link Building Outreach Campaign & GSC Performance Report',
+      },
+    ],
+  },
+  {
+    id: 'course-comm-1',
+    title: 'Executive Business Communication & Corporate Soft Skills Masterclass',
+    slug: 'executive-business-communication-corporate-soft-skills',
+    headline: 'Master Spoken Business English, Email Etiquette, Presentation Mastery & Workplace Leadership',
+    description: 'Designed for students, fresh graduates, job seekers, and working professionals seeking to articulate ideas with impact, clear corporate interview rounds, deliver compelling executive presentations, and navigate modern workplace dynamics with confidence.',
+    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1000&auto=format&fit=crop',
+    domainId: 'dom-8',
+    domainName: 'Communication & Professional Skills',
+    domainSlug: 'communication-professional-skills',
+    duration: '3 Months',
+    fee: 22000,
+    discountFee: 14999,
+    level: 'Beginner to Advanced',
+    mode: 'Live Online Workshops + Interactive Labs',
+    badge: 'Flagship Program',
+    categoryTag: 'TRENDING',
+    rating: 4.9,
+    totalStudents: 890,
+    placementAssistance: true,
+    featured: true,
+    highlights: [
+      '1-on-1 Spoken English Audits & Accent Neutralization',
+      'Corporate Interview Drills & Resume Makeover Workshops',
+      'Executive Pitching, Public Speaking & Presentation Labs',
+      'Business Email Etiquette & Slack/Teams Workplace Dynamics',
+    ],
+    instructor: {
+      name: 'Ananya Roy',
+      title: 'Ex-Corporate HR Director & Senior Executive Coach',
+      experience: '12+ Years Coaching Corporate Executives at Deloitte & PwC',
+      expertise: ['Business English', 'Executive Presence', 'Public Speaking', 'Behavioral Interviews'],
+      photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop',
+      linkedin: 'https://linkedin.com',
+    },
+    prerequisites: ['Basic understanding of conversational English'],
+    whoShouldTake: [
+      'Graduates and students preparing for campus placement interviews',
+      'Working professionals seeking promotions and leadership visibility',
+      'Non-native English speakers wanting to eliminate hesitation and speak fluently',
+    ],
+    toolsCovered: ['Grammarly Premium', 'MS PowerPoint', 'Canva Presentations', 'Zoom / MS Teams', 'Elevator Pitch Frameworks', 'Loom Video Audits'],
+    projects: [
+      {
+        title: 'Executive Boardroom Pitch & Corporate Portfolio Presentation',
+        description: 'Prepare and deliver a 10-minute live business pitch in front of industry judges with real-time feedback on body language, vocal modulation, and slide storytelling.',
+        techStack: ['MS PowerPoint', 'Canva', 'Zoom Live Feedback'],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Will I get personal feedback on my speaking fluency and grammar?',
+        answer: 'Yes! You receive 1-on-1 audio/video evaluations from certified communication coaches each week.',
+      },
+    ],
+    careerRoles: [
+      {
+        title: 'Corporate Communications Specialist',
+        avgSalary: '₹5.5 LPA - ₹14 LPA',
+        hiringCompanies: ['Deloitte', 'Accenture', 'Amazon', 'McKinsey'],
+      },
+    ],
+    syllabus: [
+      {
+        moduleNumber: 1,
+        title: 'Module 1 — Business English & Grammar Precision',
+        duration: '4 Weeks',
+        topics: [
+          'Eliminating Common Grammatical Errors & Sentence Construction',
+          'Professional Vocabulary & Corporate Terminology Building',
+          'Pronunciation, Accent Neutralization & Vocal Clarity',
+          'Active Listening & Concise Expression Techniques',
+        ],
+        practicalLab: 'Live Impromptu Speaking & Pronunciation Audio Audits',
+      },
+      {
+        moduleNumber: 2,
+        title: 'Module 2 — Written Communication & Professional Email Etiquette',
+        duration: '4 Weeks',
+        topics: [
+          'High-Impact Business Email Writing & Subject Line Strategies',
+          'Writing Project Status Reports, Meeting Minutes (MOM) & Proposals',
+          'Professional Tone in Slack, MS Teams & Client Messages',
+          'Handling Sensitive Workplace Conversations & Conflict Resolution',
+        ],
+        practicalLab: 'Corporate Email Rewrite & Conflict Scenario Simulation',
+      },
+      {
+        moduleNumber: 3,
+        title: 'Module 3 — Public Speaking, Presentations & Interview Mastery',
+        duration: '4 Weeks',
+        topics: [
+          'Designing Visual Storytelling Slides (PowerPoint / Canva)',
+          'Overcoming Stage Fright & Body Language Mastery',
+          'Behavioral (STAR Method) & HR Interview Questions Preparation',
+          'Group Discussion (GD) Tactics & Steering Conversations',
+        ],
+        practicalLab: 'Live Mock Group Discussion & Final Executive Pitch',
+      },
+    ],
+  },
+  {
+    id: 'course-comm-2',
+    title: 'Spoken English, Interview Confidence & Personality Development Bootcamp',
+    slug: 'spoken-english-interview-confidence-personality-development',
+    headline: 'Overcome Hesitations, Speak Fluent English, Master GDs & Crack Top HR/Technical Interviews',
+    description: 'An intensive hands-on bootcamp designed to build unshakable confidence, fluent English speaking skills, sharp interview answers, and professional body language for freshers and professionals.',
+    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop',
+    domainId: 'dom-8',
+    domainName: 'Communication & Professional Skills',
+    domainSlug: 'communication-professional-skills',
+    duration: '2 Months',
+    fee: 18000,
+    discountFee: 11999,
+    level: 'Beginner to Intermediate',
+    mode: 'Classroom + Live Online Practice Groups',
+    badge: 'Top Rated',
+    categoryTag: 'POPULAR',
+    rating: 4.95,
+    totalStudents: 1150,
+    placementAssistance: true,
+    featured: true,
+    highlights: [
+      'Daily 30-Minute Live Speaking Practice in Micro-Groups',
+      'ATS Resume Creation & LinkedIn Profile Optimization',
+      '10+ Mock HR & Technical Behavioral Interview Practice Sessions',
+      'Group Discussion (GD) Drills with Real-Time Panelist Scoring',
+    ],
+    instructor: {
+      name: 'David Miller',
+      title: 'Certified CELTA Voice & Accent Trainer',
+      experience: '10+ Years Experience Training College Freshers & Job Seekers',
+      expertise: ['Spoken English', 'Interview Coaching', 'GD Drills', 'Soft Skills'],
+      photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop',
+      linkedin: 'https://linkedin.com',
+    },
+    prerequisites: ['Willingness to participate in daily live speaking drills'],
+    whoShouldTake: [
+      'Freshers and college seniors aiming to clear MNC placement drives',
+      'Job seekers wanting to boost self-confidence during HR interview rounds',
+      'Individuals looking to eliminate public speaking anxiety and stutter',
+    ],
+    toolsCovered: ['ATS Resume Builders', 'LinkedIn Sales Navigator', 'Zoom Breakout Rooms', 'Vocal Pitch Apps', 'Interview Q&A Vault'],
+    projects: [
+      {
+        title: 'Full Placement Mock Drive & Video Resume Portfolio',
+        description: 'Participate in a simulated end-to-end MNC recruitment drive including Aptitude Round prep, Group Discussion, HR Interview, and Video Resume Creation.',
+        techStack: ['ATS Resume Builder', 'LinkedIn', 'Video Recording'],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Are there small practice groups so I can speak without fear?',
+        answer: 'Yes! Live practice sessions are conducted in tiny groups of 4-5 students led by a mentor.',
+      },
+    ],
+    careerRoles: [
+      {
+        title: 'Client Specialist / Talent Acquisition Associate',
+        avgSalary: '₹4.5 LPA - ₹10 LPA',
+        hiringCompanies: ['TCS', 'Cognizant', 'Infosys', 'Wipro', 'HCL'],
+      },
+    ],
+    syllabus: [
+      {
+        moduleNumber: 1,
+        title: 'Module 1 — Spoken English Fluency & Vocabulary Booster',
+        duration: '3 Weeks',
+        topics: [
+          'Daily Conversational Fluency Drills without Hesitation',
+          'Building Active Vocabulary & Phrasal Verbs',
+          'Correcting Common Indianisms & Translation Mistakes',
+          'Confidence Building & Overcoming Shyness',
+        ],
+        practicalLab: 'Daily 1-on-1 Partner Speaking & Audio Feedback',
+      },
+      {
+        moduleNumber: 2,
+        title: 'Module 2 — Interview Masterclass & STAR Method Framing',
+        duration: '3 Weeks',
+        topics: [
+          '"Tell Me About Yourself" & Impactful Self-Introduction',
+          'Answering Difficult Behavioral Questions with the STAR Method',
+          'Salary Negotiation & Handling Employment Gaps',
+          'Body Language, Eye Contact & Virtual Video Interview Hygiene',
+        ],
+        practicalLab: 'Live 1-on-1 Mock Interview with Detailed Scorecard',
+      },
+      {
+        moduleNumber: 3,
+        title: 'Module 3 — Group Discussion (GD) & Professional Persona',
+        duration: '2 Weeks',
+        topics: [
+          'GD Entry Strategies, Summarizing & Topic Analysis',
+          'Handling Dominant Speakers & Diplomatic Disagreements',
+          'ATS Resume Creation & LinkedIn Professional Branding',
+        ],
+        practicalLab: 'Live Competitive Group Discussion Simulation',
       },
     ],
   },
@@ -855,7 +1391,7 @@ export const INITIAL_BLOGS: BlogPost[] = [
     id: 'blog-1',
     title: 'How to Start a Career in Artificial Intelligence & GenAI in 2026',
     slug: 'how-to-start-career-in-ai',
-    category: 'AI',
+    category: 'AI & GenAI',
     image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop',
     authorName: 'Dr. Ananya Sen',
     authorTitle: 'Lead AI Fellow',
@@ -909,6 +1445,158 @@ Preparing for a senior Full Stack Engineer interview requires both theoretical d
 `,
     featured: true,
     createdAt: '2026-08-05',
+  },
+  {
+    id: 'blog-3',
+    title: 'AWS Cloud & DevOps Engineering Roadmap 2026: Docker to Multi-Cluster Kubernetes',
+    slug: 'aws-cloud-devops-kubernetes-roadmap',
+    category: 'Technology',
+    image: 'https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?q=80&w=800&auto=format&fit=crop',
+    authorName: 'Vikramaditya Rao',
+    authorTitle: 'Principal Cloud Architect',
+    authorPhoto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop',
+    readTime: '10 Min Read',
+    summary: 'Comprehensive technical guide for mastering Docker containerization, Kubernetes orchestration, Terraform Infrastructure as Code, and CI/CD pipelines.',
+    content: `
+# AWS Cloud & DevOps Engineering Roadmap
+
+Modern cloud infrastructure demands automated provisioning, zero-downtime deployments, and robust observability.
+
+## 1. Linux Kernel & Shell Automation
+Understanding systemd, SSH key management, bash scripting, and networking fundamentals (DNS, TCP/IP, VPC subnetting) forms the bedrock of DevOps.
+
+## 2. Docker & Containerization
+Learn multi-stage Dockerfiles, image security scanning using Trivy, and Docker Compose environments for local development.
+
+## 3. Kubernetes (EKS) & GitOps
+Master Pod lifecycle, StatefulSets, Ingress NGINX controllers, Helm charts, and automated deployment with ArgoCD.
+`,
+    featured: true,
+    createdAt: '2026-08-07',
+  },
+  {
+    id: 'blog-4',
+    title: 'Data Science & Analytics 101: Power BI, SQL, Python & Tableau Complete Guide',
+    slug: 'data-analytics-power-bi-sql-guide',
+    category: 'Data & Analytics',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop',
+    authorName: 'Priya Sharma',
+    authorTitle: 'Senior Data Scientist',
+    authorPhoto: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
+    readTime: '7 Min Read',
+    summary: 'Learn how modern business analysts and data scientists leverage SQL query tuning, Power BI DAX calculations, and Python statistical libraries to solve complex enterprise problems.',
+    content: `
+# Data Science & Analytics Complete Guide
+
+Data-driven decision making is critical for every modern company. Here is how to master data analytics in 2026.
+
+## 1. Advanced SQL for Analytics
+Master Window functions (ROW_NUMBER, DENSE_RANK, LAG/LEAD), Common Table Expressions (CTEs), and aggregation indexing.
+
+## 2. Power BI & DAX Metrics
+Build interactive executive dashboards, configure star schema data models, and write complex DAX formulas for time intelligence.
+`,
+    featured: true,
+    createdAt: '2026-08-08',
+  },
+  {
+    id: 'blog-5',
+    title: 'UI/UX Design Trends in 2026: Figma Design Systems, Micro-Interactions & Usability Testing',
+    slug: 'ui-ux-design-systems-figma-trends',
+    category: 'UI/UX Design',
+    image: 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?q=80&w=800&auto=format&fit=crop',
+    authorName: 'Siddharth Nair',
+    authorTitle: 'Staff Product Designer',
+    authorPhoto: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop',
+    readTime: '5 Min Read',
+    summary: 'Explore industry-standard UX research workflows, component design tokens in Figma, auto-layout mastery, and interactive prototyping for mobile apps.',
+    content: `
+# UI/UX Design Trends & Figma Mastery
+
+Great product design balances user psychology with aesthetic elegance and responsive interaction design.
+
+## Key Design Principles
+- Design Systems & Variable Tokens
+- Auto Layout 5.0 in Figma
+- Mobile-First responsive grids
+- Accessibility compliance (WCAG 2.2 AA)
+`,
+    featured: false,
+    createdAt: '2026-08-09',
+  },
+  {
+    id: 'blog-6',
+    title: 'How Non-IT Graduates Can Switch into High-Paying Tech Roles in 6 Months',
+    slug: 'non-tech-to-it-career-switch-roadmap',
+    category: 'Career Advice',
+    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop',
+    authorName: 'Meera Nair',
+    authorTitle: 'Head of Career Placement Services',
+    authorPhoto: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=200&auto=format&fit=crop',
+    readTime: '9 Min Read',
+    summary: 'A realistic 6-month blueprint for career switchers: choosing non-coding or coding tracks, building ATS resumes, and leveraging 1-on-1 mentorship for job placements.',
+    content: `
+# How Non-IT Graduates Can Switch into High-Paying Tech Roles
+
+Switching into technology from Arts, Commerce, Civil Engineering, or Sales is fully achievable with the right strategy.
+
+## 1. Choose Your Ideal Domain Track
+- **Coding Track**: Full Stack Web Development, Python AI/ML, Cloud DevOps
+- **Low-Coding / Business Track**: Data Analytics (Power BI/SQL), UI/UX Design, Digital Marketing
+
+## 2. Build 3 Live Production Projects
+Rather than passive tutorial watching, complete end-to-end practical labs that show employer-ready skills.
+`,
+    featured: true,
+    createdAt: '2026-08-10',
+  },
+  {
+    id: 'blog-7',
+    title: 'Modern Digital Marketing & Growth Hacking: SEO, Performance Ads & AI Analytics',
+    slug: 'digital-marketing-growth-hacking-ai',
+    category: 'Digital Marketing',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop',
+    authorName: 'Karan Malhotra',
+    authorTitle: 'VP of Growth Marketing',
+    authorPhoto: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=200&auto=format&fit=crop',
+    readTime: '6 Min Read',
+    summary: 'Discover modern growth marketing strategies using automated Google & Meta ad campaigns, SEO content clusters, customer acquisition funnels, and analytics tools.',
+    content: `
+# Modern Digital Marketing & Growth Hacking
+
+Growth marketing in 2026 relies on automated bidding, programmatic ad creatives, and deep funnel analytics.
+
+## Strategy Stack
+1. Programmatic Meta & Google Performance Max Ads
+2. Technical SEO & Semantic Content Architecture
+3. Conversion Rate Optimization (CRO)
+`,
+    featured: false,
+    createdAt: '2026-08-11',
+  },
+  {
+    id: 'blog-8',
+    title: 'Cybersecurity Essentials: Hands-On Guide to Ethical Hacking & Network Defense',
+    slug: 'cybersecurity-ethical-hacking-network-defense',
+    category: 'Cyber Security',
+    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=800&auto=format&fit=crop',
+    authorName: 'Rajesh Varma',
+    authorTitle: 'Certified Ethical Hacker',
+    authorPhoto: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=200&auto=format&fit=crop',
+    readTime: '8 Min Read',
+    summary: 'Understand penetration testing methodology, OWASP Top 10 vulnerabilities, SIEM log monitoring, and how to start a career in SOC analysis and threat hunting.',
+    content: `
+# Cybersecurity Essentials & Threat Hunting
+
+With increasing enterprise cloud adoption, network defense and incident response specialists are in record demand.
+
+## Core Security Pillars
+- OWASP Top 10 web vulnerabilities (SQLi, XSS, CSRF, SSRF)
+- Wireshark packet capture & SIEM log analytics (Splunk)
+- Penetration testing methodology using Kali Linux
+`,
+    featured: false,
+    createdAt: '2026-08-12',
   },
 ];
 

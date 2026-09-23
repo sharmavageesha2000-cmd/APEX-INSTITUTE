@@ -35,3 +35,12 @@ next-env.d.ts
 Thumbs.db
 .vscode/
 .idea/
+
+# Local Netlify folder
+.netlify
+
+.vercel
+
+# Backups
+.backups/
+get-token.mjs

@@ -119,16 +119,23 @@ export const CourseCompareClient: React.FC<CourseCompareClientProps> = ({
       {/* Side-by-Side Comparison Matrix */}
       {selectedCourses.length > 0 && (
         <div className="bg-white rounded-3xl border border-purple-100 overflow-hidden shadow-lg">
-          <div className="p-6 bg-purple-50/50 border-b border-purple-100 font-extrabold text-slate-900 text-lg flex items-center justify-between">
+          <div className="p-4 sm:p-6 bg-purple-50/50 border-b border-purple-100 font-extrabold text-slate-900 text-base sm:text-lg flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <span>Side-by-Side Comparison Matrix</span>
             <span className="text-xs text-slate-500 font-medium">Comparing {selectedCourses.length} Courses</span>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-700 border-collapse">
+          {/* Mobile Swipe Hint */}
+          <div className="md:hidden bg-purple-100/70 border-b border-purple-200/80 px-4 py-2 text-[11px] text-purple-800 font-extrabold flex items-center justify-center gap-1.5">
+            <span>← Swipe horizontally to inspect all course parameters →</span>
+          </div>
+
+          <div className="overflow-x-auto scrollbar-none">
+            <table className="w-full min-w-[700px] text-left text-xs text-slate-700 border-collapse">
               <thead>
                 <tr className="border-b border-slate-200 bg-slate-50/80">
-                  <th className="p-4 font-bold text-slate-700 w-1/4">Feature / Metric</th>
+                  <th className="p-4 font-bold text-slate-700 w-1/4 sticky left-0 bg-slate-50/95 backdrop-blur-sm z-10 shadow-[2px_0_6px_rgba(0,0,0,0.05)]">
+                    Feature / Metric
+                  </th>
                   {selectedCourses.map((crs, i) => (
                     <th key={i} className="p-4 font-extrabold text-slate-900 w-1/4 border-l border-slate-200">
                       {crs.title}
@@ -139,8 +146,8 @@ export const CourseCompareClient: React.FC<CourseCompareClientProps> = ({
               <tbody className="divide-y divide-slate-100">
                 {/* 1. Duration */}
                 <tr>
-                  <td className="p-4 font-bold text-slate-600 flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-purple-600" />
+                  <td className="p-4 font-bold text-slate-600 flex items-center gap-2 sticky left-0 bg-white z-10 shadow-[2px_0_6px_rgba(0,0,0,0.05)]">
+                    <Clock className="w-4 h-4 text-purple-600 shrink-0" />
                     <span>Duration</span>
                   </td>
                   {selectedCourses.map((crs, i) => (
@@ -152,7 +159,9 @@ export const CourseCompareClient: React.FC<CourseCompareClientProps> = ({
 
                 {/* 2. Fees & Discount */}
                 <tr>
-                  <td className="p-4 font-bold text-slate-600">Total Program Fee</td>
+                  <td className="p-4 font-bold text-slate-600 sticky left-0 bg-white z-10 shadow-[2px_0_6px_rgba(0,0,0,0.05)]">
+                    Total Program Fee
+                  </td>
                   {selectedCourses.map((crs, i) => (
                     <td key={i} className="p-4 border-l border-slate-100">
                       <span className="text-sm font-black text-slate-900">
@@ -169,8 +178,8 @@ export const CourseCompareClient: React.FC<CourseCompareClientProps> = ({
 
                 {/* 3. Skill Level */}
                 <tr>
-                  <td className="p-4 font-bold text-slate-600 flex items-center gap-2">
-                    <Layers className="w-4 h-4 text-pink-600" />
+                  <td className="p-4 font-bold text-slate-600 flex items-center gap-2 sticky left-0 bg-white z-10 shadow-[2px_0_6px_rgba(0,0,0,0.05)]">
+                    <Layers className="w-4 h-4 text-pink-600 shrink-0" />
                     <span>Skill Level</span>
                   </td>
                   {selectedCourses.map((crs, i) => (
@@ -184,8 +193,8 @@ export const CourseCompareClient: React.FC<CourseCompareClientProps> = ({
 
                 {/* 4. Curriculum Depth */}
                 <tr>
-                  <td className="p-4 font-bold text-slate-600 flex items-center gap-2">
-                    <BookOpen className="w-4 h-4 text-purple-600" />
+                  <td className="p-4 font-bold text-slate-600 flex items-center gap-2 sticky left-0 bg-white z-10 shadow-[2px_0_6px_rgba(0,0,0,0.05)]">
+                    <BookOpen className="w-4 h-4 text-purple-600 shrink-0" />
                     <span>Curriculum & Modules</span>
                   </td>
                   {selectedCourses.map((crs, i) => (
@@ -200,8 +209,8 @@ export const CourseCompareClient: React.FC<CourseCompareClientProps> = ({
 
                 {/* 5. Real-World Projects */}
                 <tr>
-                  <td className="p-4 font-bold text-slate-600 flex items-center gap-2">
-                    <Code2 className="w-4 h-4 text-emerald-600" />
+                  <td className="p-4 font-bold text-slate-600 flex items-center gap-2 sticky left-0 bg-white z-10 shadow-[2px_0_6px_rgba(0,0,0,0.05)]">
+                    <Code2 className="w-4 h-4 text-emerald-600 shrink-0" />
                     <span>Real-World Projects</span>
                   </td>
                   {selectedCourses.map((crs, i) => (
@@ -218,8 +227,8 @@ export const CourseCompareClient: React.FC<CourseCompareClientProps> = ({
 
                 {/* 6. Certification */}
                 <tr>
-                  <td className="p-4 font-bold text-slate-600 flex items-center gap-2">
-                    <Award className="w-4 h-4 text-amber-500" />
+                  <td className="p-4 font-bold text-slate-600 flex items-center gap-2 sticky left-0 bg-white z-10 shadow-[2px_0_6px_rgba(0,0,0,0.05)]">
+                    <Award className="w-4 h-4 text-amber-500 shrink-0" />
                     <span>Certification</span>
                   </td>
                   {selectedCourses.map((crs, i) => (
@@ -233,8 +242,8 @@ export const CourseCompareClient: React.FC<CourseCompareClientProps> = ({
 
                 {/* 7. Placement Support */}
                 <tr>
-                  <td className="p-4 font-bold text-slate-600 flex items-center gap-2">
-                    <Briefcase className="w-4 h-4 text-purple-600" />
+                  <td className="p-4 font-bold text-slate-600 flex items-center gap-2 sticky left-0 bg-white z-10 shadow-[2px_0_6px_rgba(0,0,0,0.05)]">
+                    <Briefcase className="w-4 h-4 text-purple-600 shrink-0" />
                     <span>Placement Support</span>
                   </td>
                   {selectedCourses.map((crs, i) => (
@@ -253,8 +262,8 @@ export const CourseCompareClient: React.FC<CourseCompareClientProps> = ({
 
                 {/* 8. Mode & Format */}
                 <tr>
-                  <td className="p-4 font-bold text-slate-600 flex items-center gap-2">
-                    <Building2 className="w-4 h-4 text-purple-600" />
+                  <td className="p-4 font-bold text-slate-600 flex items-center gap-2 sticky left-0 bg-white z-10 shadow-[2px_0_6px_rgba(0,0,0,0.05)]">
+                    <Building2 className="w-4 h-4 text-purple-600 shrink-0" />
                     <span>Mode & Learning Format</span>
                   </td>
                   {selectedCourses.map((crs, i) => (
@@ -267,7 +276,9 @@ export const CourseCompareClient: React.FC<CourseCompareClientProps> = ({
 
                 {/* Action CTA Row */}
                 <tr className="bg-purple-50/30">
-                  <td className="p-4 font-bold text-slate-600">Actions</td>
+                  <td className="p-4 font-bold text-slate-600 sticky left-0 bg-purple-50/95 backdrop-blur-sm z-10 shadow-[2px_0_6px_rgba(0,0,0,0.05)]">
+                    Actions
+                  </td>
                   {selectedCourses.map((crs, i) => (
                     <td key={i} className="p-4 border-l border-slate-100">
                       <div className="space-y-2">

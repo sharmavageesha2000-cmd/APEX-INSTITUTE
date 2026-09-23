@@ -26,10 +26,10 @@ export const HomeFloatingWidgets: React.FC = () => {
   )}`;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 font-sans animate-fadeIn">
-      {/* WHATSAPP QUICK CHAT POPUP OVERLAY */}
+    <div className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-50 flex flex-col items-start gap-2.5 font-sans animate-fadeIn max-w-[calc(100vw-2rem)] pointer-events-auto">
+      {/* WHATSAPP QUICK CHAT POPUP OVERLAY (EXPANDS FROM LEFT) */}
       {showWhatsAppPopup && (
-        <div className="w-80 sm:w-88 bg-white rounded-3xl border border-emerald-200 shadow-2xl overflow-hidden mb-2 animate-scaleUp">
+        <div className="w-[calc(100vw-2rem)] max-w-xs sm:w-88 bg-white rounded-3xl border border-emerald-200 shadow-2xl overflow-hidden mb-2 animate-scaleUp origin-bottom-left">
           {/* Header */}
           <div className="bg-gradient-to-r from-emerald-600 to-teal-700 p-4 text-white flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -78,9 +78,9 @@ export const HomeFloatingWidgets: React.FC = () => {
         </div>
       )}
 
-      {/* CALL US DIRECT MODAL OVERLAY */}
+      {/* CALL US DIRECT MODAL OVERLAY (EXPANDS FROM LEFT) */}
       {showCallModal && (
-        <div className="w-80 sm:w-88 bg-white rounded-3xl border border-purple-200 shadow-2xl overflow-hidden mb-2 animate-scaleUp">
+        <div className="w-[calc(100vw-2rem)] max-w-xs sm:w-88 bg-white rounded-3xl border border-purple-200 shadow-2xl overflow-hidden mb-2 animate-scaleUp origin-bottom-left">
           {/* Header */}
           <div className="bg-gradient-to-r from-purple-700 to-indigo-800 p-4 text-white flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -133,16 +133,29 @@ export const HomeFloatingWidgets: React.FC = () => {
         </div>
       )}
 
-      {/* FLOATING ACTION BUTTONS ROW */}
-      <div className="flex items-center gap-3">
-        {/* Close/Minimize Button */}
-        <button
-          onClick={() => setDismissed(true)}
-          title="Dismiss Popups"
-          className="w-7 h-7 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 flex items-center justify-center shadow-xs transition-all text-xs"
-        >
-          <X className="w-3.5 h-3.5" />
-        </button>
+      {/* FLOATING ACTION BUTTONS ROW (ON THE LEFT) */}
+      <div className="flex items-center gap-2 sm:gap-2.5">
+        {/* WHATSAPP FLOATING BUTTON */}
+        <div className="relative group">
+          <button
+            onClick={() => {
+              setShowWhatsAppPopup(!showWhatsAppPopup);
+              setShowCallModal(false);
+            }}
+            className="flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white font-extrabold text-xs py-2.5 sm:py-3 px-3.5 sm:px-4.5 rounded-full shadow-xl shadow-emerald-500/30 hover:scale-105 active:scale-95 transition-all border border-white/30"
+          >
+            <div className="relative flex items-center">
+              <WhatsAppLogo className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-300 rounded-full border border-white animate-pulse" />
+            </div>
+            <span>WhatsApp Us</span>
+          </button>
+
+          {/* Hover Tooltip */}
+          <div className="absolute bottom-full left-0 mb-2 hidden group-hover:block bg-slate-900 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg shadow-lg whitespace-nowrap">
+            Chat on WhatsApp
+          </div>
+        </div>
 
         {/* CALL US FLOATING BUTTON */}
         <div className="relative group">
@@ -151,42 +164,29 @@ export const HomeFloatingWidgets: React.FC = () => {
               setShowCallModal(!showCallModal);
               setShowWhatsAppPopup(false);
             }}
-            className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-extrabold text-xs py-3 px-4 rounded-full shadow-xl shadow-purple-600/30 hover:scale-105 active:scale-95 transition-all border border-white/20"
+            className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-extrabold text-xs py-2.5 sm:py-3 px-3.5 sm:px-4 rounded-full shadow-xl shadow-purple-600/30 hover:scale-105 active:scale-95 transition-all border border-white/20"
           >
             <div className="relative">
-              <Phone className="w-4 h-4 text-white" />
+              <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
               <span className="absolute -top-1 -right-1 w-2 h-2 bg-pink-400 rounded-full animate-ping" />
             </div>
             <span className="hidden sm:inline">Call Us</span>
           </button>
           
           {/* Hover Tooltip */}
-          <div className="absolute bottom-full right-0 mb-2 hidden group-hover:block bg-slate-900 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg shadow-lg whitespace-nowrap">
+          <div className="absolute bottom-full left-0 mb-2 hidden group-hover:block bg-slate-900 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg shadow-lg whitespace-nowrap">
             Direct Phone Helpline
           </div>
         </div>
 
-        {/* WHATSAPP FLOATING BUTTON */}
-        <div className="relative group">
-          <button
-            onClick={() => {
-              setShowWhatsAppPopup(!showWhatsAppPopup);
-              setShowCallModal(false);
-            }}
-            className="flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white font-extrabold text-xs py-3 px-4.5 rounded-full shadow-xl shadow-emerald-500/30 hover:scale-105 active:scale-95 transition-all border border-white/30"
-          >
-            <div className="relative flex items-center">
-              <WhatsAppLogo className="w-5 h-5 text-white" />
-              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-300 rounded-full border border-white animate-pulse" />
-            </div>
-            <span>WhatsApp Us</span>
-          </button>
-
-          {/* Hover Tooltip */}
-          <div className="absolute bottom-full right-0 mb-2 hidden group-hover:block bg-slate-900 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg shadow-lg whitespace-nowrap">
-            Chat on WhatsApp
-          </div>
-        </div>
+        {/* Close/Minimize Button */}
+        <button
+          onClick={() => setDismissed(true)}
+          title="Dismiss Popups"
+          className="w-7 h-7 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 flex items-center justify-center shadow-xs transition-all text-xs"
+        >
+          <X className="w-3.5 h-3.5" />
+        </button>
       </div>
     </div>
   );

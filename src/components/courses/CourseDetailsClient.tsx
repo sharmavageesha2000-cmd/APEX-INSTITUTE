@@ -131,8 +131,11 @@ export const CourseDetailsClient: React.FC<CourseDetailsClientProps> = ({
                 <div className="relative shrink-0 group">
                   <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-3xl bg-gradient-to-tr from-pink-600 via-purple-600 to-indigo-600 p-1 shadow-xl shadow-purple-500/20">
                     <img
-                      src={course.image || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop'}
+                      src={course.image || '/images/generative-ai-banner.jpg'}
                       alt={course.title}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/images/generative-ai-banner.jpg';
+                      }}
                       className="w-full h-full object-cover rounded-[22px] group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
@@ -177,16 +180,16 @@ export const CourseDetailsClient: React.FC<CourseDetailsClientProps> = ({
               </div>
 
               {/* CTAs */}
-              <div className="flex items-center gap-3 pt-4">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-4">
                 <button
                   onClick={handleEnrollNow}
-                  className="bright-btn-primary font-bold text-xs px-6 py-3.5 transition-all flex items-center gap-1.5"
+                  className="w-full sm:w-auto bright-btn-primary font-bold text-xs px-6 py-3.5 transition-all flex items-center justify-center gap-1.5"
                 >
                   <span>Enroll Now 🚀</span>
                 </button>
                 <button
                   onClick={() => setEnquiryModalOpen(true)}
-                  className="bright-btn-secondary text-xs px-6 py-3.5 transition-colors flex items-center gap-1.5"
+                  className="w-full sm:w-auto bright-btn-secondary text-xs px-6 py-3.5 transition-colors flex items-center justify-center gap-1.5"
                 >
                   <Download className="w-4 h-4 text-purple-600" />
                   <span>Download Brochure & Syllabus PDF</span>
@@ -441,6 +444,9 @@ export const CourseDetailsClient: React.FC<CourseDetailsClientProps> = ({
                   <img
                     src={course.instructor.photo}
                     alt={course.instructor.name}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop';
+                    }}
                     className="w-20 h-20 rounded-2xl object-cover border-2 border-purple-300 shadow-md"
                   />
                   <div className="space-y-1.5 text-xs">
