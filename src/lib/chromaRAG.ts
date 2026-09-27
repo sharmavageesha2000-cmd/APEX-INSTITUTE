@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import { exec } from 'child_process';
 import { promisify } from 'util';
+import directoryDocs from './company_directory_rag.json';
 
 const execAsync = promisify(exec);
 
@@ -206,12 +207,10 @@ export async function queryChromaDB(queryText: string, nResults: number = 3): Pr
     // Continue to Level 3
   }
 
-  // Level 3: In-memory fallback from src/lib/company_directory_rag.json
+  // Level 3: Bundled in-memory knowledge fallback
   try {
-    const jsonPath = path.resolve(process.cwd(), 'src', 'lib', 'company_directory_rag.json');
-    if (fs.existsSync(jsonPath)) {
-      const raw = fs.readFileSync(jsonPath, 'utf-8');
-      const docs = JSON.parse(raw);
+    const docs = directoryDocs as any[];
+    if (Array.isArray(docs) && docs.length > 0) {
       const queryTokens = cleanQuery.toLowerCase().split(/\s+/).filter((t) => t.length > 2);
 
       const scored = docs.map((doc: any) => {

@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: apex-tech-institute
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 20.16.0
+      - key: DATABASE_URL
+        value: postgresql://neondb_owner:npg_JtlMdTn0Gi4W@ep-mute-king-axu0adta-pooler.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+      - key: JWT_SECRET
+        generateValue: true
+      - key: NEXT_PUBLIC_APP_URL
+        value: https://apex-tech-institute.onrender.com
+      - key: GEMINI_MODEL
+        value: gemini-3.8-flash
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+        value: pk_test_51UEWhp9xCg65DqRpoIQdHLRCkZ8zMIqhQWeHGbnGONAsEAg5ADgFgDCkZa4ov7cETJzjVcTkps8fo8tNPNBW68ZB00QxvVDi0s
+      - key: STRIPE_SECRET_KEY
+        sync: false
