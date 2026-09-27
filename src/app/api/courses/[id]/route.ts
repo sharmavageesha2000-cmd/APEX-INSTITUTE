@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { updateCourse, deleteCourse, getCourseById } from '@/lib/store';
 import { getCurrentUser } from '@/lib/auth';
 
@@ -27,6 +28,14 @@ export async function PUT(
   try {
     const body = await request.json();
     const updated = await updateCourse(params.id, body);
+
+    revalidatePath('/courses');
+    revalidatePath('/courses/[slug]', 'page');
+    revalidatePath('/domains');
+    revalidatePath('/domains/[slug]', 'page');
+    revalidatePath('/');
+    revalidatePath('/admin');
+
     return NextResponse.json({ success: updated });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to update course' }, { status: 500 });
@@ -44,6 +53,14 @@ export async function DELETE(
 
   try {
     const deleted = await deleteCourse(params.id);
+
+    revalidatePath('/courses');
+    revalidatePath('/courses/[slug]', 'page');
+    revalidatePath('/domains');
+    revalidatePath('/domains/[slug]', 'page');
+    revalidatePath('/');
+    revalidatePath('/admin');
+
     return NextResponse.json({ success: deleted });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to delete course' }, { status: 500 });

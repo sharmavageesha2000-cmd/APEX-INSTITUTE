@@ -1,0 +1,127 @@
+APEX TRAINING INSTITUTE
+COMPANY PERSONNEL, LEADERSHIP & BRANCH REGISTERHeadquarters & Tech Campus: HSR Layout, Sector 1, Bangalore 560102
+1. Institute & Headquarters Profile
+Entity Parameter
+Official Information
+Company Name
+Apex Training Institute Private Limited
+Headquarters & Tech Campus
+Apex Tower, Outer Ring Road, HSR Layout, Sector 1, Bangalore, Karnataka – 560102
+Official Central Helpline & Email
++91 80 4120 7800 / +91 98450 12890 | contact@apexbangalore.in
+Operating Hours
+Monday to Saturday: 8:00 AM – 8:30 PM | Sunday: 9:00 AM – 6:00 PM (Labs Open)
+2. Master Personnel Register (Directors, Heads, HR & Managers)
+Personnel Name
+Official Designation
+Department & Contact
+Core Responsibilities
+Dr. Arvind R. Singhania
+Managing Director (MD) & Co-Founder
+Executive Board (HSR HQ)arvind.singhania@apexbangalore.inExt. 101
+Formulates 10-year institutional strategy, capital investments, corporate legal compliance, university partnerships, and chairs quarterly Executive Board reviews.
+Rajeshwari K. Nair
+Chief Executive Officer (CEO)
+Executive Office (HSR HQ)rajeshwari.nair@apexbangalore.inExt. 102
+Oversees pan-India operations, company P&L, student enrollment goals, enterprise training contracts with Bangalore IT corridors, and superintends all functional department heads.
+Vikramaditya Sen
+Chief Operating Officer (COO)
+Operations Directorate (HSR HQ)vikram.sen@apexbangalore.inExt. 103
+Manages daily facility operations across all Bangalore branches, lease renewals, lab workstation maintenance, classroom batch schedules, and vendor service contracts.
+Sunita Deshmukh
+Head of Human Resources (HR Head)
+Human Capital Dept (HSR HQ)sunita.d@apexbangalore.inExt. 301
+Designs institute-wide recruitment policies, compensation scales, labor law compliance, bi-annual appraisal reviews, and chairs the POSH / Internal Grievance committee.
+Divya Swaminathan
+HR Manager – Talent Acquisition
+HR Operations (HSR HQ)divya.s@apexbangalore.inExt. 302
+Leads end-to-end recruitment for technical trainers, lab instructors, and branch counselors; conducts multi-round technical interviews and background checks (BGV).
+Tanya Kapoor
+Assistant HR Manager – Payroll & Welfare
+HR Operations (HSR HQ)tanya.k@apexbangalore.inExt. 303
+Executes monthly payroll, PF/ESI/tax deductions, attendance regularization, staff health insurance claims, and off-boarding documentation.
+Prof. Harishankar Murthy
+Head of Academics & Delivery
+Academic Directorate (HSR HQ)h.murthy@apexbangalore.inExt. 201
+Supervises the master technical trainer panel, conducts blind classroom audits, reviews student teaching scores, and resolves student academic escalations.
+Ananya Roy
+Head of Corporate Relations & Placements
+Placements Directorate (HSR HQ)ananya.roy@apexbangalore.inExt. 202
+Directs corporate hiring tie-ups with IT MNCs in Electronic City, Whitefield, and ORR; organizes on-campus recruitment drives and resume verification.
+Dr. Farhan Akhtar Qureshi
+Head of IT & Infrastructure
+Information Technology (HSR HQ)farhan.qureshi@apexbangalore.inExt. 203
+Oversees multi-gigabit leased lines, private cloud lab environments, campus server clusters, workstation maintenance, and DPDP Act/ISO 27001 data security.
+Karthik Subramanian
+Head of Marketing & Student Counseling
+Student Admissions (HSR HQ)karthik.s@apexbangalore.inExt. 204
+Supervises academic counseling desks across branches, walk-in student career guidance, orientation webinars, and admissions workflow integrity.
+Pradeep V. Kulkarni
+Central Operations Manager
+Campus Operations (HSR HQ)pradeep.k@apexbangalore.inExt. 115
+Coordinates batch timings, lab allocations, classroom readiness, and inter-branch logistical synchronization across all Bangalore locations.
+Amitav Roy Choudhury
+Procurement & Facility Manager
+Facilities & Procurementamitav.roy@apexbangalore.inExt. 118
+Manages bulk purchases of computing hardware, lab furniture, online UPS systems, electrical generator AMCs, and campus physical security staff.
+3. Regional Branch Network & Campus Specifications (Not on Website)
+Branch Location
+Physical Address
+Branch Head & Contact
+Facility Specifications & Role
+Headquarters & Tech Campus (HSR Layout)
+Apex Tower, Outer Ring Road, HSR Layout, Sector 1, Bangalore – 560102
+Vidyadhar Hegde (Center Manager)Ph: +91 80 4120 7810 | Ext: 110
+22,500 sq. ft. | 6 Hi-Tech Labs (220 High-End Workstations), 150-seat Tech Auditorium, 1 Gbps Airtel Leased Line, 160 kVA Generator. Houses central MD, CEO & HR executive offices.
+Marathahalli / ORR Branch
+Silver Square Building, 2nd & 3rd Flr, Outer Ring Rd, Marathahalli, Bengaluru – 560037
+Suresh Babu M. (Branch Operations Head)Ph: +91 80 4155 9200 | Ext: 210
+14,000 sq. ft. | 4 Labs (140 Workstations), 2 Career Counseling Rooms, 500 Mbps Tata Leased Line, 100 kVA Generator. Weekend batches for IT employees.
+Rajajinagar West Branch
+West City Arcade, 1st & 2nd Flr, Dr. Rajkumar Rd, Rajajinagar, Bengaluru – 560010
+Manjunath Swamy (Branch Manager)Ph: +91 80 4233 4100 | Ext: 310
+11,200 sq. ft. | 3 Labs (100 Workstations), Mock-Interview Studio, 300 Mbps Fiber, 60 kVA Online UPS. Caters to North & West Bangalore graduates.
+Electronic City Phase 1 Branch
+Silicon Landmark, 3rd Flr, Neeladri Rd, Electronic City Phase 1, Bengaluru – 560100
+Deepak Chawla (Branch Operations Lead)Ph: +91 80 4390 6500 | Ext: 410
+13,500 sq. ft. | 4 Labs (130 High-Density Workstations), Proctored Assessment Room, 500 Mbps Line, 80 kVA Generator. Corporate & enterprise batches.
+Jabalpur Regional Center
+Apex Knowledge Complex, 2nd & 3rd Flr, Civil Lines Tech Enclave, Jabalpur, MP – 482001
+Sanjay Rathore (Regional Center Head)Ph: +91 761 490 4000 | Ext: 510
+16,500 sq. ft. | 4 Labs (160 Workstations), 90-terminal Proctored Exam Center, Dual 300 Mbps Line, 125 kVA DG Backup. Central India outreach hub.
+Section 7: Canonical QA Pairs for Semantic Retrieval (FAQ Format)
+Direct question-and-answer pairs designed to optimize semantic similarity matching inside ChromaDB for user queries.
+Q: Where is the Headquarters of Apex Training Institute located?
+A: The Headquarters & Tech Campus of Apex Training Institute is located at: Apex Tower, Outer Ring Road, HSR Layout, Sector 1, Bangalore, Karnataka – 560102 (Phone: +91 80 4120 7800 / +91 98450 12890, Email: contact@apexbangalore.in).
+Q: What is the address of Apex Training Institute Head Office?
+A: The official head office address is Apex Tower, Outer Ring Road, HSR Layout, Sector 1, Bangalore 560102.
+Q: Who is the Founder or Managing Director of Apex Training Institute?
+A: Dr. Arvind R. Singhania is the Founder and Managing Director (MD) of Apex Training Institute. He is based at the Bangalore HSR Layout Headquarters (Email: arvind.singhania@apexbangalore.in, Desk Ext: 101). He is responsible for organizational strategy, capital allocation, university partnerships, and executive governance.
+Q: Who is the CEO of Apex Training Institute?
+A: Rajeshwari K. Nair is the Chief Executive Officer (CEO) of Apex Training Institute. She is based at the HSR Layout Headquarters and oversees all operations, P&L, corporate partnerships across Bangalore tech corridors, and superintends all department heads (Email: rajeshwari.nair@apexbangalore.in, Desk Ext: 102).
+Q: Who is the COO of Apex Training Institute?
+A: Vikramaditya Sen is the Chief Operating Officer (COO). He manages day-to-day operations across all Bangalore branches, facility leases, computer workstation maintenance, and center safety protocols (Email: vikram.sen@apexbangalore.in, Desk Ext: 103).
+Q: Who heads the Human Resources (HR) Department at Apex Training Institute?
+A: Sunita Deshmukh is the Head of Human Resources (HR Head). She is based at the HSR Layout Headquarters and oversees HR policy, labor law compliances, staff compensation, and chairs the POSH and grievance committee (Email: sunita.d@apexbangalore.in, Desk Ext: 301).
+Q: Who manages recruitment and talent acquisition in HR?
+A: Divya Swaminathan is the HR Manager for Operations & Talent Acquisition (Email: divya.s@apexbangalore.in, Desk Ext: 302). She coordinates applicant screening, interviews, and trainer onboarding.
+Q: Who is in charge of employee payroll and welfare?
+A: Tanya Kapoor is the Assistant HR Manager for Payroll, Attendance & Employee Welfare (Email: tanya.k@apexbangalore.in, Desk Ext: 303).
+Q: Who is the Head of Placements and Corporate Relations?
+A: Ananya Roy is the Head of Corporate Relations & Placements (Email: ananya.roy@apexbangalore.in, Ext: 202). She builds hiring tie-ups with IT MNCs and startups across Outer Ring Road, HSR Layout, Electronic City, and Whitefield.
+Q: Who heads Academic Delivery and Trainer Quality?
+A: Prof. Harishankar Murthy is the Head of Academics & Training Delivery (Email: h.murthy@apexbangalore.in, Ext: 201). He audits trainer quality, manages faculty reviews, and resolves academic disputes.
+Q: Who is the Head of IT and Lab Infrastructure?
+A: Dr. Farhan Akhtar Qureshi is the Head of IT & Lab Infrastructure (Email: farhan.qureshi@apexbangalore.in, Ext: 203). He manages internet leased lines, server security, and computer lab setups.
+Q: What branches does Apex Training Institute have in Bangalore?
+A: Apex Training Institute operates multiple campuses in Bangalore: (1) Headquarters & Tech Campus at Outer Ring Road, HSR Layout Sector 1, (2) Marathahalli / Outer Ring Road Branch, (3) Rajajinagar West Branch, and (4) Electronic City Phase 1 Branch. It also maintains a regional branch in Jabalpur (Civil Lines Tech Enclave).
+Q: Who is the Center Manager for the HSR Layout Headquarters campus?
+A: Vidyadhar Hegde is the Center Manager for the Headquarters & Tech Campus at HSR Layout (Phone: +91 80 4120 7810, Ext: 110).
+Q: Who manages the Marathahalli branch?
+A: Suresh Babu M. is the Branch Operations Head for the Marathahalli / Outer Ring Road branch (Phone: +91 80 4155 9200, Ext: 210).
+Q: Who manages the Rajajinagar branch?
+A: Manjunath Swamy is the Branch Manager for the Rajajinagar branch (Phone: +91 80 4233 4100, Ext: 310).
+Q: Who manages the Electronic City branch?
+A: Deepak Chawla is the Branch Operations Lead for the Electronic City Phase 1 campus (Phone: +91 80 4390 6500, Ext: 410).
+Q: What are the official working hours of Apex Training Institute?
+A: The institute operates Monday to Saturday from 8:00 AM to 8:30 PM, and on Sundays from 9:00 AM to 6:00 PM for scheduled batches and lab practice.

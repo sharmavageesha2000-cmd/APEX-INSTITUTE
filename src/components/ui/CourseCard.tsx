@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Star, Clock, Award, CheckCircle2, ArrowRight, Sparkles } from 'lucide-react';
 import { Course } from '@/lib/types';
 import { formatCurrency } from '@/lib/utils';
+import { getCourseImage } from '@/lib/mock-data';
 
 interface CourseCardProps {
   course: Course;
@@ -23,8 +24,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({
   compact = false,
   showInstructor = true,
 }) => {
-  const fallbackCover = '/images/generative-ai-banner.jpg';
-  const coverImage = course.image || fallbackCover;
+  const coverImage = getCourseImage(course.title, course.slug, course.domainName, course.image);
 
   if (compact) {
     return (
@@ -35,7 +35,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({
             src={coverImage}
             alt={course.title}
             onError={(e) => {
-              (e.target as HTMLImageElement).src = fallbackCover;
+              (e.target as HTMLImageElement).src = getCourseImage(course.title, course.slug, course.domainName);
             }}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
@@ -138,7 +138,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({
               </button>
             ) : (
               <Link
-                href={`/courses/${course.slug}`}
+                href={`/register?course=${course.slug}`}
                 className="w-full text-center bright-btn-primary py-1.5 text-[11px] block shine-sweep"
               >
                 Enroll 🚀
@@ -158,7 +158,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({
           src={coverImage}
           alt={course.title}
           onError={(e) => {
-            (e.target as HTMLImageElement).src = fallbackCover;
+            (e.target as HTMLImageElement).src = getCourseImage(course.title, course.slug, course.domainName);
           }}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
@@ -281,7 +281,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({
             </button>
           ) : (
             <Link
-              href={`/courses/${course.slug}`}
+              href={`/register?course=${course.slug}`}
               className="w-full text-center bright-btn-primary py-2.5 text-xs block shine-sweep"
             >
               Enroll Now 🚀

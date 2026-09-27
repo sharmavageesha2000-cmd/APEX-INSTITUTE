@@ -3,9 +3,12 @@ import Link from 'next/link';
 import { getEventBySlug, getEvents } from '@/lib/store';
 import { Calendar, Clock, MapPin, User, CheckCircle2, ArrowLeft, Send } from 'lucide-react';
 
+export const revalidate = 60;
+
 export default async function EventDetailsPage({ params }: { params: { slug: string } }) {
   const allEvents = await getEvents();
-  const evt = (await getEventBySlug(params.slug)) || allEvents[0];
+  const s = params.slug.toLowerCase().trim();
+  const evt = allEvents.find((e) => e.slug === s || e.slug.includes(s) || s.includes(e.slug)) || allEvents[0];
 
   return (
     <div className="py-12 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">

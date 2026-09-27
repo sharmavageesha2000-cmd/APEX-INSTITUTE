@@ -11,14 +11,18 @@ interface CoursesPageProps {
   };
 }
 
+export const revalidate = 60;
+
 export default async function CoursesPage({ searchParams }: CoursesPageProps) {
-  const domains = await getDomains();
-  const courses = await getCourses({
-    domainSlug: searchParams.domain,
-    search: searchParams.search,
-    level: searchParams.level,
-    mode: searchParams.mode,
-  });
+  const [domains, courses] = await Promise.all([
+    getDomains(),
+    getCourses({
+      domainSlug: searchParams.domain,
+      search: searchParams.search,
+      level: searchParams.level,
+      mode: searchParams.mode,
+    }),
+  ]);
 
   return (
     <div className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">

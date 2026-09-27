@@ -1695,6 +1695,7 @@ export const INITIAL_USERS: User[] = [
     id: 'usr-admin-1',
     name: 'Admin Director',
     email: 'admin@apexinstitute.com',
+    password: 'vageesha2000',
     phone: '+91 9876543210',
     role: 'ADMIN',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
@@ -1704,10 +1705,21 @@ export const INITIAL_USERS: User[] = [
     id: 'usr-student-1',
     name: 'Vikram Malhotra',
     email: 'student@example.com',
+    password: 'student123',
     phone: '+91 9123456789',
     role: 'STUDENT',
     avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=200&auto=format&fit=crop',
     createdAt: '2026-05-10',
+  },
+  {
+    id: 'usr-faculty-1',
+    name: 'Prof. Rohan Deshmukh (Lead Faculty)',
+    email: 'faculty@apexinstitute.com',
+    password: 'faculty123',
+    phone: '+91 9822334455',
+    role: 'FACULTY',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop',
+    createdAt: '2026-02-15',
   },
 ];
 
@@ -1717,14 +1729,21 @@ export const INITIAL_ENROLLMENTS: Enrollment[] = [
     userId: 'usr-student-1',
     userName: 'Vikram Malhotra',
     userEmail: 'student@example.com',
+    userPhone: '+91 9123456789',
     courseId: 'course-1',
     courseTitle: 'Full Stack MERN & Next.js Masterclass',
     courseSlug: 'full-stack-mern-nextjs-masterclass',
     status: 'ACTIVE',
     progress: 65,
     batchTiming: 'Mon-Fri (7:30 PM - 9:30 PM)',
+    mode: 'Live Online',
     enrolledAt: '2026-05-12',
     course: INITIAL_COURSES[0],
+    totalFee: 28000,
+    registrationFeePaid: 2000,
+    remainingFee: 26000,
+    paymentPlan: 'LUMPSUM',
+    paymentStatus: 'REGISTRATION_PAID',
   },
 ];
 
@@ -1742,3 +1761,254 @@ export const INITIAL_ENQUIRIES: Enquiry[] = [
     createdAt: '2026-08-10',
   },
 ];
+
+/**
+ * Resolves a course-specific image matching the title/domain/slug.
+ * Ensures courses never fall back to an identical image unless they actually match the topic.
+ */
+export function getCourseImage(
+  title?: string,
+  slug?: string,
+  domainName?: string,
+  existingImage?: string
+): string {
+  // If an existing image is provided:
+  if (existingImage && typeof existingImage === 'string' && existingImage.trim() !== '') {
+    // If it's the generative-ai-banner, only keep it if the course is actually AI / LLM related
+    if (existingImage.includes('generative-ai-banner')) {
+      const lower = `${title || ''} ${slug || ''} ${domainName || ''}`.toLowerCase();
+      if (
+        lower.includes('generative') ||
+        lower.includes('llm') ||
+        lower.includes('artificial intelligence') ||
+        lower.includes('ai & machine') ||
+        lower.includes('prompt')
+      ) {
+        return existingImage;
+      }
+      // If it's NOT AI related, continue below to find the true title-specific image!
+    } else {
+      return existingImage;
+    }
+  }
+
+  // 1. Direct match with INITIAL_COURSES by slug or ID
+  if (slug) {
+    const s = slug.toLowerCase().trim();
+    const matched = INITIAL_COURSES.find(
+      (c) => c.slug.toLowerCase() === s || c.id.toLowerCase() === s
+    );
+    if (matched && matched.image) return matched.image;
+  }
+
+  // 2. Direct match with INITIAL_COURSES by title
+  if (title) {
+    const tLower = title.toLowerCase().trim();
+    const matchedByTitle = INITIAL_COURSES.find(
+      (c) => c.title.toLowerCase().trim() === tLower
+    );
+    if (matchedByTitle && matchedByTitle.image) return matchedByTitle.image;
+  }
+
+  // 3. Keyword-based matching for topic & title
+  const combined = `${title || ''} ${slug || ''} ${domainName || ''}`.toLowerCase();
+
+  // MERN / Full Stack / Next.js / Web Development / Frontend / Backend
+  if (
+    combined.includes('mern') ||
+    combined.includes('full stack') ||
+    combined.includes('web development') ||
+    combined.includes('web dev') ||
+    combined.includes('next.js') ||
+    combined.includes('react') ||
+    combined.includes('javascript') ||
+    combined.includes('frontend') ||
+    combined.includes('backend') ||
+    combined.includes('node')
+  ) {
+    return 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000&auto=format&fit=crop';
+  }
+
+  // Generative AI / LLMs
+  if (
+    combined.includes('generative') ||
+    combined.includes('llm') ||
+    combined.includes('prompt') ||
+    combined.includes('rag') ||
+    combined.includes('chatgpt') ||
+    combined.includes('openai')
+  ) {
+    return '/images/generative-ai-banner.jpg';
+  }
+
+  // Artificial Intelligence / Machine Learning
+  if (
+    combined.includes('machine learning') ||
+    combined.includes('artificial intelligence') ||
+    combined.includes('deep learning') ||
+    combined.includes('neural')
+  ) {
+    return 'https://images.unsplash.com/photo-1677442136019-21780efad99a?q=80&w=1000&auto=format&fit=crop';
+  }
+
+  // Power BI / Business Analytics / SQL / Excel
+  if (
+    combined.includes('power bi') ||
+    combined.includes('business analytics') ||
+    combined.includes('tableau') ||
+    combined.includes('sql') ||
+    combined.includes('excel') ||
+    combined.includes('bi ') ||
+    combined.includes('bi-')
+  ) {
+    return 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop';
+  }
+
+  // Data Science / Python / Big Data
+  if (
+    combined.includes('data science') ||
+    combined.includes('python') ||
+    combined.includes('big data') ||
+    combined.includes('data engineering')
+  ) {
+    return 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?q=80&w=1000&auto=format&fit=crop';
+  }
+
+  // Product Management / Agile / Scrum / Project Management
+  if (
+    combined.includes('product management') ||
+    combined.includes('agile') ||
+    combined.includes('scrum') ||
+    combined.includes('project management') ||
+    combined.includes('leadership')
+  ) {
+    return 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=1000&auto=format&fit=crop';
+  }
+
+  // Finance / Tally / GST / Accounting / Valuation
+  if (
+    combined.includes('financial') ||
+    combined.includes('finance') ||
+    combined.includes('tally') ||
+    combined.includes('gst') ||
+    combined.includes('accounting') ||
+    combined.includes('valuation') ||
+    combined.includes('banking') ||
+    combined.includes('tax')
+  ) {
+    return 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1000&auto=format&fit=crop';
+  }
+
+  // Figma / Design Tokens
+  if (
+    (combined.includes('figma') && combined.includes('token')) ||
+    combined.includes('component architecture')
+  ) {
+    return 'https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=1000&auto=format&fit=crop';
+  }
+
+  // UI/UX / Design Systems / Graphic Design
+  if (
+    combined.includes('ui/ux') ||
+    combined.includes('ui-ux') ||
+    combined.includes('ux') ||
+    combined.includes('ui design') ||
+    combined.includes('design system') ||
+    combined.includes('graphic design') ||
+    combined.includes('figma')
+  ) {
+    return 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?q=80&w=1000&auto=format&fit=crop';
+  }
+
+  // Automation / n8n / Web3 / Blockchain / IoT / Robotics
+  if (
+    combined.includes('n8n') ||
+    combined.includes('automation') ||
+    combined.includes('workflow') ||
+    combined.includes('blockchain') ||
+    combined.includes('web3') ||
+    combined.includes('iot') ||
+    combined.includes('robotics')
+  ) {
+    return 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop';
+  }
+
+  // SEO / Organic Growth / Growth Hacking
+  if (
+    combined.includes('seo') ||
+    combined.includes('growth hacking') ||
+    combined.includes('organic')
+  ) {
+    return 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?q=80&w=1000&auto=format&fit=crop';
+  }
+
+  // Digital Marketing / Performance Marketing / Paid Ads
+  if (
+    combined.includes('marketing') ||
+    combined.includes('paid acquisition') ||
+    combined.includes('ad ') ||
+    combined.includes('ads') ||
+    combined.includes('social media')
+  ) {
+    return 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop';
+  }
+
+  // Spoken English / Interview Preparation / Fluency
+  if (
+    combined.includes('spoken english') ||
+    combined.includes('english') ||
+    combined.includes('interview') ||
+    combined.includes('fluency')
+  ) {
+    return 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop';
+  }
+
+  // Corporate Communication / Soft Skills / Executive Presence
+  if (
+    combined.includes('corporate communication') ||
+    combined.includes('communication') ||
+    combined.includes('executive presence') ||
+    combined.includes('soft skill') ||
+    combined.includes('personality') ||
+    combined.includes('public speaking')
+  ) {
+    return 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1000&auto=format&fit=crop';
+  }
+
+  // Cloud / DevOps / AWS / Docker / Kubernetes
+  if (
+    combined.includes('cloud') ||
+    combined.includes('devops') ||
+    combined.includes('aws') ||
+    combined.includes('docker') ||
+    combined.includes('kubernetes') ||
+    combined.includes('azure')
+  ) {
+    return 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop';
+  }
+
+  // Cyber Security / Ethical Hacking
+  if (
+    combined.includes('cyber') ||
+    combined.includes('security') ||
+    combined.includes('hacking')
+  ) {
+    return 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1000&auto=format&fit=crop';
+  }
+
+  // Career Switch / Placement Guaranteed / Job-Oriented Bootcamps
+  if (
+    combined.includes('career switch') ||
+    combined.includes('placement') ||
+    combined.includes('bootcamp') ||
+    combined.includes('job-oriented') ||
+    combined.includes('career program') ||
+    combined.includes('career')
+  ) {
+    return 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1000&auto=format&fit=crop';
+  }
+
+  // General Career / Tech Education fallback
+  return 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1000&auto=format&fit=crop';
+}
+

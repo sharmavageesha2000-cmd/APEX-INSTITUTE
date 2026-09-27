@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
 
 export default function AdminBlogsAliasPage() {
-  redirect('/admin');
+  redirect('/admin?tab=BLOGS_EVENTS');
 }

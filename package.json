@@ -7,13 +7,16 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "chroma:index": "python scripts/index_directory_chroma.py",
+    "chroma:serve": "python scripts/chroma_service.py"
   },
   "prisma": {
     "seed": "npx tsx prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.19.1",
+    "@stripe/stripe-js": "^9.17.0",
     "bcryptjs": "^2.4.3",
     "clsx": "^2.1.1",
     "jsonwebtoken": "^9.0.2",
@@ -21,6 +24,7 @@
     "next": "14.2.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "stripe": "^22.6.2",
     "tailwind-merge": "^2.5.2",
     "zod": "^3.23.8"
   },

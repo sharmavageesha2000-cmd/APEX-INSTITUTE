@@ -8,10 +8,15 @@ interface DomainDetailsPageProps {
   };
 }
 
+export const revalidate = 60;
+
 export default async function DomainDetailsPage({ params }: DomainDetailsPageProps) {
-  const allDomains = await getDomains();
-  const domain = (await getDomainBySlug(params.slug)) || allDomains[0];
-  const allCourses = await getCourses();
+  const [allDomains, allCourses] = await Promise.all([
+    getDomains(),
+    getCourses(),
+  ]);
+  const s = params.slug.toLowerCase().trim();
+  const domain = allDomains.find((d) => d.slug === s || d.slug.includes(s) || s.includes(d.slug)) || allDomains[0];
 
   const domainCourses = allCourses.filter(
     (c) => c.domainId === domain.id || c.domainSlug === domain.slug

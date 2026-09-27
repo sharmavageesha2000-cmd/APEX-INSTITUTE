@@ -237,7 +237,7 @@ export const Footer = () => {
             <h3 className="font-extrabold text-white text-sm uppercase tracking-wider drop-shadow-xs">Student Portal</h3>
             <ul className="space-y-2 font-medium text-purple-100/95">
               <li>
-                <Link href="/login" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Student Login</Link>
+                <Link href="/login" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Portal Login (Student & Faculty)</Link>
               </li>
               <li>
                 <Link href="/register" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Student Registration</Link>
@@ -256,9 +256,6 @@ export const Footer = () => {
               </li>
               <li>
                 <Link href="/search" className="hover:text-white hover:translate-x-1 transition-all duration-200 inline-block">Global Search</Link>
-              </li>
-              <li>
-                <Link href="/admin" className="hover:text-emerald-200 hover:translate-x-1 transition-all duration-200 inline-block text-emerald-300 font-semibold">Admin Portal</Link>
               </li>
             </ul>
           </div>

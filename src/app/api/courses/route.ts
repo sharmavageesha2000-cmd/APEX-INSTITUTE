@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getCourses, createCourse } from '@/lib/store';
 import { getCurrentUser } from '@/lib/auth';
 
@@ -96,6 +97,13 @@ export async function POST(request: Request) {
       placementAssistance: placementAssistance !== false,
       featured: Boolean(featured),
     });
+
+    revalidatePath('/courses');
+    revalidatePath('/courses/[slug]', 'page');
+    revalidatePath('/domains');
+    revalidatePath('/domains/[slug]', 'page');
+    revalidatePath('/');
+    revalidatePath('/admin');
 
     return NextResponse.json({ success: true, course });
   } catch (error) {

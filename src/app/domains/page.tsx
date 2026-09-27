@@ -6,6 +6,8 @@ import { DynamicIcon } from '@/components/ui/IconHelper';
 import { DomainCertificateCard } from '@/components/domains/DomainCertificateCard';
 import { Layers, ArrowRight, Award, ShieldCheck, Sparkles, CheckCircle2 } from 'lucide-react';
 
+export const revalidate = 60;
+
 export default async function DomainsIndexPage() {
   const domains = await getDomains();
 

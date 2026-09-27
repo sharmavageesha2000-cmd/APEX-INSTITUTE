@@ -11,6 +11,10 @@ export default function ErrorPage({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  if (error?.digest?.startsWith('NEXT_REDIRECT') || error?.message === 'NEXT_REDIRECT') {
+    throw error;
+  }
+
   useEffect(() => {
     console.error('Unhandled app error:', error);
   }, [error]);

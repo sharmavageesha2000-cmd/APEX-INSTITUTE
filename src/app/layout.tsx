@@ -5,15 +5,27 @@ import { getDomains, getCourses } from '@/lib/store';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { ARVRMotionGraphicsEffect } from '@/components/ui/ARVRMotionGraphicsEffect';
+import { SVGatorAnimatedPatternBackground } from '@/components/ui/SVGatorAnimatedPatternBackground';
+import { GeminiChatbot } from '@/components/chat/GeminiChatbot';
 
-const font = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-sans' });
-const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-heading' });
+
+const font = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+  preload: true,
+});
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-heading',
+  display: 'swap',
+  preload: false,
+});
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  maximumScale: 5,
 };
 
 export const metadata: Metadata = {
@@ -64,7 +76,6 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
@@ -72,10 +83,13 @@ export default async function RootLayout({
       </head>
       <body className={`${font.variable} ${spaceGrotesk.variable} ${font.className} min-h-screen bg-slate-50 text-slate-900 flex flex-col antialiased relative`}>
         <ARVRMotionGraphicsEffect />
+        <SVGatorAnimatedPatternBackground />
         <Navbar domains={domains} featuredCourses={featuredCourses} />
         <main className="flex-1 relative z-[1]">{children}</main>
         <Footer />
+        <GeminiChatbot />
       </body>
     </html>
   );
 }
+

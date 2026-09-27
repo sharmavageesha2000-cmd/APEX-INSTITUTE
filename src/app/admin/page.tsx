@@ -13,29 +13,47 @@ import {
 } from '@/lib/store';
 import { AdminDashboardClient } from '@/components/admin/AdminDashboardClient';
 
-export default async function AdminPage() {
+export const dynamic = 'force-dynamic';
+
+export default async function AdminPage({
+  searchParams,
+}: {
+  searchParams?: { tab?: string };
+}) {
   const user = await getCurrentUser();
 
   if (!user) {
-    redirect('/login?redirect=/admin');
+    redirect('/admin/login');
   }
 
   if (user.role !== 'ADMIN') {
     redirect('/dashboard');
   }
 
-  const domains = await getDomains();
-  const courses = await getCourses();
-  const enquiries = await getEnquiries();
-  const users = await getUsers();
-  const enrollments = await getAllEnrollments();
-  const blogs = await getBlogs();
-  const events = await getEvents();
-  const settings = await getSiteSettings();
+  const [
+    domains,
+    courses,
+    enquiries,
+    users,
+    enrollments,
+    blogs,
+    events,
+    settings,
+  ] = await Promise.all([
+    getDomains(),
+    getCourses(),
+    getEnquiries(),
+    getUsers(),
+    getAllEnrollments(),
+    getBlogs(),
+    getEvents(),
+    getSiteSettings(),
+  ]);
 
   return (
     <div className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
       <AdminDashboardClient
+        initialTab={searchParams?.tab}
         initialDomains={domains}
         initialCourses={courses}
         initialEnquiries={enquiries}

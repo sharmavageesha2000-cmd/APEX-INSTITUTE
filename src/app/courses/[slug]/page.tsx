@@ -8,10 +8,15 @@ interface CourseDetailsPageProps {
   };
 }
 
+export const revalidate = 60;
+
 export default async function CourseDetailsPage({ params }: CourseDetailsPageProps) {
-  const allCourses = await getCourses();
-  const course = (await getCourseBySlug(params.slug)) || allCourses[0];
-  const reviews = await getReviews();
+  const [allCourses, reviews] = await Promise.all([
+    getCourses(),
+    getReviews(),
+  ]);
+  const s = params.slug.toLowerCase().trim();
+  const course = allCourses.find((c) => c.slug === s || c.slug.includes(s) || s.includes(c.slug)) || allCourses[0];
 
   return (
     <div className="pb-20">

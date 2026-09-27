@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { updateDomain, deleteDomain } from '@/lib/store';
 import { getCurrentUser } from '@/lib/auth';
 
@@ -14,6 +15,13 @@ export async function PUT(
   try {
     const body = await request.json();
     const updated = await updateDomain(params.id, body);
+
+    revalidatePath('/domains');
+    revalidatePath('/domains/[slug]', 'page');
+    revalidatePath('/courses');
+    revalidatePath('/');
+    revalidatePath('/admin');
+
     return NextResponse.json({ success: updated });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to update domain' }, { status: 500 });
@@ -31,6 +39,13 @@ export async function DELETE(
 
   try {
     const deleted = await deleteDomain(params.id);
+
+    revalidatePath('/domains');
+    revalidatePath('/domains/[slug]', 'page');
+    revalidatePath('/courses');
+    revalidatePath('/');
+    revalidatePath('/admin');
+
     return NextResponse.json({ success: deleted });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to delete domain' }, { status: 500 });

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getDomains, createDomain } from '@/lib/store';
 import { getCurrentUser } from '@/lib/auth';
 
@@ -33,6 +34,12 @@ export async function POST(request: Request) {
       iconName: iconName || 'BookOpen',
       subcategories: Array.isArray(subcategories) ? subcategories : [],
     });
+
+    revalidatePath('/domains');
+    revalidatePath('/domains/[slug]', 'page');
+    revalidatePath('/courses');
+    revalidatePath('/');
+    revalidatePath('/admin');
 
     return NextResponse.json({ success: true, domain });
   } catch (error) {

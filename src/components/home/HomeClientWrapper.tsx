@@ -208,29 +208,49 @@ export const HomeClientWrapper: React.FC<HomeClientWrapperProps> = ({
   return (
     <div className="w-full overflow-hidden">
 
-      {/* ── 1. HERO SECTION (White) ─────────────────────────────────── */}
-      <section className="bg-white relative overflow-hidden pt-12 pb-20 sm:pb-28 border-b border-purple-100/60">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-tr from-pink-400/25 via-purple-400/25 to-indigo-400/25 blur-[130px] pointer-events-none rounded-full animate-pulse-glow" />
-        <div className="absolute top-20 right-10 w-72 h-72 mesh-orb-purple pointer-events-none rounded-full animate-float-delayed" />
-        <div className="absolute bottom-10 left-10 w-80 h-80 mesh-orb-pink pointer-events-none rounded-full animate-float" />
+      {/* ── 1. HERO SECTION WITH IMAGE BACKGROUND & BRIGHT NATURAL FADE ── */}
+      <section className="bg-slate-50 relative overflow-hidden pt-12 pb-20 sm:pb-28 border-b border-purple-100/70">
+        {/* Full Background Image */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
+          <img
+            src="/images/hero-students-bg.jpg"
+            alt="Apex Tech Institute students collaborating in practical labs"
+            className="w-full h-full object-cover object-center lg:object-[80%_center] opacity-95"
+          />
+
+          {/* Soft, bright faded overlay:
+              Smooth white-to-faded gradient on the left side where the text is,
+              fading naturally into the clear background image across the right area */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/85 sm:via-white/70 lg:via-white/50 to-transparent" />
+
+          {/* Mobile responsive backdrop wash to maintain comfortable readability */}
+          <div className="absolute inset-0 bg-white/40 sm:bg-transparent" />
+
+          {/* Gentle ambient top/bottom fade for smooth section transitions */}
+          <div className="absolute inset-0 bg-gradient-to-t from-white/50 via-transparent to-white/30" />
+
+          {/* Subtle playful light glow accents */}
+          <div className="absolute top-1/4 left-10 w-96 h-96 bg-purple-400/15 rounded-full blur-[140px] pointer-events-none" />
+          <div className="absolute bottom-10 left-1/4 w-80 h-80 bg-pink-400/15 rounded-full blur-[120px] pointer-events-none" />
+        </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Left */}
+            {/* Left: Text & Action Controls on Bright Natural Faded Area */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-purple-700 bg-purple-100 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-purple-200 shadow-sm animate-float max-w-full">
+              <div className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-purple-700 bg-purple-100/90 backdrop-blur-md px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-purple-200/90 shadow-sm animate-float max-w-full">
                 <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-pink-600 animate-spin shrink-0" />
                 <span className="sm:hidden">#1 Job-Oriented EdTech</span>
                 <span className="hidden sm:inline">#1 Job-Oriented EdTech &amp; Career Mastery Platform</span>
               </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-black tracking-tight leading-[1.1]">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.1]">
                 Learn Today. <br />
                 <span className="gradient-text-bright">Build Skills.</span> <br />
                 Shape Your Future.
               </h1>
 
-              <p className="text-sm sm:text-lg text-black leading-relaxed max-w-xl mx-auto lg:mx-0 font-semibold">
+              <p className="text-sm sm:text-lg text-slate-800 leading-relaxed max-w-xl mx-auto lg:mx-0 font-bold">
                 Industry-focused training programs designed to help students build practical skills, gain confidence and prepare for real-world careers.
               </p>
 
@@ -245,45 +265,28 @@ export const HomeClientWrapper: React.FC<HomeClientWrapperProps> = ({
                 </Link>
               </div>
 
-              <div className="pt-8 border-t border-purple-200 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-center lg:text-left">
-                <div className="playful-card p-3 sm:p-4 hover:scale-105 transition-transform duration-300">
-                  <div className="text-2xl sm:text-3xl font-black text-black">50+</div>
+              <div className="pt-8 border-t border-purple-200/70 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-center lg:text-left">
+                <div className="playful-card bg-white/90 backdrop-blur-md p-3 sm:p-4 border-purple-100 hover:scale-105 transition-transform duration-300 shadow-sm">
+                  <div className="text-2xl sm:text-3xl font-black text-slate-900">50+</div>
                   <div className="text-[11px] sm:text-xs font-black text-purple-700 mt-0.5">Courses</div>
                 </div>
-                <div className="playful-card p-3 sm:p-4 hover:scale-105 transition-transform duration-300">
-                  <div className="text-2xl sm:text-3xl font-black text-black">10+</div>
+                <div className="playful-card bg-white/90 backdrop-blur-md p-3 sm:p-4 border-purple-100 hover:scale-105 transition-transform duration-300 shadow-sm">
+                  <div className="text-2xl sm:text-3xl font-black text-slate-900">10+</div>
                   <div className="text-[11px] sm:text-xs font-black text-purple-700 mt-0.5">Domains</div>
                 </div>
-                <div className="playful-card p-3 sm:p-4 hover:scale-105 transition-transform duration-300">
-                  <div className="text-2xl sm:text-3xl font-black text-black">1000+</div>
+                <div className="playful-card bg-white/90 backdrop-blur-md p-3 sm:p-4 border-purple-100 hover:scale-105 transition-transform duration-300 shadow-sm">
+                  <div className="text-2xl sm:text-3xl font-black text-slate-900">1000+</div>
                   <div className="text-[11px] sm:text-xs font-black text-purple-700 mt-0.5">Students</div>
                 </div>
-                <div className="playful-card p-3 sm:p-4 hover:scale-105 transition-transform duration-300">
-                  <div className="text-2xl sm:text-3xl font-black text-black">100%</div>
+                <div className="playful-card bg-white/90 backdrop-blur-md p-3 sm:p-4 border-purple-100 hover:scale-105 transition-transform duration-300 shadow-sm">
+                  <div className="text-2xl sm:text-3xl font-black text-slate-900">100%</div>
                   <div className="text-[11px] sm:text-xs font-black text-purple-700 mt-0.5">Practical Labs</div>
                 </div>
               </div>
             </div>
 
-            {/* Right Image */}
-            <div className="lg:col-span-5 relative">
-              <div className="playful-card p-4 relative z-10 shadow-2xl border-purple-200 gradient-border-card">
-                <img
-                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop"
-                  alt="Students learning technology in practical labs"
-                  className="w-full h-80 sm:h-96 object-cover rounded-[1.5rem]"
-                />
-                <div className="absolute -bottom-3 -left-2 sm:-bottom-4 sm:-left-4 max-w-[calc(100vw-3rem)] playful-card p-3 sm:p-3.5 flex items-center gap-2.5 sm:gap-3 bg-white border-purple-200 shadow-2xl animate-float">
-                  <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-pink-600 to-purple-600 flex items-center justify-center text-white shrink-0 shadow-md">
-                    <Award className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-xs font-black text-slate-900">ISO 9001:2026 Certified</div>
-                    <div className="text-[10px] text-purple-700 font-extrabold">Practical Live Labs</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* Right: Clean open area showcasing the background picture */}
+            <div className="hidden lg:block lg:col-span-5 relative min-h-[460px] pointer-events-none" />
           </div>
         </div>
       </section>

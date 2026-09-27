@@ -17,14 +17,17 @@
   body {
     max-width: 100vw;
     width: 100%;
+    overflow-x: hidden;
     overflow-x: clip;
     position: relative;
     box-sizing: border-box;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
     background-color: #f8fafc;
     color: #0f172a;
+    min-height: 100vh;
   }
 }
 
@@ -449,21 +452,264 @@ pre, code {
   }
 }
 
-/* ── AR / VR LiDAR Wave Scanner Animation ──────────────────── */
-@keyframes arLidarScan {
-  0% {
-    top: -5%;
-    opacity: 0;
+
+/* ── Cute Mascot Robot Chatbot Animations ──────────────────── */
+@keyframes robotFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
   }
-  8% {
-    opacity: 0.7;
-  }
-  92% {
-    opacity: 0.7;
-  }
-  100% {
-    top: 96%;
-    opacity: 0;
+  50% {
+    transform: translateY(-9px) rotate(1.2deg);
   }
 }
+
+@keyframes robotWiggle {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(-4deg) scale(1.04);
+  }
+  75% {
+    transform: rotate(4deg) scale(1.04);
+  }
+}
+
+@keyframes speechBubbleBounce {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.02);
+  }
+}
+
+@keyframes hologramPulse {
+  0%, 100% {
+    transform: scaleX(1) scaleY(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scaleX(1.2) scaleY(1.25);
+    opacity: 0.9;
+  }
+}
+
+@keyframes starTwinkleGlow {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(0.75) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25) rotate(25deg);
+  }
+}
+
+.animate-robot-float {
+  animation: robotFloat 3.4s ease-in-out infinite;
+}
+
+.animate-robot-wiggle {
+  animation: robotWiggle 2s ease-in-out infinite;
+}
+
+.animate-speech-bubble {
+  animation: speechBubbleBounce 3s ease-in-out infinite;
+}
+
+.animate-hologram-pulse {
+  animation: hologramPulse 2.2s ease-in-out infinite;
+}
+
+.animate-star-glow {
+  animation: starTwinkleGlow 2.4s ease-in-out infinite;
+}
+
+/* ── Authentic Waving Hand Animation ───────────────────────── */
+@keyframes robotWaveHandAction {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(24deg) scale(1.02);
+  }
+  20% {
+    transform: rotate(-10deg);
+  }
+  30% {
+    transform: rotate(28deg) scale(1.03);
+  }
+  40% {
+    transform: rotate(-8deg);
+  }
+  50% {
+    transform: rotate(24deg) scale(1.02);
+  }
+  60% {
+    transform: rotate(-4deg);
+  }
+  70% {
+    transform: rotate(14deg);
+  }
+  80%, 95% {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-robot-hand-wave {
+  transform-origin: 22% 92%;
+  animation: robotWaveHandAction 2.8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  display: block;
+}
+
+/* 3D Floating with Subtle Perspective Tilt */
+@keyframes robotFloat3D {
+  0%, 100% {
+    transform: translateY(0px) rotateY(-2deg) rotateX(1deg);
+  }
+  50% {
+    transform: translateY(-10px) rotateY(4deg) rotateX(-2deg);
+  }
+}
+
+.animate-robot-3d {
+  animation: robotFloat3D 3.6s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+/* ── SVGator Shape Morphing & Movement Keyframes ─────────────────── */
+@keyframes svgatorMorph1 {
+  0% {
+    d: path("M150,50 C220,40 270,110 260,180 C250,250 190,290 120,280 C50,270 20,210 30,140 C40,70 80,60 150,50 Z");
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    d: path("M170,30 C250,60 290,140 270,220 C240,290 160,300 90,270 C20,240 10,160 40,90 C70,20 120,10 170,30 Z");
+    transform: rotate(45deg) scale(1.08) translate(15px, -10px);
+  }
+  50% {
+    d: path("M190,70 C260,110 270,190 230,260 C190,310 110,300 50,250 C10,200 20,120 70,70 C120,20 150,40 190,70 Z");
+    transform: rotate(120deg) scale(0.94) translate(-20px, 15px);
+  }
+  75% {
+    d: path("M140,40 C230,20 280,90 280,170 C280,250 200,280 130,290 C60,300 20,230 20,160 C20,80 80,50 140,40 Z");
+    transform: rotate(230deg) scale(1.05) translate(10px, 20px);
+  }
+  100% {
+    d: path("M150,50 C220,40 270,110 260,180 C250,250 190,290 120,280 C50,270 20,210 30,140 C40,70 80,60 150,50 Z");
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+@keyframes svgatorMorph2 {
+  0% {
+    d: path("M200,80 Q290,50 320,140 Q350,230 260,280 Q170,330 110,250 Q50,170 120,100 Q170,60 200,80 Z");
+    transform: rotate(0deg) scale(1);
+  }
+  33% {
+    d: path("M220,60 Q320,80 340,180 Q330,270 230,310 Q140,320 80,230 Q40,140 130,80 Q180,40 220,60 Z");
+    transform: rotate(-75deg) scale(1.12) translate(-15px, 20px);
+  }
+  66% {
+    d: path("M180,90 Q270,70 330,160 Q340,250 250,290 Q160,330 90,260 Q30,180 110,90 Q150,60 180,90 Z");
+    transform: rotate(-190deg) scale(0.92) translate(25px, -15px);
+  }
+  100% {
+    d: path("M200,80 Q290,50 320,140 Q350,230 260,280 Q170,330 110,250 Q50,170 120,100 Q170,60 200,80 Z");
+    transform: rotate(-360deg) scale(1);
+  }
+}
+
+@keyframes svgatorPolygonMorph {
+  0% {
+    transform: rotate(0deg) scale(1) translate(0px, 0px);
+  }
+  25% {
+    transform: rotate(90deg) scale(1.2) translate(30px, -20px);
+  }
+  50% {
+    transform: rotate(180deg) scale(0.85) translate(-25px, 35px);
+  }
+  75% {
+    transform: rotate(270deg) scale(1.15) translate(-35px, -15px);
+  }
+  100% {
+    transform: rotate(360deg) scale(1) translate(0px, 0px);
+  }
+}
+
+@keyframes svgatorDriftPath1 {
+  0% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+  25% {
+    transform: translate(45px, -35px) rotate(15deg);
+  }
+  50% {
+    transform: translate(80px, 20px) rotate(30deg);
+  }
+  75% {
+    transform: translate(25px, 50px) rotate(10deg);
+  }
+  100% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+}
+
+@keyframes svgatorDriftPath2 {
+  0% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+  33% {
+    transform: translate(-50px, 40px) rotate(-20deg);
+  }
+  66% {
+    transform: translate(35px, -45px) rotate(15deg);
+  }
+  100% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+}
+
+@keyframes svgatorPulseRing {
+  0% {
+    stroke-dashoffset: 0;
+    transform: scale(0.96) rotate(0deg);
+    opacity: 0.45;
+  }
+  50% {
+    stroke-dashoffset: 180;
+    transform: scale(1.08) rotate(180deg);
+    opacity: 0.8;
+  }
+  100% {
+    stroke-dashoffset: 360;
+    transform: scale(0.96) rotate(360deg);
+    opacity: 0.45;
+  }
+}
+
+@keyframes svgatorTessellationShift {
+  0% {
+    background-position: 0px 0px;
+  }
+  50% {
+    background-position: 60px 45px;
+  }
+  100% {
+    background-position: 120px 90px;
+  }
+}
+
+@keyframes svgatorConstellationFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-24px) rotate(8deg);
+  }
+}
+
+
 

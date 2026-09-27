@@ -9,12 +9,14 @@ import {
   Search,
   User as UserIcon,
   LogOut,
-  LayoutDashboard,
   Menu,
   X,
   Sparkles,
   ArrowRight,
+  UserPlus,
 } from 'lucide-react';
+
+
 import { Domain, User, Course } from '@/lib/types';
 import { DynamicIcon } from '../ui/IconHelper';
 import { ApexLogo } from '../ui/ApexLogo';
@@ -53,7 +55,7 @@ export const Navbar: React.FC<NavbarProps> = ({ domains = [], featuredCourses = 
     fetch('/api/auth/me')
       .then((res) => res.json())
       .then((data) => {
-        if (data.user) setCurrentUser(data.user);
+        setCurrentUser(data.user || null);
       })
       .catch(() => {});
   }, [pathname]);
@@ -190,7 +192,7 @@ export const Navbar: React.FC<NavbarProps> = ({ domains = [], featuredCourses = 
                       >
                         <div className="flex items-center gap-2">
                           <span className="w-2 h-2 rounded-full bg-pink-500 animate-pulse" />
-                          <span>Explore 50+ Certified Industry Bootcamps</span>
+                          <span>Explore All Certified Training Programs</span>
                         </div>
                         <span className="text-[11px] text-pink-600 group-hover:translate-x-1 transition-transform flex items-center gap-1 font-black">
                           Browse Catalog &rarr;
@@ -255,6 +257,7 @@ export const Navbar: React.FC<NavbarProps> = ({ domains = [], featuredCourses = 
                 <Sparkles className="w-3.5 h-3.5 text-pink-500 animate-pulse" />
                 <span>Career Path</span>
               </Link>
+
 
               <Link
                 href="/placements"
@@ -350,13 +353,11 @@ export const Navbar: React.FC<NavbarProps> = ({ domains = [], featuredCourses = 
               {currentUser ? (
                 <div className="flex items-center gap-2 shrink-0">
                   <Link
-                    href={currentUser.role === 'ADMIN' ? '/admin' : '/dashboard'}
-                    className="bg-white/90 hover:bg-white border border-purple-200 text-purple-700 font-extrabold text-xs px-3 sm:px-4 py-2 rounded-full flex items-center gap-1.5 transition-all shadow-xs"
+                    href="/register"
+                    className="bg-white/90 hover:bg-white border border-purple-200 text-purple-700 hover:text-purple-900 font-extrabold text-xs px-3 sm:px-4 py-2 rounded-full flex items-center gap-1.5 transition-all shadow-xs"
                   >
-                    <LayoutDashboard className="w-3.5 h-3.5 text-purple-600" />
-                    <span className="hidden sm:inline">
-                      {currentUser.role === 'ADMIN' ? 'Admin CMS' : 'Dashboard'}
-                    </span>
+                    <UserPlus className="w-3.5 h-3.5 text-purple-600" />
+                    <span>Registration</span>
                   </Link>
 
                   <button
@@ -377,9 +378,10 @@ export const Navbar: React.FC<NavbarProps> = ({ domains = [], featuredCourses = 
                   </Link>
                   <Link
                     href="/register"
-                    className="bright-btn-secondary px-3 py-1.5 text-xs hidden sm:block font-bold bg-white/90 border-pink-200 hover:bg-white hover:border-purple-400 text-purple-900 shadow-xs"
+                    className="bright-btn-secondary px-3 py-1.5 text-xs hidden sm:flex items-center gap-1.5 font-bold bg-white/90 border-pink-200 hover:bg-white hover:border-purple-400 text-purple-900 shadow-xs rounded-full"
                   >
-                    Register
+                    <UserPlus className="w-3.5 h-3.5 text-purple-600" />
+                    <span>Registration</span>
                   </Link>
                 </div>
               )}
@@ -421,18 +423,31 @@ export const Navbar: React.FC<NavbarProps> = ({ domains = [], featuredCourses = 
             {/* Mobile Auth Row */}
             <div className="p-3 bg-white/80 backdrop-blur-md rounded-2xl border border-pink-200/70 shadow-xs">
               {currentUser ? (
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-2">
                   <div>
                     <div className="text-xs font-black text-slate-900">{currentUser.name}</div>
-                    <div className="text-[10px] text-purple-700 font-bold">{currentUser.role === 'ADMIN' ? 'Administrator' : 'Student Account'}</div>
+                    <div className="text-[10px] text-purple-700 font-bold">{currentUser.role === 'ADMIN' ? 'Administrator' : currentUser.role === 'FACULTY' ? 'Faculty Instructor' : 'Student Account'}</div>
                   </div>
-                  <Link
-                    href={currentUser.role === 'ADMIN' ? '/admin' : '/dashboard'}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="bright-btn-primary px-3.5 py-1.5 text-xs font-bold"
-                  >
-                    Dashboard
-                  </Link>
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href="/register"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="bright-btn-primary px-3 py-1.5 text-xs font-bold flex items-center gap-1 shadow-xs"
+                    >
+                      <UserPlus className="w-3.5 h-3.5" />
+                      <span>Registration</span>
+                    </Link>
+                    <button
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        handleLogout();
+                      }}
+                      className="p-1.5 text-slate-500 hover:text-rose-600 bg-white border border-pink-200 rounded-xl"
+                      title="Logout"
+                    >
+                      <LogOut className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
@@ -446,9 +461,10 @@ export const Navbar: React.FC<NavbarProps> = ({ domains = [], featuredCourses = 
                   <Link
                     href="/register"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex-1 text-center bright-btn-primary text-xs py-2 rounded-xl font-extrabold"
+                    className="flex-1 text-center bright-btn-primary text-xs py-2 rounded-xl font-extrabold flex items-center justify-center gap-1 shadow-xs"
                   >
-                    Register
+                    <UserPlus className="w-3.5 h-3.5" />
+                    <span>Registration</span>
                   </Link>
                 </div>
               )}
@@ -488,7 +504,7 @@ export const Navbar: React.FC<NavbarProps> = ({ domains = [], featuredCourses = 
                       onClick={() => setMobileMenuOpen(false)}
                       className="block text-xs font-extrabold text-pink-600 hover:text-purple-700 transition-colors"
                     >
-                      ✦ View All 50+ Bootcamps &rarr;
+                      ✦ View All Certified Training Programs &rarr;
                     </Link>
                     {displayCourses.map((c) => (
                       <Link
@@ -510,6 +526,7 @@ export const Navbar: React.FC<NavbarProps> = ({ domains = [], featuredCourses = 
                 <Sparkles className="w-4 h-4 text-pink-500" />
                 <span>Career Path Finder</span>
               </Link>
+
               <Link href="/placements" onClick={() => setMobileMenuOpen(false)} className="hover:text-purple-600 transition-colors">
                 Placements &amp; Success Stories
               </Link>

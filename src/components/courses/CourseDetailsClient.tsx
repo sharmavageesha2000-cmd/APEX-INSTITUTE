@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 import { Course, Review } from '@/lib/types';
 import { formatCurrency } from '@/lib/utils';
+import { getCourseImage } from '@/lib/mock-data';
 import { EnquiryModal } from '../ui/EnquiryModal';
 
 interface CourseDetailsClientProps {
@@ -65,37 +66,8 @@ export const CourseDetailsClient: React.FC<CourseDetailsClientProps> = ({
           (m) => `Module ${m.moduleNumber}` === activeModuleFilter
         );
 
-  const handleEnrollNow = async () => {
-    setEnrolling(true);
-    setEnrollMsg(null);
-    try {
-      const res = await fetch('/api/enrollments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          courseId: course.id,
-          preferredBatch: selectedBatch,
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        if (res.status === 401) {
-          router.push(`/login?redirect=/courses/${course.slug}`);
-          return;
-        }
-        throw new Error(data.error || 'Enrollment failed');
-      }
-
-      setEnrollMsg({ type: 'success', text: 'Enrollment successful! Redirecting to student dashboard...' });
-      setTimeout(() => {
-        router.push('/dashboard');
-      }, 1500);
-    } catch (err: any) {
-      setEnrollMsg({ type: 'error', text: err.message || 'Something went wrong.' });
-    } finally {
-      setEnrolling(false);
-    }
+  const handleEnrollNow = () => {
+    router.push(`/register?course=${course.slug}`);
   };
 
   return (
@@ -131,10 +103,10 @@ export const CourseDetailsClient: React.FC<CourseDetailsClientProps> = ({
                 <div className="relative shrink-0 group">
                   <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-3xl bg-gradient-to-tr from-pink-600 via-purple-600 to-indigo-600 p-1 shadow-xl shadow-purple-500/20">
                     <img
-                      src={course.image || '/images/generative-ai-banner.jpg'}
+                      src={getCourseImage(course.title, course.slug, course.domainName, course.image)}
                       alt={course.title}
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/images/generative-ai-banner.jpg';
+                        (e.target as HTMLImageElement).src = getCourseImage(course.title, course.slug, course.domainName);
                       }}
                       className="w-full h-full object-cover rounded-[22px] group-hover:scale-105 transition-transform duration-300"
                     />

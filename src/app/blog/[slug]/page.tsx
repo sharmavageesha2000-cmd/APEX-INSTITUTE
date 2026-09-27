@@ -3,9 +3,12 @@ import Link from 'next/link';
 import { getBlogBySlug, getBlogs } from '@/lib/store';
 import { Clock, Calendar, User, ArrowLeft, Share2, Sparkles, BookOpen } from 'lucide-react';
 
+export const revalidate = 60;
+
 export default async function BlogDetailsPage({ params }: { params: { slug: string } }) {
   const allBlogs = await getBlogs();
-  const blog = (await getBlogBySlug(params.slug)) || allBlogs[0];
+  const s = params.slug.toLowerCase().trim();
+  const blog = allBlogs.find((b) => b.slug === s || b.slug.includes(s) || s.includes(b.slug)) || allBlogs[0];
 
   const relatedBlogs = allBlogs.filter((b) => b.id !== blog.id).slice(0, 2);
 

@@ -19,8 +19,8 @@ export const ARVRMotionGraphicsEffect: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // If on home page, do nothing
-    if (pathname === '/') return;
+    // Only run on the home page (pathname === '/')
+    if (pathname !== '/') return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -102,42 +102,12 @@ export const ARVRMotionGraphicsEffect: React.FC = () => {
     let gyroAngle1 = 0;
     let gyroAngle2 = 0;
     let gyroAngle3 = 0;
-    let scanY = 0;
-    let scanDirection = 1;
-
     const render = () => {
       // Eased mouse parallax
       mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.05;
       mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.05;
 
       ctx.clearRect(0, 0, width, height);
-
-      // LiDAR Scanning Laser Beam
-      scanY += 1.8 * scanDirection;
-      if (scanY > height) {
-        scanY = height;
-        scanDirection = -1;
-      } else if (scanY < 0) {
-        scanY = 0;
-        scanDirection = 1;
-      }
-
-      // Draw faint LiDAR horizontal line and ambient laser sweep
-      const laserGrad = ctx.createLinearGradient(0, scanY - 35 * scanDirection, 0, scanY);
-      laserGrad.addColorStop(0, 'rgba(6, 182, 212, 0)');
-      laserGrad.addColorStop(0.7, 'rgba(139, 92, 246, 0.03)');
-      laserGrad.addColorStop(1, 'rgba(6, 182, 212, 0.12)');
-      ctx.fillStyle = laserGrad;
-      ctx.fillRect(0, scanDirection > 0 ? scanY - 35 : scanY, width, 35);
-
-      ctx.beginPath();
-      ctx.moveTo(0, scanY);
-      ctx.lineTo(width, scanY);
-      ctx.strokeStyle = 'rgba(6, 182, 212, 0.25)';
-      ctx.lineWidth = 1;
-      ctx.setLineDash([8, 12]);
-      ctx.stroke();
-      ctx.setLineDash([]);
 
       // ── 1. Render Floating 3D Spatial Particles ──────────
       const fov = 650;
@@ -231,24 +201,19 @@ export const ARVRMotionGraphicsEffect: React.FC = () => {
         };
       });
 
-      // Draw Icosahedron Edges with depth and LiDAR reaction
+      // Draw Icosahedron Edges with depth
       icoEdges.forEach(([startIdx, endIdx]) => {
         const p1 = projectedIco[startIdx];
         const p2 = projectedIco[endIdx];
         const avgZ = (p1.z + p2.z) / 2;
-        const avgY = (p1.y + p2.y) / 2;
 
-        // Is scanline near this edge?
-        const scanDist = Math.abs(avgY - scanY);
-        const scanBoost = scanDist < 60 ? (1 - scanDist / 60) * 0.4 : 0;
-
-        const baseAlpha = Math.max(0.08, 0.22 + (avgZ / icoRadius) * 0.12) + scanBoost;
+        const baseAlpha = Math.max(0.08, 0.22 + (avgZ / icoRadius) * 0.12);
 
         ctx.beginPath();
         ctx.moveTo(p1.x, p1.y);
         ctx.lineTo(p2.x, p2.y);
-        ctx.strokeStyle = scanBoost > 0.15 ? `rgba(6, 182, 212, ${baseAlpha})` : `rgba(139, 92, 246, ${baseAlpha})`;
-        ctx.lineWidth = scanBoost > 0.15 ? 1.5 : 1;
+        ctx.strokeStyle = `rgba(139, 92, 246, ${baseAlpha})`;
+        ctx.lineWidth = 1;
         ctx.stroke();
       });
 
@@ -330,74 +295,25 @@ export const ARVRMotionGraphicsEffect: React.FC = () => {
     };
   }, [pathname]);
 
-  // If on home page or not mounted yet, render null
-  if (!mounted || pathname === '/') {
+  // Only render on home page, and when mounted
+  if (!mounted || pathname !== '/') {
     return null;
   }
 
   return (
-    <>
-      {/* 1. Background 3D Spatial Canvas Layer (Behind content: z-0) */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none">
-        <canvas
-          ref={canvasRef}
-          className="absolute inset-0 w-full h-full pointer-events-none opacity-85"
-        />
-        {/* Ambient subtle spatial grid */}
-        <div 
-          className="absolute inset-0 opacity-[0.035] pointer-events-none"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, #6366f1 1px, transparent 0)`,
-            backgroundSize: '36px 36px',
-          }}
-        />
-      </div>
-
-      {/* 2. Foreground AR HUD & LiDAR Visor Layer (Above background, below modals: z-20, pointer-events-none) */}
-      <div className="fixed inset-0 pointer-events-none z-20 overflow-hidden select-none">
-        {/* Holographic LiDAR Scanning Wave Beam */}
-        <div 
-          className="absolute left-0 right-0 h-24 pointer-events-none opacity-60"
-          style={{
-            animation: 'arLidarScan 9s ease-in-out infinite alternate',
-            background: 'linear-gradient(to bottom, transparent, rgba(6, 182, 212, 0.04) 70%, rgba(139, 92, 246, 0.1) 98%, rgba(6, 182, 212, 0.5) 100%)',
-            borderBottom: '1px solid rgba(6, 182, 212, 0.65)',
-            boxShadow: '0 2px 14px rgba(6, 182, 212, 0.25)',
-          }}
-        />
-
-        {/* Top Left AR Reticle */}
-        <div className="absolute top-24 left-6 hidden md:flex flex-col gap-1 text-[10px] font-mono text-cyan-800/80 uppercase tracking-widest bg-white/70 backdrop-blur-xs px-2.5 py-1.5 rounded-lg border border-cyan-300/40 shadow-xs">
-          <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-xs border-t-2 border-l-2 border-cyan-500" />
-            <span className="font-bold text-cyan-700">AR_SPATIAL // LIVE</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse ml-1" />
-          </div>
-          <div className="text-[9px] text-slate-500 font-semibold pl-3 tracking-normal">
-            SYS: 60FPS • FOV 110° • MESH_ACTIVE
-          </div>
-        </div>
-
-        {/* Top Right AR HUD Coordinate Tag */}
-        <div className="absolute top-24 right-6 hidden md:flex items-center gap-2 text-[10px] font-mono text-purple-800/80 uppercase tracking-wider bg-white/70 backdrop-blur-xs px-2.5 py-1.5 rounded-lg border border-purple-300/40 shadow-xs">
-          <span className="text-[9px] text-slate-500 font-semibold">
-            GRID: X+42.8 Y-19.4 Z+104
-          </span>
-          <span className="w-2 h-2 rounded-xs border-t-2 border-r-2 border-purple-500" />
-        </div>
-
-        {/* Bottom Left AR Corner Bracket */}
-        <div className="absolute bottom-6 left-6 hidden md:flex items-center gap-2 text-[10px] font-mono text-cyan-800/80 bg-white/60 backdrop-blur-xs px-2 py-1 rounded-md border border-cyan-200/50 shadow-xs">
-          <span className="w-2 h-2 rounded-xs border-b-2 border-l-2 border-cyan-500" />
-          <span className="text-[9px] text-slate-500 tracking-wider font-semibold">APEX_VR_MATRIX // V2.4</span>
-        </div>
-
-        {/* Bottom Right AR Crosshair Reticle */}
-        <div className="absolute bottom-6 right-6 hidden md:flex items-center gap-2 text-[10px] font-mono text-purple-800/80 bg-white/60 backdrop-blur-xs px-2 py-1 rounded-md border border-purple-200/50 shadow-xs">
-          <span className="text-[9px] text-slate-500 tracking-wider font-semibold">[ TRACKING: ACTIVE ]</span>
-          <span className="w-2 h-2 rounded-xs border-b-2 border-r-2 border-purple-500" />
-        </div>
-      </div>
-    </>
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none">
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full pointer-events-none opacity-85"
+      />
+      {/* Ambient subtle spatial grid */}
+      <div 
+        className="absolute inset-0 opacity-[0.035] pointer-events-none"
+        style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, #6366f1 1px, transparent 0)`,
+          backgroundSize: '36px 36px',
+        }}
+      />
+    </div>
   );
 };

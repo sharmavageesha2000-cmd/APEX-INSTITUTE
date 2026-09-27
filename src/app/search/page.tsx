@@ -3,10 +3,12 @@ import { getCourses, getDomains, getBlogs, getEvents } from '@/lib/store';
 import { GlobalSearchClient } from '@/components/search/GlobalSearchClient';
 
 export default async function SearchPage() {
-  const courses = await getCourses();
-  const domains = await getDomains();
-  const blogs = await getBlogs();
-  const events = await getEvents();
+  const [courses, domains, blogs, events] = await Promise.all([
+    getCourses(),
+    getDomains(),
+    getBlogs(),
+    getEvents(),
+  ]);
 
   return (
     <div className="py-12 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">

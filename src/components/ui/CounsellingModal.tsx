@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Send, Sparkles, CheckCircle2, Calendar, Clock } from 'lucide-react';
 import { Domain } from '@/lib/types';
 
@@ -15,6 +16,7 @@ export const CounsellingModal: React.FC<CounsellingModalProps> = ({
   onClose,
   domains = [],
 }) => {
+  const [mounted, setMounted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -29,7 +31,30 @@ export const CounsellingModal: React.FC<CounsellingModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen || !mounted) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,26 +89,41 @@ export const CounsellingModal: React.FC<CounsellingModalProps> = ({
     }
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-md animate-fadeIn">
-      <div className="bg-white border border-purple-100 w-full max-w-lg max-w-[calc(100vw-1.5rem)] max-h-[90vh] overflow-y-auto p-5 sm:p-8 rounded-3xl shadow-2xl space-y-6 relative">
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[9999] overflow-y-auto bg-slate-950/70 backdrop-blur-md p-4 sm:p-8 flex min-h-screen items-center justify-center animate-fadeIn"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      role="dialog"
+      aria-modal="true"
+    >
+      <div 
+        className="relative w-full max-w-lg bg-white border border-purple-100 rounded-3xl shadow-2xl my-auto overflow-hidden animate-scaleUp"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Pinned Close Button */}
         <button
+          type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-slate-500 hover:text-slate-900 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-colors"
+          aria-label="Close dialog"
+          className="absolute top-4 right-4 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-full bg-slate-100/90 hover:bg-rose-50 text-slate-600 hover:text-rose-600 border border-slate-200 hover:border-rose-200 transition-all shadow-sm group focus:outline-none focus:ring-2 focus:ring-purple-400"
         >
-          <X className="w-4 h-4" />
+          <X className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:scale-110 group-hover:rotate-90 duration-200" />
         </button>
 
-        <div className="space-y-1">
-          <span className="inline-flex items-center gap-1 text-[11px] font-bold text-purple-700 bg-purple-100 px-2.5 py-0.5 rounded-full border border-purple-200">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>1-on-1 Senior Mentor Session</span>
-          </span>
-          <h2 className="text-xl font-bold text-slate-900">Book a Free Career Counselling Session</h2>
-          <p className="text-xs text-slate-500">
-            Get personalized guidance on domain roadmap, salary expectations, and course selection.
-          </p>
-        </div>
+        {/* Scrollable Modal Content */}
+        <div className="max-h-[84vh] overflow-y-auto p-5 sm:p-8 pt-6 sm:pt-8 space-y-6">
+          <div className="space-y-1 pr-12">
+            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-purple-700 bg-purple-100 px-2.5 py-0.5 rounded-full border border-purple-200">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>1-on-1 Senior Mentor Session</span>
+            </span>
+            <h2 className="text-xl font-bold text-slate-900">Book a Free Career Counselling Session</h2>
+            <p className="text-xs text-slate-500">
+              Get personalized guidance on domain roadmap, salary expectations, and course selection.
+            </p>
+          </div>
 
         {success ? (
           <div className="py-8 text-center space-y-3 bg-emerald-50 border border-emerald-200 rounded-2xl p-4">
@@ -212,7 +252,9 @@ export const CounsellingModal: React.FC<CounsellingModalProps> = ({
             </button>
           </form>
         )}
+        </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

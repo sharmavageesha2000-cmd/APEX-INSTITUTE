@@ -1,9 +1,10 @@
-export type Role = 'STUDENT' | 'ADMIN';
+export type Role = 'STUDENT' | 'FACULTY' | 'ADMIN';
 
 export interface User {
   id: string;
   name: string;
   email: string;
+  password?: string;
   phone?: string;
   city?: string;
   education?: string;
@@ -95,12 +96,15 @@ export interface Course {
 }
 
 export type EnrollmentStatus = 'ACTIVE' | 'COMPLETED' | 'CANCELLED';
+export type PaymentPlan = 'LUMPSUM' | 'INSTALLMENTS_2' | 'INSTALLMENTS_3';
+export type PaymentStatus = 'REGISTRATION_PAID' | 'PARTIALLY_PAID' | 'FULLY_PAID';
 
 export interface Enrollment {
   id: string;
   userId: string;
   userName?: string;
   userEmail?: string;
+  userPhone?: string;
   courseId: string;
   courseTitle?: string;
   courseSlug?: string;
@@ -110,6 +114,12 @@ export interface Enrollment {
   mode?: string;
   enrolledAt: string;
   course?: Course;
+  totalFee?: number;
+  registrationFeePaid?: number;
+  remainingFee?: number;
+  paymentPlan?: PaymentPlan;
+  paymentStatus?: PaymentStatus;
+  lastPaymentDate?: string;
 }
 
 export type EnquiryStatus = 'NEW' | 'IN_PROGRESS' | 'CONVERTED' | 'CLOSED';

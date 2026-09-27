@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { createEnquiry, getEnquiries, updateEnquiryStatus } from '@/lib/store';
 import { getCurrentUser } from '@/lib/auth';
 
@@ -29,6 +30,7 @@ export async function POST(request: Request) {
       message: message || 'Enquiry submitted from website.',
     });
 
+    revalidatePath('/admin');
     return NextResponse.json({ success: true, enquiry });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to submit enquiry' }, { status: 500 });
@@ -48,8 +50,13 @@ export async function PATCH(request: Request) {
     }
 
     const updated = await updateEnquiryStatus(id, status, notes);
+    revalidatePath('/admin');
     return NextResponse.json({ success: updated });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to update enquiry' }, { status: 500 });
   }
+}
+
+export async function PUT(request: Request) {
+  return PATCH(request);
 }

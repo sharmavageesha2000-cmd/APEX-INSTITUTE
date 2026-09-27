@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { Calendar, Clock, MapPin, Sparkles, User, ArrowRight } from 'lucide-react';
 import { getEvents } from '@/lib/store';
 
+export const revalidate = 60;
+
 export default async function EventsIndexPage() {
   const events = await getEvents();
 
