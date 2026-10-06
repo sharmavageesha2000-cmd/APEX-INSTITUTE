@@ -303,6 +303,7 @@ const INITIAL_PASSPORTS: StudentSkillPassport[] = [
 
 export const SkillPassportClient: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<UserType | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [passportsList, setPassportsList] = useState<StudentSkillPassport[]>(INITIAL_PASSPORTS);
   const [selectedPassport, setSelectedPassport] = useState<StudentSkillPassport>(INITIAL_PASSPORTS[0]);
   const [activePassportTab, setActivePassportTab] = useState<
@@ -339,14 +340,16 @@ export const SkillPassportClient: React.FC = () => {
   const [verificationResult, setVerificationResult] = useState<StudentSkillPassport | null>(null);
   const [copiedLink, setCopiedLink] = useState(false);
 
-  // Check auth user
+  // Check auth user - strictly restricted to student accounts
   useEffect(() => {
     fetch('/api/auth/me')
       .then((res) => res.json())
       .then((data) => {
-        if (data.user) {
+        // STRICT ROLE CHECK: Only authentic students (role === 'STUDENT') should have personal skill passports.
+        // Administrators or faculty should NEVER have their name or profile displayed as a student passport holder.
+        if (data?.user && data.user.role === 'STUDENT') {
           setCurrentUser(data.user);
-          // Pre-fill form data with user info if logged in
+          // Pre-fill form data with student user info
           setFormData((prev) => ({
             ...prev,
             name: data.user.name || prev.name,
@@ -411,6 +414,9 @@ export const SkillPassportClient: React.FC = () => {
 
           setPassportsList((prev) => [userPassport, ...prev.filter((p) => p.id !== userPassport.id)]);
           setSelectedPassport(userPassport);
+        } else if (data?.user && data.user.role === 'ADMIN') {
+          // Administrator is inspecting student passports: do not treat admin as a student
+          setIsAdmin(true);
         }
       })
       .catch(() => {});
@@ -583,6 +589,14 @@ export const SkillPassportClient: React.FC = () => {
                 >
                   <GraduationCap className="w-4 h-4 text-purple-600" />
                   <span>Student LMS Dashboard</span>
+                </Link>
+              ) : isAdmin ? (
+                <Link
+                  href="/admin"
+                  className="bright-btn-secondary text-xs px-4 py-2 flex items-center gap-1.5 font-extrabold"
+                >
+                  <ShieldCheck className="w-4 h-4 text-purple-600" />
+                  <span>Admin Console</span>
                 </Link>
               ) : (
                 <div className="flex items-center gap-2">
