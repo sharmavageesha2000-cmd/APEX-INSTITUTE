@@ -34,6 +34,8 @@ export const CourseCard: React.FC<CourseCardProps> = ({
           <img
             src={coverImage}
             alt={course.title}
+            loading="lazy"
+            decoding="async"
             onError={(e) => {
               (e.target as HTMLImageElement).src = getCourseImage(course.title, course.slug, course.domainName);
             }}
@@ -157,6 +159,8 @@ export const CourseCard: React.FC<CourseCardProps> = ({
         <img
           src={coverImage}
           alt={course.title}
+          loading="lazy"
+          decoding="async"
           onError={(e) => {
             (e.target as HTMLImageElement).src = getCourseImage(course.title, course.slug, course.domainName);
           }}
@@ -201,6 +205,8 @@ export const CourseCard: React.FC<CourseCardProps> = ({
             <img
               src={course.instructor.photo}
               alt={course.instructor.name}
+              loading="lazy"
+              decoding="async"
               onError={(e) => {
                 (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop';
               }}

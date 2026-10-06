@@ -84,7 +84,8 @@ export const ARVRMotionGraphicsEffect: React.FC = () => {
     }
 
     // ── 3D Matrix Background Floating Nodes ────────────────
-    const PARTICLE_COUNT = 32;
+    const isMobile = window.innerWidth < 768;
+    const PARTICLE_COUNT = isMobile ? 12 : 32;
     const particles = Array.from({ length: PARTICLE_COUNT }, () => ({
       x: (Math.random() - 0.5) * 1200,
       y: (Math.random() - 0.5) * 900,
@@ -102,7 +103,14 @@ export const ARVRMotionGraphicsEffect: React.FC = () => {
     let gyroAngle1 = 0;
     let gyroAngle2 = 0;
     let gyroAngle3 = 0;
+    let isPaused = false;
+
     const render = () => {
+      if (document.hidden) {
+        isPaused = true;
+        return;
+      }
+
       // Eased mouse parallax
       mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.05;
       mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.05;
@@ -137,32 +145,33 @@ export const ARVRMotionGraphicsEffect: React.FC = () => {
           ctx.arc(sx, sy, 2 * scale, 0, Math.PI * 2);
           ctx.fill();
 
-          // Interconnect close particles (spatial AR mesh)
-          for (let j = idx + 1; j < particles.length; j++) {
-            const p2 = particles[j];
-            const d = Math.hypot(p.x - p2.x, p.y - p2.y, p.z - p2.z);
-            if (d < 160) {
-              const lineAlpha = (1 - d / 160) * 0.12;
-              const p2z = p2.z + 400;
-              const scale2 = fov / (fov + p2z);
-              const s2x = width / 2 + (p2.x + mouseRef.current.x * 40) * scale2;
-              const s2y = height / 2 + (p2.y + mouseRef.current.y * 30) * scale2;
-              ctx.beginPath();
-              ctx.moveTo(sx, sy);
-              ctx.lineTo(s2x, s2y);
-              ctx.strokeStyle = `rgba(99, 102, 241, ${lineAlpha})`;
-              ctx.lineWidth = 0.8;
-              ctx.stroke();
+          // Interconnect close particles (spatial AR mesh) - skip high count on mobile
+          if (!isMobile) {
+            for (let j = idx + 1; j < particles.length; j++) {
+              const p2 = particles[j];
+              const d = Math.hypot(p.x - p2.x, p.y - p2.y, p.z - p2.z);
+              if (d < 160) {
+                const lineAlpha = (1 - d / 160) * 0.12;
+                const p2z = p2.z + 400;
+                const scale2 = fov / (fov + p2z);
+                const s2x = width / 2 + (p2.x + mouseRef.current.x * 40) * scale2;
+                const s2y = height / 2 + (p2.y + mouseRef.current.y * 30) * scale2;
+                ctx.beginPath();
+                ctx.moveTo(sx, sy);
+                ctx.lineTo(s2x, s2y);
+                ctx.strokeStyle = `rgba(99, 102, 241, ${lineAlpha})`;
+                ctx.lineWidth = 0.8;
+                ctx.stroke();
+              }
             }
           }
         }
       });
 
       // ── 2. Render 3D Holographic Wireframe Icosahedron ──
-      // Positioned gracefully in top-right ambient quadrant
-      const icoRadius = Math.min(width, height) * 0.16;
-      const icoCenterX = width * 0.84;
-      const icoCenterY = Math.max(160, height * 0.26);
+      const icoRadius = Math.min(width, height) * (isMobile ? 0.12 : 0.16);
+      const icoCenterX = width * (isMobile ? 0.78 : 0.84);
+      const icoCenterY = Math.max(140, height * (isMobile ? 0.20 : 0.26));
 
       angleX += 0.006;
       angleY += 0.009;
@@ -174,15 +183,12 @@ export const ARVRMotionGraphicsEffect: React.FC = () => {
 
       // 3D Rotation helper
       const rotate3D = (x: number, y: number, z: number, rx: number, ry: number, rz: number) => {
-        // Rotate Z
         let x1 = x * Math.cos(rz) - y * Math.sin(rz);
         let y1 = x * Math.sin(rz) + y * Math.cos(rz);
         let z1 = z;
-        // Rotate Y
         let x2 = x1 * Math.cos(ry) + z1 * Math.sin(ry);
         let y2 = y1;
         let z2 = -x1 * Math.sin(ry) + z1 * Math.cos(ry);
-        // Rotate X
         let x3 = x2;
         let y3 = y2 * Math.cos(rx) - z2 * Math.sin(rx);
         let z3 = y2 * Math.sin(rx) + z2 * Math.cos(rx);
@@ -227,17 +233,16 @@ export const ARVRMotionGraphicsEffect: React.FC = () => {
       });
 
       // ── 3. Render 3D Spatial Gyroscope / IMU Orbital Rings ──
-      // Positioned gracefully in bottom-left ambient quadrant
-      const gyroRadius = Math.min(width, height) * 0.15;
-      const gyroCenterX = width * 0.14;
-      const gyroCenterY = Math.min(height - 180, height * 0.76);
+      const gyroRadius = Math.min(width, height) * (isMobile ? 0.11 : 0.15);
+      const gyroCenterX = width * (isMobile ? 0.18 : 0.14);
+      const gyroCenterY = Math.min(height - 180, height * (isMobile ? 0.82 : 0.76));
 
       gyroAngle1 += 0.007;
       gyroAngle2 += 0.005;
       gyroAngle3 += 0.009;
 
       const drawGyroRing = (radius: number, rx: number, ry: number, rz: number, color: string, alphaBase: number) => {
-        const STEPS = 48;
+        const STEPS = isMobile ? 24 : 48;
         ctx.beginPath();
         let first = true;
         for (let i = 0; i <= STEPS; i++) {
@@ -262,10 +267,12 @@ export const ARVRMotionGraphicsEffect: React.FC = () => {
         ctx.stroke();
       };
 
-      // 3 Gimbal rings
+      // Gimbal rings
       drawGyroRing(gyroRadius, gyroAngle1 + mouseRef.current.y * 0.3, gyroAngle2, 0, 'rgba(6, 182, 212, ALPHA)', 0.28);
       drawGyroRing(gyroRadius * 0.82, gyroAngle2, 0, gyroAngle3 + mouseRef.current.x * 0.3, 'rgba(168, 85, 247, ALPHA)', 0.24);
-      drawGyroRing(gyroRadius * 0.65, 0, gyroAngle3, gyroAngle1, 'rgba(59, 130, 246, ALPHA)', 0.2);
+      if (!isMobile) {
+        drawGyroRing(gyroRadius * 0.65, 0, gyroAngle3, gyroAngle1, 'rgba(59, 130, 246, ALPHA)', 0.2);
+      }
 
       // Gyro Core Node
       ctx.beginPath();
@@ -288,8 +295,18 @@ export const ARVRMotionGraphicsEffect: React.FC = () => {
 
     render();
 
+    const handleVisibility = () => {
+      if (!document.hidden && isPaused) {
+        isPaused = false;
+        animationFrameId = requestAnimationFrame(render);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
+
     return () => {
       cancelAnimationFrame(animationFrameId);
+      document.removeEventListener('visibilitychange', handleVisibility);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
     };

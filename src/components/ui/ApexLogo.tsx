@@ -46,6 +46,8 @@ export const ApexLogo: React.FC<ApexLogoProps> = ({
           <img
             src="/images/apex_logo_symbol.png"
             alt="Apex Institute Logo"
+            loading="eager"
+            decoding="async"
             className="w-full h-full object-contain filter drop-shadow-md group-hover:scale-105 transition-transform duration-300"
           />
         </div>

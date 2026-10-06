@@ -547,28 +547,28 @@ export const SkillPassportClient: React.FC = () => {
       </div>
 
       {/* ── 🌟 TOP PORTAL: STUDENT PASSPORT BUILDER & ACTIVE VIEWER ── */}
-      <div className="bg-gradient-to-br from-purple-900 via-indigo-950 to-slate-900 text-white rounded-[2.5rem] p-6 sm:p-10 shadow-2xl border-2 border-purple-300/40 relative overflow-hidden">
+      <div className="bg-gradient-to-br from-purple-900 via-indigo-950 to-slate-900 text-white rounded-2xl sm:rounded-3xl lg:rounded-[2.5rem] p-4 sm:p-8 lg:p-10 shadow-2xl border-2 border-purple-300/40 relative overflow-hidden">
         {/* Glow backdrop */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-pink-500/15 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-72 sm:w-96 h-72 sm:h-96 bg-pink-500/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-72 sm:w-96 h-72 sm:h-96 bg-purple-500/15 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 space-y-6">
           {/* Portal Top Bar */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/10">
-            <div className="flex items-center gap-3.5">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-pink-500 via-purple-500 to-amber-400 text-white flex items-center justify-center shadow-lg shadow-pink-500/25 shrink-0">
-                <ShieldCheck className="w-6 h-6" />
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 sm:pb-6 border-b border-white/10">
+            <div className="flex items-start sm:items-center gap-3 sm:gap-3.5 min-w-0">
+              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-pink-500 via-purple-500 to-amber-400 text-white flex items-center justify-center shadow-lg shadow-pink-500/25 shrink-0">
+                <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-amber-300 bg-amber-400/20 px-2.5 py-0.5 rounded-full border border-amber-400/30">
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                  <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-amber-300 bg-amber-400/20 px-2 sm:px-2.5 py-0.5 rounded-full border border-amber-400/30">
                     {currentUser ? 'STUDENT ACTIVE PORTAL' : 'STUDENT CREATION PORTAL'}
                   </span>
-                  <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-400/30">
+                  <span className="text-[9px] sm:text-[10px] font-bold text-emerald-400 bg-emerald-950/80 px-2 sm:px-2.5 py-0.5 rounded-full border border-emerald-400/30">
                     ✓ 100% Verifiable Profile
                   </span>
                 </div>
-                <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
+                <h2 className="text-lg sm:text-xl lg:text-2xl font-black text-white mt-1 leading-snug">
                   {currentUser
                     ? `Welcome, ${currentUser.name}! Your Digital Skill Passport is Active`
                     : 'Create & Customize Your Student Digital Skill Passport'}
@@ -867,19 +867,19 @@ export const SkillPassportClient: React.FC = () => {
           )}
 
           {/* Quick Active Passport Pill Row */}
-          <div className="bg-white/5 border border-white/10 p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl overflow-hidden border border-amber-400/80 shrink-0">
-                <img src={selectedPassport.avatar} alt={selectedPassport.name} className="w-full h-full object-cover" />
+          <div className="bg-white/5 border border-white/10 p-3.5 sm:p-4 rounded-xl sm:rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-10 h-10 rounded-xl overflow-hidden border border-amber-400/80 shrink-0 bg-purple-900/40">
+                <img src={selectedPassport.avatar} alt={selectedPassport.name} className="w-full h-full object-cover" loading="lazy" decoding="async" />
               </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <strong className="text-sm font-black text-white">{selectedPassport.name}</strong>
-                  <span className="text-[10px] font-mono text-amber-300 font-bold bg-amber-400/20 px-2 py-0.5 rounded border border-amber-400/30">
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-2">
+                  <strong className="text-sm font-black text-white truncate">{selectedPassport.name}</strong>
+                  <span className="text-[10px] font-mono text-amber-300 font-bold bg-amber-400/20 px-2 py-0.5 rounded border border-amber-400/30 shrink-0">
                     {selectedPassport.passportId}
                   </span>
                 </div>
-                <p className="text-[11px] text-purple-200">
+                <p className="text-[11px] text-purple-200 truncate">
                   {selectedPassport.title} • {selectedPassport.domain}
                 </p>
               </div>
@@ -1096,7 +1096,7 @@ export const SkillPassportClient: React.FC = () => {
           </div>
 
           {/* Student Profile Selector Chips */}
-          <div className="flex flex-wrap gap-2">
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 pt-1 max-w-full scrollbar-none touch-pan-x -webkit-overflow-scrolling-touch sm:flex-wrap">
             {passportsList.map((passport) => (
               <button
                 key={passport.id}
@@ -1104,16 +1104,16 @@ export const SkillPassportClient: React.FC = () => {
                   setSelectedPassport(passport);
                   setActivePassportTab('OVERVIEW');
                 }}
-                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border ${
+                className={`px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border shrink-0 ${
                   selectedPassport.id === passport.id
                     ? 'bg-purple-700 text-white border-purple-700 shadow-md'
                     : 'bg-white text-slate-700 border-slate-200 hover:border-purple-300'
                 }`}
               >
                 <div className="w-5 h-5 rounded-full overflow-hidden shrink-0 border border-white/40">
-                  <img src={passport.avatar} alt={passport.name} className="w-full h-full object-cover" />
+                  <img src={passport.avatar} alt={passport.name} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                 </div>
-                <span>{passport.name}</span>
+                <span className="whitespace-nowrap">{passport.name}</span>
                 {passport.isUserCustom && (
                   <span className="text-[9px] bg-pink-500 text-white px-1.5 py-0.2 rounded-full">Custom</span>
                 )}
@@ -1123,55 +1123,61 @@ export const SkillPassportClient: React.FC = () => {
         </div>
 
         {/* The Digital Passport Card Mockup */}
-        <div className="bg-white rounded-[2.5rem] border-2 border-purple-200 shadow-2xl overflow-hidden">
+        <div className="bg-white rounded-2xl sm:rounded-3xl lg:rounded-[2.5rem] border-2 border-purple-200 shadow-2xl overflow-hidden">
           {/* Passport Header Bar */}
-          <div className="bg-gradient-to-r from-slate-900 via-purple-950 to-indigo-950 text-white p-6 sm:p-8 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="bg-gradient-to-r from-slate-900 via-purple-950 to-indigo-950 text-white p-4 sm:p-6 lg:p-8 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-72 sm:w-96 h-72 sm:h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
 
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-              <div className="flex items-start sm:items-center gap-4">
-                <div className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 border-amber-400 shadow-lg shrink-0">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6 relative z-10">
+              <div className="flex items-start sm:items-center gap-3.5 sm:gap-4 min-w-0 flex-1">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 border-amber-400 shadow-lg shrink-0 bg-purple-900/40">
                   <img
                     src={selectedPassport.avatar}
                     alt={selectedPassport.name}
                     className="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
 
-                <div className="space-y-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-amber-300 bg-amber-400/20 px-2.5 py-0.5 rounded-full border border-amber-400/30 flex items-center gap-1">
-                      <ShieldCheck className="w-3 h-3 text-amber-300" />
+                <div className="space-y-1 sm:space-y-1.5 min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                    <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-amber-300 bg-amber-400/20 px-2 sm:px-2.5 py-0.5 rounded-full border border-amber-400/30 inline-flex items-center gap-1 shrink-0">
+                      <ShieldCheck className="w-3 h-3 text-amber-300 shrink-0" />
                       <span>OFFICIAL SKILL PASSPORT</span>
                     </span>
-                    <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-400/30">
+                    <span className="text-[9px] sm:text-[10px] font-bold text-emerald-400 bg-emerald-950/60 px-2 sm:px-2.5 py-0.5 rounded-full border border-emerald-400/30 shrink-0">
                       ✓ {selectedPassport.validity}
                     </span>
                   </div>
 
-                  <h3 className="text-2xl sm:text-3xl font-black text-white">{selectedPassport.name}</h3>
-                  <p className="text-xs sm:text-sm text-purple-200 font-semibold">{selectedPassport.title}</p>
-                  <p className="text-[11px] text-slate-400 font-medium">
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white leading-tight break-words">
+                    {selectedPassport.name}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-purple-200 font-semibold truncate sm:whitespace-normal">
+                    {selectedPassport.title}
+                  </p>
+                  <p className="text-[11px] text-slate-300 sm:text-slate-400 font-medium truncate sm:whitespace-normal">
                     {selectedPassport.batch} • {selectedPassport.location}
                   </p>
                 </div>
               </div>
 
               {/* Passport ID & Placement Badge */}
-              <div className="flex flex-col sm:items-end gap-2 shrink-0">
-                <div className="p-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-left sm:text-right space-y-0.5">
-                  <span className="text-[10px] text-purple-200 uppercase font-black tracking-widest block">
+              <div className="flex flex-col sm:flex-row lg:flex-col items-stretch sm:items-center lg:items-end gap-2.5 shrink-0 pt-3 lg:pt-0 border-t border-white/10 lg:border-t-0 w-full sm:w-auto">
+                <div className="w-full sm:w-auto p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex sm:block items-center justify-between sm:justify-end gap-3 text-left sm:text-right shadow-xs">
+                  <span className="text-[9px] sm:text-[10px] text-purple-200 uppercase font-black tracking-widest block">
                     PASSPORT LEDGER ID
                   </span>
-                  <span className="text-xs sm:text-sm font-mono font-black text-amber-300">
+                  <span className="text-xs sm:text-sm font-mono font-black text-amber-300 tracking-wider">
                     {selectedPassport.passportId}
                   </span>
                 </div>
 
                 {selectedPassport.hiredAt && (
-                  <span className="text-xs font-black text-amber-950 bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400 px-3.5 py-1.5 rounded-xl shadow-md inline-flex items-center gap-1.5">
-                    <Award className="w-4 h-4 text-amber-900" />
-                    <span>{selectedPassport.hiredAt}</span>
+                  <span className="text-[11px] sm:text-xs font-black text-amber-950 bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400 px-3 sm:px-3.5 py-2 sm:py-1.5 rounded-xl shadow-md inline-flex items-center justify-center sm:justify-start gap-1.5 shrink-0">
+                    <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-900 shrink-0" />
+                    <span className="truncate sm:whitespace-normal">{selectedPassport.hiredAt}</span>
                   </span>
                 )}
               </div>
@@ -1179,7 +1185,7 @@ export const SkillPassportClient: React.FC = () => {
           </div>
 
           {/* Navigation Tabs for Digital Profile Sections */}
-          <div className="border-b border-slate-200 bg-slate-50/80 px-4 sm:px-8 flex items-center gap-2 overflow-x-auto scrollbar-none py-2">
+          <div className="border-b border-slate-200 bg-slate-50/80 px-3 sm:px-8 flex items-center gap-1.5 sm:gap-2 overflow-x-auto scrollbar-none touch-pan-x -webkit-overflow-scrolling-touch py-2">
             {[
               { key: 'OVERVIEW', label: 'Overview', icon: UserCheck },
               { key: 'SKILLS', label: 'Skills Matrix', icon: Code2 },
@@ -1192,20 +1198,20 @@ export const SkillPassportClient: React.FC = () => {
               <button
                 key={tab.key}
                 onClick={() => setActivePassportTab(tab.key as any)}
-                className={`px-3.5 py-2.5 rounded-xl text-xs font-extrabold flex items-center gap-2 whitespace-nowrap transition-all ${
+                className={`px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl text-xs font-extrabold flex items-center gap-1.5 sm:gap-2 whitespace-nowrap shrink-0 transition-all ${
                   activePassportTab === tab.key
                     ? 'bg-purple-700 text-white shadow-sm'
                     : 'text-slate-600 hover:text-purple-700 hover:bg-purple-50'
                 }`}
               >
-                <tab.icon className="w-4 h-4" />
+                <tab.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                 <span>{tab.label}</span>
               </button>
             ))}
           </div>
 
           {/* Tab Content Panels */}
-          <div className="p-6 sm:p-8">
+          <div className="p-4 sm:p-6 lg:p-8">
             {/* 1. OVERVIEW TAB */}
             {activePassportTab === 'OVERVIEW' && (
               <div className="space-y-6">
@@ -1219,7 +1225,7 @@ export const SkillPassportClient: React.FC = () => {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                   <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
                     <div className="flex items-center gap-2 text-xs font-black text-slate-900">
                       <Code2 className="w-4 h-4 text-purple-600" />
@@ -1469,13 +1475,13 @@ export const SkillPassportClient: React.FC = () => {
                   <p className="text-xs text-slate-500 font-medium">Public vanity link for ATS resume distribution and instant HR contact.</p>
                 </div>
 
-                <div className="p-6 rounded-3xl bg-gradient-to-r from-purple-50 via-pink-50 to-indigo-50 border border-purple-200 space-y-4 text-center sm:text-left">
+                <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-purple-50 via-pink-50 to-indigo-50 border border-purple-200 space-y-4 text-center sm:text-left">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="space-y-1">
+                    <div className="space-y-1 min-w-0">
                       <span className="text-[10px] font-black uppercase tracking-wider text-purple-700">
                         Shareable Digital URL
                       </span>
-                      <h5 className="text-base font-black text-slate-900 font-mono">
+                      <h5 className="text-sm sm:text-base font-black text-slate-900 font-mono break-all">
                         {selectedPassport.portfolioUrl}
                       </h5>
                     </div>
@@ -1523,7 +1529,7 @@ export const SkillPassportClient: React.FC = () => {
       </div>
 
       {/* ── RECRUITER VERIFICATION LOOKUP TOOL ──────────────────── */}
-      <div id="verify-tool" className="scroll-mt-24 bg-gradient-to-br from-slate-900 via-purple-950 to-slate-900 text-white p-8 sm:p-12 rounded-[2.5rem] shadow-2xl space-y-6">
+      <div id="verify-tool" className="scroll-mt-24 bg-gradient-to-br from-slate-900 via-purple-950 to-slate-900 text-white p-5 sm:p-8 lg:p-12 rounded-2xl sm:rounded-3xl lg:rounded-[2.5rem] shadow-2xl space-y-6">
         <div className="max-w-2xl mx-auto text-center space-y-3">
           <div className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-amber-300 bg-amber-400/20 px-3.5 py-1 rounded-full border border-amber-400/30">
             <QrCode className="w-3.5 h-3.5 text-amber-300" />
@@ -1604,8 +1610,8 @@ export const SkillPassportClient: React.FC = () => {
           </h2>
         </div>
 
-        <div className="overflow-x-auto scrollbar-none">
-          <table className="w-full min-w-[550px] bg-white rounded-3xl border border-purple-100 shadow-md text-left text-xs">
+        <div className="overflow-x-auto scrollbar-none -mx-2 sm:mx-0">
+          <table className="w-full min-w-[520px] bg-white rounded-2xl sm:rounded-3xl border border-purple-100 shadow-md text-left text-xs">
             <thead>
               <tr className="bg-slate-50 border-b border-purple-100">
                 <th className="p-4 sm:p-5 font-black text-slate-900">Evaluation Factor</th>
@@ -1648,7 +1654,7 @@ export const SkillPassportClient: React.FC = () => {
       </div>
 
       {/* ── HOW TO GET YOUR SKILL PASSPORT ──────────────────────── */}
-      <div className="bg-gradient-to-r from-purple-50 via-pink-50 to-indigo-50 border border-purple-200 p-8 sm:p-12 rounded-[2.5rem] text-center space-y-6">
+      <div className="bg-gradient-to-r from-purple-50 via-pink-50 to-indigo-50 border border-purple-200 p-6 sm:p-8 lg:p-12 rounded-2xl sm:rounded-3xl lg:rounded-[2.5rem] text-center space-y-6">
         <div className="max-w-2xl mx-auto space-y-2">
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
             Ready to Build Your Verified Skill Passport?

@@ -27,33 +27,63 @@ export const SVGatorAnimatedPatternBackground: React.FC = () => {
     // Only add mouse parallax on non-home pages
     if (pathname === '/') return;
 
-    let rafId: number;
+    // Skip heavy mouse tracking on touch / mobile devices for maximum speed & battery efficiency
+    const isTouchOrMobile = window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches;
+    if (isTouchOrMobile) return;
+
+    let rafId: number | null = null;
     let targetX = 0;
     let targetY = 0;
     let currentX = 0;
     let currentY = 0;
+    let isRunning = false;
+
+    const updateParallax = () => {
+      if (document.hidden) {
+        isRunning = false;
+        return;
+      }
+
+      currentX += (targetX - currentX) * 0.05;
+      currentY += (targetY - currentY) * 0.05;
+
+      if (parallaxLayerRef.current) {
+        parallaxLayerRef.current.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0)`;
+      }
+
+      // If difference is tiny, pause loop until next mouse move to save CPU
+      if (Math.abs(targetX - currentX) > 0.02 || Math.abs(targetY - currentY) > 0.02) {
+        rafId = requestAnimationFrame(updateParallax);
+      } else {
+        isRunning = false;
+      }
+    };
 
     const handleMouseMove = (e: MouseEvent) => {
       const { innerWidth, innerHeight } = window;
       targetX = (e.clientX / innerWidth - 0.5) * 28;
       targetY = (e.clientY / innerHeight - 0.5) * 28;
+
+      if (!isRunning) {
+        isRunning = true;
+        rafId = requestAnimationFrame(updateParallax);
+      }
     };
 
-    const updateParallax = () => {
-      currentX += (targetX - currentX) * 0.05;
-      currentY += (targetY - currentY) * 0.05;
-      if (parallaxLayerRef.current) {
-        parallaxLayerRef.current.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0)`;
+    const handleVisibilityChange = () => {
+      if (!document.hidden && !isRunning) {
+        isRunning = true;
+        rafId = requestAnimationFrame(updateParallax);
       }
-      rafId = requestAnimationFrame(updateParallax);
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    rafId = requestAnimationFrame(updateParallax);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      cancelAnimationFrame(rafId);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (rafId) cancelAnimationFrame(rafId);
     };
   }, [pathname]);
 
