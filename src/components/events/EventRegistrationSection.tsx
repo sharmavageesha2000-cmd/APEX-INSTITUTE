@@ -43,6 +43,12 @@ export const EventRegistrationSection: React.FC<EventRegistrationSectionProps> =
 
   useEffect(() => {
     setMounted(true);
+    setFormData({
+      name: '',
+      phone: '',
+      email: '',
+      profile: 'College Student / Fresher',
+    });
 
     // Check if user already booked this event in this browser
     const existingPass = localStorage.getItem(`apex_event_pass_${event.id}`);
@@ -53,6 +59,19 @@ export const EventRegistrationSection: React.FC<EventRegistrationSectionProps> =
       setPassId(generated);
     }
   }, [event.id]);
+
+  useEffect(() => {
+    if (isOpen) {
+      setFormData({
+        name: '',
+        phone: '',
+        email: '',
+        profile: 'College Student / Fresher',
+      });
+      setErrorMsg('');
+      setIsSubmitted(false);
+    }
+  }, [isOpen]);
 
   const handleOpenModal = () => {
     setErrorMsg('');
@@ -226,7 +245,7 @@ export const EventRegistrationSection: React.FC<EventRegistrationSectionProps> =
               <div className="p-5 sm:p-6 overflow-y-auto space-y-5">
                 {!isSubmitted ? (
                   /* STEP 1: FORM FILL-OUT SECTION */
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                  <form onSubmit={handleSubmit} autoComplete="off" autoCapitalize="none" className="space-y-4">
                     {/* Event Mini-Card */}
                     <div className="bg-purple-50/70 border border-purple-200/90 rounded-2xl p-3.5 space-y-2">
                       <div className="flex items-center gap-2">
@@ -276,7 +295,15 @@ export const EventRegistrationSection: React.FC<EventRegistrationSectionProps> =
                       </label>
                       <input
                         type="text"
+                        name="attendee_booking_name"
+                        id="attendee_booking_name"
                         required
+                        autoComplete="off"
+                        autoCorrect="off"
+                        spellCheck={false}
+                        data-lpignore="true"
+                        data-1p-ignore="true"
+                        data-form-type="other"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="e.g. Rahul Sharma"
@@ -296,8 +323,16 @@ export const EventRegistrationSection: React.FC<EventRegistrationSectionProps> =
                         </span>
                         <input
                           type="tel"
+                          name="attendee_booking_phone"
+                          id="attendee_booking_phone"
                           required
                           maxLength={12}
+                          autoComplete="off"
+                          autoCorrect="off"
+                          spellCheck={false}
+                          data-lpignore="true"
+                          data-1p-ignore="true"
+                          data-form-type="other"
                           value={formData.phone}
                           onChange={(e) =>
                             setFormData({
@@ -322,7 +357,15 @@ export const EventRegistrationSection: React.FC<EventRegistrationSectionProps> =
                       </label>
                       <input
                         type="email"
+                        name="attendee_booking_email"
+                        id="attendee_booking_email"
                         required
+                        autoComplete="off"
+                        autoCorrect="off"
+                        spellCheck={false}
+                        data-lpignore="true"
+                        data-1p-ignore="true"
+                        data-form-type="other"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="rahul.sharma@example.com"
