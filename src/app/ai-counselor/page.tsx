@@ -57,8 +57,8 @@ export default function AiCounselorPage() {
     {
       id: 'welcome',
       role: 'assistant',
-      content: `👋 **Welcome to the Apex AI Career & Course Advisory Studio!**\n\nI am **ApexBot**, your personal AI Career Counselor powered by **Google Gemini 3.8 Flash**.\n\nWhether you are a college graduate, a working professional seeking a salary hike, or switching from non-IT to tech, I can:\n- **Recommend the best matching career domains & courses**\n- **Explain batch timings, fees & up to 35% scholarship eligibility**\n- **Detail our 100% placement assurance and hiring partner network**\n\nTell me a bit about your education background, current role, or what career you aspire to!`,
-      model: 'gemini-3.8-flash',
+      content: `👋 **Welcome to the Apex AI Career & Course Advisory Studio!**\n\nI am **ApexBot**, your personal AI Career Counselor powered by **Google Gemini**.\n\nWhether you are a college graduate, a working professional seeking a salary hike, or switching from non-IT to tech, I can:\n- **Recommend the best matching career domains & courses**\n- **Explain batch timings, fees & up to 35% scholarship eligibility**\n- **Detail our 100% placement assurance and hiring partner network**\n\nTell me a bit about your education background, current role, or what career you aspire to!`,
+      model: 'gemini-3.5-flash-lite',
       timestamp: 'Just now',
     },
   ]);
@@ -157,7 +157,7 @@ export default function AiCounselorPage() {
         id: `welcome-${Date.now()}`,
         role: 'assistant',
         content: `👋 **Chat reset!** Tell me about your dream tech career or what course you'd like to explore!`,
-        model: 'gemini-3.8-flash',
+        model: 'gemini-3.5-flash-lite',
         timestamp: 'Just now',
       },
     ]);
@@ -320,7 +320,7 @@ export default function AiCounselorPage() {
             <div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-100 text-teal-800 text-xs font-black mb-1.5 border border-teal-200">
                 <Sparkles className="w-3.5 h-3.5 text-teal-600" />
-                <span>ApexBot Career Counselor &bull; Powered by Gemini 3.8 Flash</span>
+                <span>ApexBot Career Counselor &bull; Powered by Google Gemini Flash</span>
               </div>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight font-heading">
                 AI Career &amp; Course Advisory Studio

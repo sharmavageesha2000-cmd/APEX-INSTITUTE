@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     revalidatePath('/');
     revalidatePath('/admin');
 
-    return NextResponse.json({ success: true, domain });
+    return NextResponse.json({ success: true, domain }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to create domain' }, { status: 500 });
   }

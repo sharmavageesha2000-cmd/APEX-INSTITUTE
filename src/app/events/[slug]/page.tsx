@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { getEventBySlug, getEvents } from '@/lib/store';
 import { Calendar, Clock, MapPin, User, CheckCircle2, ArrowLeft, Send } from 'lucide-react';
 
+import { EventRegistrationSection } from '@/components/events/EventRegistrationSection';
+
 export const revalidate = 60;
 
 export default async function EventDetailsPage({ params }: { params: { slug: string } }) {
@@ -76,21 +78,8 @@ export default async function EventDetailsPage({ params }: { params: { slug: str
         </div>
       </div>
 
-      {/* Free Seat Registration CTA */}
-      <div className="bg-gradient-to-r from-purple-50 via-pink-50 to-indigo-50 border border-purple-200 p-6 sm:p-8 rounded-3xl text-center space-y-4 shadow-sm">
-        <h3 className="text-2xl font-extrabold text-slate-900">Reserve Your Free Seat Now</h3>
-        <p className="text-xs text-slate-600 font-medium max-w-md mx-auto">
-          Limited virtual seats available for this live interactive workshop. Registrations close 2 hours prior to the session.
-        </p>
-
-        <Link
-          href="/contact"
-          className="inline-flex bright-btn-primary font-bold px-8 py-3.5 text-xs items-center gap-2"
-        >
-          <Send className="w-4 h-4" />
-          <span>Confirm Free Seat Registration</span>
-        </Link>
-      </div>
+      {/* Free Seat Registration CTA & Interactive Popup Modal */}
+      <EventRegistrationSection event={evt} />
     </div>
   );
 }

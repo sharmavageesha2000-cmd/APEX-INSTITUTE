@@ -180,7 +180,7 @@ export const GeminiChatbot: React.FC = () => {
         id: `welcome-${Date.now()}`,
         role: 'assistant',
         content: `👋 **Chat reset!** Talk to me for course suggestions, salary roadmaps, or fee discounts!`,
-        model: 'gemini-3.8-flash',
+        model: 'gemini-3.5-flash-lite',
         timestamp: 'Just now',
       },
     ]);
@@ -495,7 +495,7 @@ export const GeminiChatbot: React.FC = () => {
                     ApexBot <span className="text-amber-300 text-xs">✨</span>
                   </h3>
                   <span className="text-[10px] uppercase font-black tracking-wider px-2 py-0.5 rounded-full bg-white/20 text-teal-100 border border-white/25 backdrop-blur-md">
-                    Gemini 3.8
+                    Gemini Flash
                   </span>
                 </div>
                 <p className="text-[11px] text-teal-100 flex items-center gap-1 font-medium">

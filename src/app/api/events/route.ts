@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     revalidatePath('/');
     revalidatePath('/admin');
 
-    return NextResponse.json({ success: true, event: newEvent });
+    return NextResponse.json({ success: true, event: newEvent }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message || 'Failed to create event' }, { status: 500 });
   }

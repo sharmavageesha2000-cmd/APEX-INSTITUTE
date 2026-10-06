@@ -43,7 +43,7 @@ export async function POST(request: Request) {
     revalidatePath('/');
     revalidatePath('/admin');
 
-    return NextResponse.json({ success: true, blog: newBlog });
+    return NextResponse.json({ success: true, blog: newBlog }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message || 'Failed to create blog' }, { status: 500 });
   }

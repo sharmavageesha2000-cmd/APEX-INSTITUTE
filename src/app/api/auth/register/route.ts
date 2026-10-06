@@ -154,22 +154,25 @@ export async function POST(request: Request) {
       role: newUser.role,
     });
 
-    const response = NextResponse.json({
-      success: true,
-      user: {
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-        role: newUser.role,
+    const response = NextResponse.json(
+      {
+        success: true,
+        user: {
+          id: newUser.id,
+          name: newUser.name,
+          email: newUser.email,
+          role: newUser.role,
+        },
+        enrollment,
+        transactionId: generatedTxn,
+        registrationFeePaid: paidNow,
+        remainingFee: remainingBalance,
+        paymentStatus,
+        paymentChoice: isFullPayment ? 'FULL_PAYMENT' : 'DEPOSIT_2000',
+        courseTitle: selectedCourse?.title,
       },
-      enrollment,
-      transactionId: generatedTxn,
-      registrationFeePaid: paidNow,
-      remainingFee: remainingBalance,
-      paymentStatus,
-      paymentChoice: isFullPayment ? 'FULL_PAYMENT' : 'DEPOSIT_2000',
-      courseTitle: selectedCourse?.title,
-    });
+      { status: 201 }
+    );
 
     response.cookies.set(getAuthTokenCookieName(), token, {
       httpOnly: true,

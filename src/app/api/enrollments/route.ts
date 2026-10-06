@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     }
 
     const enrollment = await createEnrollment(user.id, courseId, batchTiming);
-    return NextResponse.json({ success: true, enrollment });
+    return NextResponse.json({ success: true, enrollment }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message || 'Failed to enroll' }, { status: 500 });
   }

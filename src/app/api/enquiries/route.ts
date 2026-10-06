@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     });
 
     revalidatePath('/admin');
-    return NextResponse.json({ success: true, enquiry });
+    return NextResponse.json({ success: true, enquiry }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to submit enquiry' }, { status: 500 });
   }
