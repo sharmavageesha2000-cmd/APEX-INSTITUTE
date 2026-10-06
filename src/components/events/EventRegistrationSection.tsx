@@ -43,20 +43,6 @@ export const EventRegistrationSection: React.FC<EventRegistrationSectionProps> =
 
   useEffect(() => {
     setMounted(true);
-    // Prefill user details if logged in
-    fetch('/api/auth/me')
-      .then((r) => r.json())
-      .then((data) => {
-        if (data?.user) {
-          setFormData((prev) => ({
-            ...prev,
-            name: prev.name || data.user.name || '',
-            email: prev.email || data.user.email || '',
-            phone: prev.phone || data.user.phone || '',
-          }));
-        }
-      })
-      .catch(() => {});
 
     // Check if user already booked this event in this browser
     const existingPass = localStorage.getItem(`apex_event_pass_${event.id}`);
@@ -67,6 +53,17 @@ export const EventRegistrationSection: React.FC<EventRegistrationSectionProps> =
       setPassId(generated);
     }
   }, [event.id]);
+
+  const handleOpenModal = () => {
+    setErrorMsg('');
+    setFormData({
+      name: '',
+      phone: '',
+      email: '',
+      profile: 'College Student / Fresher',
+    });
+    setIsOpen(true);
+  };
 
   // Handle ESC key and scroll locking
   useEffect(() => {
@@ -175,7 +172,7 @@ export const EventRegistrationSection: React.FC<EventRegistrationSectionProps> =
 
         <button
           type="button"
-          onClick={() => setIsOpen(true)}
+          onClick={handleOpenModal}
           className="inline-flex bright-btn-primary font-bold px-8 py-3.5 text-xs items-center gap-2 cursor-pointer shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all"
         >
           <Send className="w-4 h-4" />
@@ -496,13 +493,30 @@ export const EventRegistrationSection: React.FC<EventRegistrationSectionProps> =
                       </a>
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() => setIsOpen(false)}
-                      className="w-full py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:text-slate-900 font-bold text-xs transition-colors cursor-pointer"
-                    >
-                      Back to Event Details
-                    </button>
+                    <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsSubmitted(false);
+                          setFormData({
+                            name: '',
+                            phone: '',
+                            email: '',
+                            profile: 'College Student / Fresher',
+                          });
+                        }}
+                        className="flex-1 py-2.5 rounded-xl border border-purple-200 text-purple-700 hover:bg-purple-50 font-bold text-xs transition-colors cursor-pointer"
+                      >
+                        Book Another Seat
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setIsOpen(false)}
+                        className="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-colors cursor-pointer"
+                      >
+                        Close &amp; Return to Event
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
