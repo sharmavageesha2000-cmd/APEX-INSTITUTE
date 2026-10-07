@@ -31,34 +31,129 @@ export const CoursesClientView: React.FC<CoursesClientViewProps> = ({
   const [activeCourseForEnquiry, setActiveCourseForEnquiry] = useState<Course | null>(null);
   const [comparedCourseIds, setComparedCourseIds] = useState<string[]>([]);
 
+  // Normalizing search and identifying matching domains
+  const q = search.toLowerCase().trim();
+  const tokens = q ? q.split(/\s+/).filter(Boolean) : [];
+
+  const matchingDomains = q
+    ? domains.filter((d) => {
+        const dName = d.name.toLowerCase();
+        const dSlug = d.slug.toLowerCase();
+        return (
+          dName.includes(q) ||
+          q.includes(dName) ||
+          dSlug.includes(q) ||
+          d.subcategories.some((sub) => sub.toLowerCase().includes(q) || q.includes(sub.toLowerCase()))
+        );
+      })
+    : [];
+
+  const matchedDomainSlugs = new Set(matchingDomains.map((d) => d.slug));
+  const matchedDomainNames = new Set(matchingDomains.map((d) => d.name.toLowerCase()));
+
   // Filtering
   let displayedCourses = [...initialCourses];
 
   if (selectedDomain) {
     displayedCourses = displayedCourses.filter((c) => c.domainSlug === selectedDomain);
   }
-  if (search.trim()) {
-    const term = search.toLowerCase();
-    displayedCourses = displayedCourses.filter(
-      (c) =>
-        c.title.toLowerCase().includes(term) ||
-        c.headline.toLowerCase().includes(term) ||
-        c.description.toLowerCase().includes(term)
-    );
+
+  if (q) {
+    displayedCourses = displayedCourses.filter((c) => {
+      const title = c.title.toLowerCase();
+      const domainName = (c.domainName || '').toLowerCase();
+      const domainSlug = (c.domainSlug || '').toLowerCase();
+      const headline = (c.headline || '').toLowerCase();
+      const desc = (c.description || '').toLowerCase();
+      const tools = (c.toolsCovered || []).map((t) => t.toLowerCase());
+      const roles = (c.careerRoles || []).map((r) => r.title.toLowerCase());
+
+      const matchesDomain =
+        domainName.includes(q) ||
+        domainSlug.includes(q) ||
+        matchedDomainSlugs.has(domainSlug) ||
+        matchedDomainNames.has(domainName);
+
+      const matchesText =
+        title.includes(q) ||
+        headline.includes(q) ||
+        desc.includes(q) ||
+        tools.some((t) => t.includes(q) || q.includes(t)) ||
+        roles.some((r) => r.includes(q));
+
+      const matchesTokens =
+        tokens.length > 1 &&
+        tokens.every(
+          (tok) =>
+            title.includes(tok) ||
+            domainName.includes(tok) ||
+            headline.includes(tok) ||
+            tools.some((t) => t.includes(tok))
+        );
+
+      return matchesDomain || matchesText || matchesTokens;
+    });
   }
+
   if (selectedLevel !== 'ALL') {
     displayedCourses = displayedCourses.filter((c) =>
       c.level.toLowerCase().includes(selectedLevel.toLowerCase())
     );
   }
 
+  // Reliability & Relevance Scoring for search queries
+  const getRelevanceScore = (c: Course): number => {
+    let score = 0;
+    const title = c.title.toLowerCase();
+    const dName = (c.domainName || '').toLowerCase();
+    const headline = (c.headline || '').toLowerCase();
+    const tools = (c.toolsCovered || []).map((t) => t.toLowerCase());
+
+    // 1. Direct Title Match
+    if (title === q) score += 100;
+    else if (title.startsWith(q)) score += 80;
+    else if (title.includes(q)) score += 60;
+
+    // 2. Direct Domain Match (e.g. student searched "AI", "Cloud", "Data", "Full Stack", etc.)
+    if (dName === q) score += 95;
+    else if (dName.startsWith(q)) score += 85;
+    else if (dName.includes(q)) score += 75;
+    else if (c.domainSlug && matchedDomainSlugs.has(c.domainSlug)) score += 70;
+    else if (dName && matchedDomainNames.has(dName)) score += 70;
+
+    // 3. Tech Stack / Tools Covered Match
+    if (tools.some((t) => t === q)) score += 50;
+    else if (tools.some((t) => t.includes(q))) score += 35;
+
+    // 4. Headline Match
+    if (headline.includes(q)) score += 25;
+
+    // 5. Reliability & Quality Boost (Catch Most Reliable Course)
+    // Rating boost (e.g. 4.9 * 12 = 58.8 pts)
+    score += (c.rating || 0) * 12;
+    // Featured / Flagship Course Priority
+    if (c.featured) score += 30;
+    if (c.badge) score += 15;
+    // Proven Enrollment Numbers (popularity & proven reliability)
+    score += Math.min((c.totalStudents || 0) / 100, 25);
+    // Placement Assistance
+    if (c.placementAssistance) score += 15;
+
+    return score;
+  };
+
   // Sorting
   displayedCourses.sort((a, b) => {
-    if (sortBy === 'rating') return b.rating - a.rating;
-    if (sortBy === 'students') return b.totalStudents - a.totalStudents;
     if (sortBy === 'price-low') return (a.discountFee || a.fee) - (b.discountFee || b.fee);
     if (sortBy === 'price-high') return (b.discountFee || b.fee) - (a.discountFee || a.fee);
-    return 0;
+    if (sortBy === 'students') return b.totalStudents - a.totalStudents;
+
+    // Default 'rating': if search query exists, prioritize relevance and reliability!
+    if (q) {
+      const scoreDiff = getRelevanceScore(b) - getRelevanceScore(a);
+      if (scoreDiff !== 0) return scoreDiff;
+    }
+    return b.rating - a.rating;
   });
 
   const handleEnquire = (course: Course) => {
@@ -80,12 +175,21 @@ export const CoursesClientView: React.FC<CoursesClientViewProps> = ({
     <div className="space-y-8">
       {/* Search & Filters Bar */}
       <div className="bg-white border border-purple-200 shadow-lg p-4 sm:p-6 rounded-2xl space-y-4">
+        {q && matchingDomains.length > 0 && (
+          <div className="flex items-center gap-2 text-xs text-purple-800 bg-purple-50/80 border border-purple-200 px-3.5 py-2 rounded-xl font-bold animate-in fade-in">
+            <Sparkles className="w-4 h-4 text-pink-600 shrink-0" />
+            <span>
+              Searching Domain: <strong>{matchingDomains.map((d) => d.name).join(', ')}</strong> &bull; Showing most reliable & highest-rated courses first
+            </span>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
           {/* Search Input */}
           <div className="md:col-span-6 relative">
             <input
               type="text"
-              placeholder="Search by course name, technology, skill..."
+              placeholder="Search by course name, domain (e.g. AI, Cloud, Full Stack), technology, skill..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full bg-white border border-purple-200 text-sm text-black placeholder-slate-400 rounded-xl py-3 pl-10 pr-4 focus:outline-none focus:border-purple-500 focus:bg-slate-50"

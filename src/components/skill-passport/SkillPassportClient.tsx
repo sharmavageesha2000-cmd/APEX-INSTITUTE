@@ -314,25 +314,25 @@ export const SkillPassportClient: React.FC = () => {
   const [portalTab, setPortalTab] = useState<'BASIC' | 'SKILLS' | 'PROJECTS' | 'INTERNSHIP'>('BASIC');
   const [saveSuccessMsg, setSaveSuccessMsg] = useState('');
 
-  // Form State for Portal
+  // Form State for Portal - clean, empty by default without prefilled dummy data
   const [formData, setFormData] = useState({
     name: '',
-    title: 'Full Stack & Software Engineer',
+    title: '',
     domain: 'Information Technology',
-    location: 'Bengaluru, India',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
-    summary: 'Enthusiastic software engineer specialized in building scalable, real-world web applications and cloud architectures.',
-    skillsString: 'React 18, Next.js 14, Node.js, PostgreSQL, Docker, AWS, TypeScript',
-    projectTitle: 'Full-Stack Enterprise Cloud Portal',
-    projectDesc: 'Engineered a scalable microservices architecture with real-time authentication and PostgreSQL caching.',
-    projectTech: 'Next.js 14, Node.js, PostgreSQL, TailwindCSS, Docker',
-    projectLive: 'https://myproject.apex.edu',
-    projectGithub: 'https://github.com/myaccount/myproject',
-    projectImpact: 'Handled 2,000+ daily requests with 99.9% uptime.',
-    internCompany: 'Apex Cloud Innovations',
-    internRole: 'Software Engineering Intern',
-    internDuration: '3 Months (400 Hours)',
-    internDeliverables: 'Delivered 3 microservices and optimized API throughput by 35%.',
+    location: '',
+    avatar: '',
+    summary: '',
+    skillsString: '',
+    projectTitle: '',
+    projectDesc: '',
+    projectTech: '',
+    projectLive: '',
+    projectGithub: '',
+    projectImpact: '',
+    internCompany: '',
+    internRole: '',
+    internDuration: '',
+    internDeliverables: '',
   });
 
   const [searchPassportId, setSearchPassportId] = useState('');
@@ -348,13 +348,6 @@ export const SkillPassportClient: React.FC = () => {
         // Administrators or other roles should NEVER have their name or profile displayed as a student passport holder.
         if (data?.user && data.user.role === 'STUDENT') {
           setCurrentUser(data.user);
-          // Pre-fill form data with student user info
-          setFormData((prev) => ({
-            ...prev,
-            name: data.user.name || prev.name,
-            location: data.user.city || prev.location,
-            domain: data.user.careerInterest || prev.domain,
-          }));
 
           // Generate or get logged-in student's passport
           const userPassport: StudentSkillPassport = {
@@ -426,47 +419,53 @@ export const SkillPassportClient: React.FC = () => {
       return;
     }
 
-    const skillsArray: StudentSkillItem[] = formData.skillsString
-      .split(',')
-      .map((s) => s.trim())
-      .filter((s) => s.length > 0)
-      .map((skillName, i) => ({
-        name: skillName,
-        level: Math.max(85, 98 - i * 3),
-        category: i % 2 === 0 ? 'Core Tech' : 'Framework',
-        verified: true,
-      }));
+    const skillsArray: StudentSkillItem[] = formData.skillsString.trim()
+      ? formData.skillsString
+          .split(',')
+          .map((s) => s.trim())
+          .filter((s) => s.length > 0)
+          .map((skillName, i) => ({
+            name: skillName,
+            level: Math.max(85, 98 - i * 3),
+            category: i % 2 === 0 ? 'Core Tech' : 'Framework',
+            verified: true,
+          }))
+      : [
+          { name: `${formData.domain || 'Technology'} Core Competencies`, level: 94, category: 'Core Tech', verified: true },
+          { name: 'Practical System Engineering', level: 90, category: 'Engineering', verified: true },
+          { name: 'Production Deployment & Best Practices', level: 88, category: 'Production', verified: true },
+        ];
+
+    const techStackArray = formData.projectTech.trim()
+      ? formData.projectTech.split(',').map((t) => t.trim()).filter(Boolean)
+      : ['Next.js', 'TypeScript', 'TailwindCSS'];
 
     const newPassport: StudentSkillPassport = {
       id: `custom-${Date.now()}`,
       name: formData.name.trim(),
-      avatar: formData.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
-      title: formData.title.trim() || 'Software Engineer',
-      domain: formData.domain,
+      avatar: formData.avatar.trim() || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
+      title: formData.title.trim() || `${formData.domain || 'Software'} Specialist`,
+      domain: formData.domain || 'Information Technology',
       batch: 'Batch 2026 (Digital Credential)',
       location: formData.location.trim() || 'India',
       passportId: `APX-SP-2026-${Math.floor(1000 + Math.random() * 9000)}`,
       issueDate: 'August 2026',
       validity: 'Lifetime Verified Ledger',
       hiredAt: 'Active Skill Passport Profile',
-      skills: skillsArray.length > 0 ? skillsArray : [
-        { name: 'React 18 & Next.js 14', level: 95, category: 'Frontend', verified: true },
-        { name: 'Node.js & Microservices', level: 90, category: 'Backend', verified: true },
-        { name: 'Database Architecture & SQL', level: 88, category: 'Database', verified: true },
-      ],
+      skills: skillsArray,
       projects: [
         {
-          title: formData.projectTitle || 'Capstone Production Project',
-          description: formData.projectDesc || 'Built a complete production-grade application with modern frontend and backend architectures.',
-          techStack: formData.projectTech.split(',').map((t) => t.trim()),
-          liveDemo: formData.projectLive || 'https://demo.apex.edu',
-          github: formData.projectGithub || 'https://github.com/apex-student/project',
-          impact: formData.projectImpact || 'Completed full system review and passed all test suites.',
+          title: formData.projectTitle.trim() || 'Capstone Production Project',
+          description: formData.projectDesc.trim() || 'Engineered an end-to-end industry application with verified cloud architecture.',
+          techStack: techStackArray,
+          liveDemo: formData.projectLive.trim() || 'https://demo.apex.edu',
+          github: formData.projectGithub.trim() || 'https://github.com/apex-student/project',
+          impact: formData.projectImpact.trim() || 'Completed full system review and passed all test suites.',
         },
       ],
       certifications: [
         {
-          title: `Govt. of India & AICTE Approved ${formData.domain} Credential`,
+          title: `Govt. of India & AICTE Approved ${formData.domain || 'Technical'} Credential`,
           authority: 'Ministry of Skill Development & AICTE Technical Board',
           credentialId: `GOVT-AICTE-${Math.floor(1000 + Math.random() * 9000)}`,
           accreditations: ['Govt. of India 🏛️', 'AICTE 🎓', 'NSDC Skill India 🇮🇳', 'ISO 9001:2026 🌐'],
@@ -478,18 +477,17 @@ export const SkillPassportClient: React.FC = () => {
         { title: 'Production Code Quality & Architecture Audit', score: '92/100', percentile: 'Top 4% Nationally', status: 'Mastery' },
       ],
       internship: {
-        company: formData.internCompany || 'Apex Cloud Innovations',
-        role: formData.internRole || 'Software Engineering Intern',
-        duration: formData.internDuration || '3 Months',
+        company: formData.internCompany.trim() || 'Apex Cloud Innovations',
+        role: formData.internRole.trim() || 'Software Engineering Intern',
+        duration: formData.internDuration.trim() || '3 Months',
         mentorRemarks: 'Demonstrated high competence, clean code architecture, and timely delivery of capstone milestones.',
-        deliverables: [
-          formData.internDeliverables || 'Built and delivered core microservice endpoints',
-          'Collaborated in agile sprint cycles and code reviews',
-        ],
+        deliverables: formData.internDeliverables.trim()
+          ? [formData.internDeliverables.trim()]
+          : ['Delivered core microservice modules', 'Collaborated in agile sprint cycles and code reviews'],
         rating: '5.0 / 5.0',
       },
       portfolioUrl: `https://apex.edu/passport/${formData.name.toLowerCase().replace(/\s+/g, '-')}`,
-      summary: formData.summary.trim() || `Verified technical specialist in ${formData.domain}.`,
+      summary: formData.summary.trim() || `Verified technical specialist in ${formData.domain || 'Software Engineering'}.`,
       isUserCustom: true,
     };
 

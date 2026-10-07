@@ -732,12 +732,15 @@ export async function getCourses(params?: {
     filtered = filtered.filter((c) => c.domainSlug === params.domainSlug);
   }
   if (params?.search) {
-    const term = params.search.toLowerCase();
+    const term = params.search.toLowerCase().trim();
     filtered = filtered.filter(
       (c) =>
         c.title.toLowerCase().includes(term) ||
+        (c.domainName && c.domainName.toLowerCase().includes(term)) ||
+        (c.domainSlug && c.domainSlug.toLowerCase().includes(term)) ||
         c.headline.toLowerCase().includes(term) ||
-        c.description.toLowerCase().includes(term)
+        c.description.toLowerCase().includes(term) ||
+        (c.toolsCovered && c.toolsCovered.some((t) => t.toLowerCase().includes(term)))
     );
   }
   if (params?.level && params.level !== 'ALL') {

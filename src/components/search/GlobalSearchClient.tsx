@@ -28,21 +28,55 @@ export const GlobalSearchClient: React.FC<GlobalSearchClientProps> = ({
 
   const q = query.toLowerCase().trim();
 
-  // Matched arrays
-  const matchedCourses = courses.filter(
-    (c) =>
-      c.title.toLowerCase().includes(q) ||
-      c.headline.toLowerCase().includes(q) ||
-      c.description.toLowerCase().includes(q) ||
-      (c.instructor && c.instructor.name.toLowerCase().includes(q))
-  );
-
   const matchedDomains = domains.filter(
     (d) =>
       d.name.toLowerCase().includes(q) ||
       d.headline.toLowerCase().includes(q) ||
+      d.slug.toLowerCase().includes(q) ||
       d.subcategories.some((sub) => sub.toLowerCase().includes(q))
   );
+
+  const matchedDomainSlugs = new Set(matchedDomains.map((d) => d.slug));
+  const matchedDomainNames = new Set(matchedDomains.map((d) => d.name.toLowerCase()));
+
+  // Matched arrays with domain search and reliability ranking
+  const matchedCourses = courses
+    .filter((c) => {
+      const title = c.title.toLowerCase();
+      const dName = (c.domainName || '').toLowerCase();
+      const dSlug = (c.domainSlug || '').toLowerCase();
+      const headline = (c.headline || '').toLowerCase();
+      const desc = (c.description || '').toLowerCase();
+      const tools = (c.toolsCovered || []).map((t) => t.toLowerCase());
+
+      return (
+        title.includes(q) ||
+        dName.includes(q) ||
+        dSlug.includes(q) ||
+        matchedDomainSlugs.has(dSlug) ||
+        matchedDomainNames.has(dName) ||
+        headline.includes(q) ||
+        desc.includes(q) ||
+        tools.some((t) => t.includes(q)) ||
+        (c.instructor && c.instructor.name.toLowerCase().includes(q))
+      );
+    })
+    .sort((a, b) => {
+      if (!q) return b.rating - a.rating;
+      // Calculate relevance score
+      const score = (item: Course) => {
+        let s = 0;
+        const it = item.title.toLowerCase();
+        const id = (item.domainName || '').toLowerCase();
+        if (it.includes(q)) s += 60;
+        if (id.includes(q) || (item.domainSlug && matchedDomainSlugs.has(item.domainSlug))) s += 50;
+        if (item.featured) s += 20;
+        s += (item.rating || 0) * 10;
+        s += Math.min((item.totalStudents || 0) / 100, 15);
+        return s;
+      };
+      return score(b) - score(a);
+    });
 
   const matchedBlogs = blogs.filter(
     (b) =>
