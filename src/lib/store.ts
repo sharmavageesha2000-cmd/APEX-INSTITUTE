@@ -102,6 +102,36 @@ let memoryNotifications = globalForStore.memoryNotifications!;
 
 const isPlaceholderDb = !process.env.DATABASE_URL || process.env.DATABASE_URL.includes('sample');
 
+// Fast DB Circuit Breaker: prevents blocking requests when remote DB is sleeping or unreachable
+let dbUnavailableUntil = 0;
+
+export function isDbAvailable(): boolean {
+  if (isPlaceholderDb) return false;
+  return Date.now() >= dbUnavailableUntil;
+}
+
+export function reportDbError(err?: any) {
+  // If remote DB fails or times out, back off for 5 minutes so app remains instantaneous
+  dbUnavailableUntil = Date.now() + 5 * 60 * 1000;
+}
+
+export async function runDb<T>(fn: () => Promise<T>, timeoutMs = 700): Promise<T | null> {
+  if (!isDbAvailable()) return null;
+  let timer: NodeJS.Timeout | undefined;
+  try {
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      timer = setTimeout(() => reject(new Error('DB_TIMEOUT')), timeoutMs);
+    });
+    const result = await Promise.race([fn(), timeoutPromise]);
+    return result;
+  } catch (err: any) {
+    reportDbError(err);
+    return null;
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+
 const DEFAULT_INSTRUCTOR = {
   name: 'Apex Senior Tech Mentor',
   title: 'Lead Industry Architect',
@@ -133,27 +163,23 @@ export async function getBlogs(): Promise<BlogPost[]> {
   }
 
   let list: BlogPost[] = [];
-  if (!isPlaceholderDb) {
-    try {
-      const blogs = await prisma.blog.findMany({ orderBy: { createdAt: 'desc' } });
-      if (blogs.length > 0) {
-        list = blogs.map((b) => ({
-          id: b.id,
-          title: b.title,
-          slug: b.slug,
-          category: b.category,
-          image: b.image,
-          authorName: b.authorName,
-          authorTitle: b.authorTitle,
-          authorPhoto: b.authorPhoto,
-          readTime: b.readTime,
-          summary: b.summary,
-          content: b.content,
-          featured: b.featured,
-          createdAt: b.createdAt.toISOString(),
-        }));
-      }
-    } catch (err) {}
+  const blogs = await runDb(() => prisma.blog.findMany({ orderBy: { createdAt: 'desc' } }));
+  if (blogs && blogs.length > 0) {
+    list = blogs.map((b) => ({
+      id: b.id,
+      title: b.title,
+      slug: b.slug,
+      category: b.category,
+      image: b.image,
+      authorName: b.authorName,
+      authorTitle: b.authorTitle,
+      authorPhoto: b.authorPhoto,
+      readTime: b.readTime,
+      summary: b.summary,
+      content: b.content,
+      featured: b.featured,
+      createdAt: b.createdAt.toISOString(),
+    }));
   }
   if (list.length === 0) {
     list = memoryBlogs;
@@ -176,7 +202,7 @@ export async function getBlogBySlug(slug: string): Promise<BlogPost | null> {
 export async function createBlog(data: Omit<BlogPost, 'id' | 'createdAt'>): Promise<BlogPost> {
   invalidateBlogsCache();
   const slug = data.slug || data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       const created = await prisma.blog.create({
         data: {
@@ -227,7 +253,7 @@ export async function createBlog(data: Omit<BlogPost, 'id' | 'createdAt'>): Prom
 export async function updateBlog(id: string, data: Partial<Omit<BlogPost, 'id'>>): Promise<boolean> {
   invalidateBlogsCache();
   let updatedInDb = false;
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       await prisma.blog.update({
         where: { id },
@@ -261,7 +287,7 @@ export async function updateBlog(id: string, data: Partial<Omit<BlogPost, 'id'>>
 export async function deleteBlog(id: string): Promise<boolean> {
   invalidateBlogsCache();
   let deletedFromDb = false;
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       await prisma.blog.delete({ where: { id } });
       deletedFromDb = true;
@@ -281,27 +307,23 @@ export async function getEvents(): Promise<EventItem[]> {
   }
 
   let list: EventItem[] = [];
-  if (!isPlaceholderDb) {
-    try {
-      const events = await prisma.event.findMany({ orderBy: { createdAt: 'desc' } });
-      if (events.length > 0) {
-        list = events.map((e) => ({
-          id: e.id,
-          title: e.title,
-          slug: e.slug,
-          category: e.category,
-          date: e.date,
-          time: e.time,
-          location: e.location,
-          speakerName: e.speakerName,
-          speakerRole: e.speakerRole,
-          speakerFoto: e.speakerFoto,
-          description: e.description,
-          featured: e.featured,
-          createdAt: e.createdAt.toISOString(),
-        }));
-      }
-    } catch (err) {}
+  const events = await runDb(() => prisma.event.findMany({ orderBy: { createdAt: 'desc' } }));
+  if (events && events.length > 0) {
+    list = events.map((e) => ({
+      id: e.id,
+      title: e.title,
+      slug: e.slug,
+      category: e.category,
+      date: e.date,
+      time: e.time,
+      location: e.location,
+      speakerName: e.speakerName,
+      speakerRole: e.speakerRole,
+      speakerFoto: e.speakerFoto,
+      description: e.description,
+      featured: e.featured,
+      createdAt: e.createdAt.toISOString(),
+    }));
   }
   if (list.length === 0) {
     list = memoryEvents;
@@ -323,7 +345,7 @@ export async function getEventBySlug(slug: string): Promise<EventItem | null> {
 export async function createEvent(data: Omit<EventItem, 'id' | 'createdAt'>): Promise<EventItem> {
   invalidateEventsCache();
   const slug = data.slug || data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       const created = await prisma.event.create({
         data: {
@@ -374,7 +396,7 @@ export async function createEvent(data: Omit<EventItem, 'id' | 'createdAt'>): Pr
 export async function updateEvent(id: string, data: Partial<Omit<EventItem, 'id'>>): Promise<boolean> {
   invalidateEventsCache();
   let updatedInDb = false;
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       await prisma.event.update({
         where: { id },
@@ -408,7 +430,7 @@ export async function updateEvent(id: string, data: Partial<Omit<EventItem, 'id'
 export async function deleteEvent(id: string): Promise<boolean> {
   invalidateEventsCache();
   let deletedFromDb = false;
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       await prisma.event.delete({ where: { id } });
       deletedFromDb = true;
@@ -428,23 +450,19 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   }
 
   let settings = memorySettings;
-  if (!isPlaceholderDb) {
-    try {
-      const s = await prisma.siteSettings.findUnique({ where: { id: 'default' } });
-      if (s) {
-        settings = {
-          phone: s.phone,
-          email: s.email,
-          address: s.address,
-          workingHours: s.workingHours,
-          facebookUrl: s.facebookUrl,
-          twitterUrl: s.twitterUrl,
-          linkedinUrl: s.linkedinUrl,
-          youtubeUrl: s.youtubeUrl,
-          whatsappNo: s.whatsappNo,
-        };
-      }
-    } catch (err) {}
+  const s = await runDb(() => prisma.siteSettings.findUnique({ where: { id: 'default' } }));
+  if (s) {
+    settings = {
+      phone: s.phone,
+      email: s.email,
+      address: s.address,
+      workingHours: s.workingHours,
+      facebookUrl: s.facebookUrl,
+      twitterUrl: s.twitterUrl,
+      linkedinUrl: s.linkedinUrl,
+      youtubeUrl: s.youtubeUrl,
+      whatsappNo: s.whatsappNo,
+    };
   }
   if (!globalForStore.cacheStore) globalForStore.cacheStore = {};
   globalForStore.cacheStore.settings = { data: settings, ts: now };
@@ -453,7 +471,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 
 export async function updateSiteSettings(data: Partial<SiteSettings>): Promise<SiteSettings> {
   invalidateSettingsCache();
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       const updated = await prisma.siteSettings.upsert({
         where: { id: 'default' },
@@ -500,27 +518,25 @@ export async function getDomains(): Promise<Domain[]> {
   }
 
   let list: Domain[] = [];
-  if (!isPlaceholderDb) {
-    try {
-      const domains = await prisma.domain.findMany({
-        include: { _count: { select: { courses: true } } },
-        orderBy: { name: 'asc' },
-      });
-      if (domains.length > 0) {
-        list = domains.map((d) => ({
-          id: d.id,
-          name: d.name,
-          slug: d.slug,
-          headline: d.headline,
-          description: d.description,
-          iconName: d.iconName,
-          image: d.image || undefined,
-          subcategories: d.subcategories ? JSON.parse(d.subcategories) : [],
-          featured: d.featured,
-          courseCount: d._count.courses,
-        }));
-      }
-    } catch (error) {}
+  const domains = await runDb(() =>
+    prisma.domain.findMany({
+      include: { _count: { select: { courses: true } } },
+      orderBy: { name: 'asc' },
+    })
+  );
+  if (domains && domains.length > 0) {
+    list = domains.map((d) => ({
+      id: d.id,
+      name: d.name,
+      slug: d.slug,
+      headline: d.headline,
+      description: d.description,
+      iconName: d.iconName,
+      image: d.image || undefined,
+      subcategories: d.subcategories ? JSON.parse(d.subcategories) : [],
+      featured: d.featured,
+      courseCount: d._count.courses,
+    }));
   }
   if (list.length === 0) {
     list = memoryDomains;
@@ -550,7 +566,7 @@ export async function createDomain(data: {
 }): Promise<Domain> {
   invalidateDomainsCache();
   const slug = data.slug || data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       const created = await prisma.domain.create({
         data: {
@@ -601,7 +617,7 @@ export async function updateDomain(
 ): Promise<boolean> {
   invalidateDomainsCache();
   let updatedInDb = false;
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       await prisma.domain.update({
         where: { id },
@@ -636,7 +652,7 @@ export async function updateDomain(
 export async function deleteDomain(id: string): Promise<boolean> {
   invalidateDomainsCache();
   let deletedFromDb = false;
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       await prisma.domain.delete({ where: { id } });
       deletedFromDb = true;
@@ -663,55 +679,50 @@ export async function getCourses(params?: {
     allList = globalForStore.cacheStore.courses.data;
   } else {
     let list: Course[] = [];
+    const dbCourses = await runDb(() =>
+      prisma.course.findMany({
+        include: { domain: true },
+        orderBy: { createdAt: 'desc' },
+      })
+    );
+    if (dbCourses && dbCourses.length > 0) {
+      list = dbCourses.map((c) => {
+        const matchInitial = INITIAL_COURSES.find(
+          (ic) => ic.slug === c.slug || ic.id === c.id || ic.title.toLowerCase() === c.title.toLowerCase()
+        );
+        const courseImage = matchInitial?.image || getCourseImage(c.title, c.slug, c.domain?.name);
 
-    if (!isPlaceholderDb) {
-      try {
-        const dbCourses = await prisma.course.findMany({
-          include: { domain: true },
-          orderBy: { createdAt: 'desc' },
-        });
-        if (dbCourses.length > 0) {
-          list = dbCourses.map((c) => {
-            const matchInitial = INITIAL_COURSES.find(
-              (ic) => ic.slug === c.slug || ic.id === c.id || ic.title.toLowerCase() === c.title.toLowerCase()
-            );
-            const courseImage = matchInitial?.image || getCourseImage(c.title, c.slug, c.domain?.name);
-
-            return {
-              id: c.id,
-              title: c.title,
-              slug: c.slug,
-              headline: c.headline,
-              description: c.description,
-              image: courseImage,
-              domainId: c.domainId,
-              domainName: c.domain?.name,
-              domainSlug: c.domain?.slug,
-              duration: c.duration,
-              fee: c.fee,
-              discountFee: c.discountFee || undefined,
-              level: c.level as any,
-              mode: c.mode as any,
-              badge: c.badge || undefined,
-              rating: c.rating,
-              totalStudents: c.totalStudents,
-              syllabus: c.syllabus ? (typeof c.syllabus === 'string' ? JSON.parse(c.syllabus) : c.syllabus) : (matchInitial?.syllabus || []),
-              careerRoles: c.careerRoles ? (typeof c.careerRoles === 'string' ? JSON.parse(c.careerRoles) : c.careerRoles) : (matchInitial?.careerRoles || []),
-              highlights: c.highlights ? (typeof c.highlights === 'string' ? JSON.parse(c.highlights) : c.highlights) : (matchInitial?.highlights || []),
-              placementAssistance: c.placementAssistance,
-              featured: c.featured,
-              instructor: matchInitial?.instructor || DEFAULT_INSTRUCTOR,
-              projects: matchInitial?.projects || DEFAULT_PROJECTS,
-              faqs: matchInitial?.faqs || DEFAULT_FAQS,
-              prerequisites: matchInitial?.prerequisites || ['Basic computer fundamentals'],
-              whoShouldTake: matchInitial?.whoShouldTake || ['Students and professionals'],
-              toolsCovered: matchInitial?.toolsCovered || ['Core Frameworks'],
-            };
-          });
-        }
-      } catch (err) {
-        console.error('Error in getCourses from prisma:', err);
-      }
+        return {
+          id: c.id,
+          title: c.title,
+          slug: c.slug,
+          headline: c.headline,
+          description: c.description,
+          image: courseImage,
+          domainId: c.domainId,
+          domainName: c.domain?.name,
+          domainSlug: c.domain?.slug,
+          duration: c.duration,
+          fee: c.fee,
+          discountFee: c.discountFee || undefined,
+          level: c.level as any,
+          mode: c.mode as any,
+          badge: c.badge || undefined,
+          rating: c.rating,
+          totalStudents: c.totalStudents,
+          syllabus: c.syllabus ? (typeof c.syllabus === 'string' ? JSON.parse(c.syllabus) : c.syllabus) : (matchInitial?.syllabus || []),
+          careerRoles: c.careerRoles ? (typeof c.careerRoles === 'string' ? JSON.parse(c.careerRoles) : c.careerRoles) : (matchInitial?.careerRoles || []),
+          highlights: c.highlights ? (typeof c.highlights === 'string' ? JSON.parse(c.highlights) : c.highlights) : (matchInitial?.highlights || []),
+          placementAssistance: c.placementAssistance,
+          featured: c.featured,
+          instructor: matchInitial?.instructor || DEFAULT_INSTRUCTOR,
+          projects: matchInitial?.projects || DEFAULT_PROJECTS,
+          faqs: matchInitial?.faqs || DEFAULT_FAQS,
+          prerequisites: matchInitial?.prerequisites || ['Basic computer fundamentals'],
+          whoShouldTake: matchInitial?.whoShouldTake || ['Students and professionals'],
+          toolsCovered: matchInitial?.toolsCovered || ['Core Frameworks'],
+        };
+      });
     }
 
     if (list.length === 0) {
@@ -790,7 +801,7 @@ export async function createCourse(data: Omit<Course, 'id'>): Promise<Course> {
   const domainObj = domains.find((d) => d.id === data.domainId);
   const slug = data.slug || data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
-  if (!isPlaceholderDb && domainObj) {
+  if (isDbAvailable() && domainObj) {
     try {
       const created = await prisma.course.create({
         data: {
@@ -858,7 +869,7 @@ export async function updateCourse(id: string, data: Partial<Omit<Course, 'id'>>
   invalidateCoursesCache();
   invalidateDomainsCache();
   let updatedInDb = false;
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       await prisma.course.update({
         where: { id },
@@ -898,7 +909,7 @@ export async function deleteCourse(id: string): Promise<boolean> {
   invalidateCoursesCache();
   invalidateDomainsCache();
   let deletedFromDb = false;
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       await prisma.course.delete({ where: { id } });
       deletedFromDb = true;
@@ -924,7 +935,7 @@ export async function createEnquiry(data: {
   message: string;
 }): Promise<Enquiry> {
   const course = data.courseId ? await getCourseById(data.courseId) : null;
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       const enq = await prisma.enquiry.create({
         data: {
@@ -984,41 +995,37 @@ export async function createEnquiry(data: {
 }
 
 export async function getEnquiries(): Promise<Enquiry[]> {
-  if (!isPlaceholderDb) {
-    try {
-      const list = await prisma.enquiry.findMany({
-        include: { course: true },
-        orderBy: { createdAt: 'desc' },
-      });
-      if (list.length > 0) {
-        return list.map((e) => ({
-          id: e.id,
-          name: e.name,
-          email: e.email,
-          phone: e.phone,
-          courseId: e.courseId || undefined,
-          courseTitle: e.course?.title,
-          domain: e.domain || undefined,
-          type: e.type,
-          preferredContact: e.preferredContact || undefined,
-          preferredDate: e.preferredDate || undefined,
-          preferredTime: e.preferredTime || undefined,
-          message: e.message,
-          status: e.status as any,
-          notes: e.notes || undefined,
-          createdAt: e.createdAt.toISOString(),
-        }));
-      }
-    } catch (err) {
-      console.error('Error fetching enquiries from prisma:', err);
-    }
+  const list = await runDb(() =>
+    prisma.enquiry.findMany({
+      include: { course: true },
+      orderBy: { createdAt: 'desc' },
+    })
+  );
+  if (list && list.length > 0) {
+    return list.map((e) => ({
+      id: e.id,
+      name: e.name,
+      email: e.email,
+      phone: e.phone,
+      courseId: e.courseId || undefined,
+      courseTitle: e.course?.title,
+      domain: e.domain || undefined,
+      type: e.type,
+      preferredContact: e.preferredContact || undefined,
+      preferredDate: e.preferredDate || undefined,
+      preferredTime: e.preferredTime || undefined,
+      message: e.message,
+      status: e.status as any,
+      notes: e.notes || undefined,
+      createdAt: e.createdAt.toISOString(),
+    }));
   }
   return memoryEnquiries;
 }
 
 export async function updateEnquiryStatus(id: string, status: string, notes?: string): Promise<boolean> {
   let updatedInDb = false;
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       await prisma.enquiry.update({
         where: { id },
@@ -1050,28 +1057,24 @@ export async function getReviews(approvedOnly = true): Promise<Review[]> {
     list = globalForStore.cacheStore.reviews.data;
   } else {
     let rawList: Review[] = [];
-    if (!isPlaceholderDb) {
-      try {
-        const dbReviews = await prisma.review.findMany({
-          orderBy: { createdAt: 'desc' },
-        });
-        if (dbReviews.length > 0) {
-          rawList = dbReviews.map((r) => ({
-            id: r.id,
-            userName: r.userName,
-            userRole: r.userRole,
-            company: r.company || undefined,
-            avatar: r.avatar || undefined,
-            courseId: r.courseId,
-            rating: r.rating,
-            comment: r.comment,
-            approved: r.approved,
-            createdAt: r.createdAt.toISOString(),
-          }));
-        }
-      } catch (err) {
-        console.error('Error in getReviews from prisma:', err);
-      }
+    const dbReviews = await runDb(() =>
+      prisma.review.findMany({
+        orderBy: { createdAt: 'desc' },
+      })
+    );
+    if (dbReviews && dbReviews.length > 0) {
+      rawList = dbReviews.map((r) => ({
+        id: r.id,
+        userName: r.userName,
+        userRole: r.userRole,
+        company: r.company || undefined,
+        avatar: r.avatar || undefined,
+        courseId: r.courseId,
+        rating: r.rating,
+        comment: r.comment,
+        approved: r.approved,
+        createdAt: r.createdAt.toISOString(),
+      }));
     }
     if (rawList.length === 0) {
       rawList = memoryReviews;
@@ -1092,30 +1095,26 @@ export async function getUsers(): Promise<User[]> {
   }
 
   let dbList: User[] = [];
-  if (!isPlaceholderDb) {
-    try {
-      const dbUsers = await prisma.user.findMany({
-        orderBy: { createdAt: 'desc' },
-      });
-      if (dbUsers.length > 0) {
-        dbList = dbUsers.map((u) => ({
-          id: u.id,
-          name: u.name,
-          email: u.email,
-          password: u.password,
-          phone: u.phone || undefined,
-          city: u.city || undefined,
-          education: u.education || undefined,
-          graduationYear: u.graduationYear || undefined,
-          careerInterest: u.careerInterest || undefined,
-          role: u.role as Role,
-          avatar: u.avatar || undefined,
-          createdAt: u.createdAt.toISOString(),
-        }));
-      }
-    } catch (err) {
-      console.error('Error fetching users from prisma:', err);
-    }
+  const dbUsers = await runDb(() =>
+    prisma.user.findMany({
+      orderBy: { createdAt: 'desc' },
+    })
+  );
+  if (dbUsers && dbUsers.length > 0) {
+    dbList = dbUsers.map((u) => ({
+      id: u.id,
+      name: u.name,
+      email: u.email,
+      password: u.password,
+      phone: u.phone || undefined,
+      city: u.city || undefined,
+      education: u.education || undefined,
+      graduationYear: u.graduationYear || undefined,
+      careerInterest: u.careerInterest || undefined,
+      role: u.role as Role,
+      avatar: u.avatar || undefined,
+      createdAt: u.createdAt.toISOString(),
+    }));
   }
 
   // Preserve memory users (like faculty or initial accounts) that aren't in PostgreSQL
@@ -1146,7 +1145,7 @@ export async function getUserByEmail(email: string): Promise<User | null> {
     return match;
   }
 
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       const dbUser = await prisma.user.findUnique({
         where: { email: normalized },
@@ -1179,7 +1178,7 @@ export async function deleteUser(id: string): Promise<boolean> {
   invalidateUsersCache();
   invalidateEnrollmentsCache();
   let deletedFromDb = false;
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       await prisma.user.delete({ where: { id } });
       deletedFromDb = true;
@@ -1195,7 +1194,7 @@ export async function deleteUser(id: string): Promise<boolean> {
 export async function updateUser(id: string, data: Partial<Omit<User, 'id'>>): Promise<boolean> {
   invalidateUsersCache();
   let updatedInDb = false;
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       await prisma.user.update({
         where: { id },
@@ -1234,7 +1233,7 @@ export async function createUser(userData: Omit<User, 'id'> & { id?: string }): 
     createdAt: userData.createdAt || new Date().toISOString(),
   };
 
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       await prisma.user.upsert({
         where: { email: userData.email.toLowerCase().trim() },
@@ -1276,13 +1275,13 @@ export async function getAllEnrollments(): Promise<Enrollment[]> {
   ]);
 
   let dbList: Enrollment[] = [];
-  if (!isPlaceholderDb) {
-    try {
-      const dbEnrollments = await prisma.enrollment.findMany({
-        include: { user: true, course: true },
-        orderBy: { enrolledAt: 'desc' },
-      });
-      if (dbEnrollments.length > 0) {
+  const dbEnrollments = await runDb(() =>
+    prisma.enrollment.findMany({
+      include: { user: true, course: true },
+      orderBy: { enrolledAt: 'desc' },
+    })
+  );
+  if (dbEnrollments && dbEnrollments.length > 0) {
         dbList = dbEnrollments.map((enr) => {
           const courseObj = allCourses.find((c) => c.id === enr.courseId) || (enr.course ? {
             id: enr.course.id,
@@ -1329,10 +1328,6 @@ export async function getAllEnrollments(): Promise<Enrollment[]> {
           };
         });
       }
-    } catch (err) {
-      console.error('Error fetching enrollments from prisma:', err);
-    }
-  }
 
   // Merge with any memory enrollments
   const existingIds = new Set(dbList.map((e) => e.id));
@@ -1404,7 +1399,7 @@ export async function createEnrollment(
     lastPaymentDate: new Date().toISOString(),
   };
 
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       await prisma.enrollment.create({
         data: {
@@ -1428,7 +1423,7 @@ export async function createEnrollment(
 
 export async function updateEnrollment(id: string, data: Partial<Enrollment>): Promise<Enrollment | null> {
   invalidateEnrollmentsCache();
-  if (!isPlaceholderDb) {
+  if (isDbAvailable()) {
     try {
       await prisma.enrollment.update({
         where: { id },
@@ -1450,3 +1445,4 @@ export async function updateEnrollment(id: string, data: Partial<Enrollment>): P
   }
   return null;
 }
+
