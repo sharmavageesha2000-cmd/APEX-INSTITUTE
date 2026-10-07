@@ -23,11 +23,11 @@ export interface RAGAnswerResult {
 // Known valid personnel in Apex Directory
 export const VALID_PERSONNEL = [
   { name: 'Dr. Arvind R. Singhania', keys: ['arvind', 'singhania', 'managing director', 'founder', 'co-founder'] },
-  { name: 'Rajeshwari K. Nair', keys: ['rajeshwari', 'nair', 'chief executive'] },
-  { name: 'Vikramaditya Sen', keys: ['vikramaditya', 'sen', 'chief operating'] },
-  { name: 'Sunita Deshmukh', keys: ['sunita', 'deshmukh', 'hr head', 'head of hr', 'human resources head', 'posh head'] },
-  { name: 'Divya Swaminathan', keys: ['divya', 'swaminathan', 'talent acquisition head', 'recruitment head'] },
-  { name: 'Tanya Kapoor', keys: ['tanya', 'kapoor', 'payroll manager'] },
+  { name: 'Rajeshwari K. Nair', keys: ['rajeshwari', 'nair', 'chief executive', 'ceo'] },
+  { name: 'Vikramaditya Sen', keys: ['vikramaditya', 'sen', 'chief operating', 'coo'] },
+  { name: 'Sunita Deshmukh', keys: ['sunita', 'deshmukh', 'hr head', 'head of hr', 'human resources head', 'posh head', 'hr', 'human resources', 'human resource', 'head hr', 'hr lead'] },
+  { name: 'Divya Swaminathan', keys: ['divya', 'swaminathan', 'talent acquisition head', 'recruitment head', 'recruiter', 'recruitment', 'talent acquisition', 'hr manager', 'hiring manager'] },
+  { name: 'Tanya Kapoor', keys: ['tanya', 'kapoor', 'payroll manager', 'payroll', 'welfare manager', 'assistant hr manager'] },
   { name: 'Prof. Harishankar Murthy', keys: ['harishankar', 'murthy', 'academic director', 'head of academics'] },
   { name: 'Ananya Roy', keys: ['ananya', 'roy', 'placement head', 'head of placements', 'corporate relations head'] },
   { name: 'Dr. Farhan Akhtar Qureshi', keys: ['farhan', 'qureshi', 'head of it', 'it head', 'infrastructure head'] },
@@ -45,8 +45,8 @@ export const VALID_ROLES = [
   'managing director', 'md', 'founder', 'co-founder',
   'chief executive officer', 'ceo', 'chief executive',
   'chief operating officer', 'coo', 'chief operating',
-  'head of human resources', 'hr head', 'head of hr', 'human resources head',
-  'talent acquisition', 'recruitment', 'bgv',
+  'head of human resources', 'hr head', 'head of hr', 'human resources head', 'hr', 'human resources', 'human resource', 'hr manager', 'head hr',
+  'talent acquisition', 'recruitment', 'recruiter', 'bgv', 'hiring',
   'payroll', 'employee welfare', 'payroll manager',
   'head of academics', 'academics & delivery', 'trainer quality', 'academic director',
   'head of placements', 'corporate relations', 'placements head', 'placement head',
@@ -113,17 +113,23 @@ export function isCompanyPersonnelQuery(query: string): boolean {
     return true;
   }
 
-  // Specific leadership titles
+  // Specific leadership titles and HR inquiries (e.g. "hr name", "who is hr", "hr details", "recruiter", etc.)
   if (
-    q.includes(' ceo') || q.startsWith('ceo') ||
-    q.includes(' md') || q.startsWith('md') ||
-    q.includes(' coo') || q.startsWith('coo') ||
-    q.includes('cfo') || q.includes('cto') ||
+    /\b(hr|human resources?|recruiter|recruitment|talent acquisition|payroll|posh)\b/i.test(q) ||
+    /\b(ceo|coo|md|founder|director)\b/i.test(q) ||
     q.includes('managing director') ||
-    q.includes('founder') ||
     q.includes('hr head') || q.includes('head of hr') ||
     q.includes('talent acquisition') ||
     q.includes('payroll')
+  ) {
+    return true;
+  }
+
+  // Name inquiries with role or personnel: "what is the name of hr", "name of ceo", "tell me hr name", etc.
+  if (
+    (q.includes('name') || q.includes('who') || q.includes('tell') || q.includes('give') || q.includes('what')) &&
+    (/\b(hr|recruiter|ceo|coo|md|director|manager|founder|academics|placement|head)\b/i.test(q) ||
+      VALID_ROLES.some(r => q.includes(r)))
   ) {
     return true;
   }
@@ -285,9 +291,9 @@ export async function resolveCompanyDirectoryRAG(userQuery: string): Promise<RAG
   // 3. Check for unknown person inquiries in "who is <name>"
   const whoIsMatch = qLower.match(/who\s+(?:is|was)\s+([a-z\s]+)/i);
   if (whoIsMatch) {
-    const isKnownRole = VALID_ROLES.some(r => qLower.includes(r));
-    const isKnownPerson = VALID_PERSONNEL.some(p => p.keys.some(k => qLower.includes(k)));
-    const isKnownBranch = VALID_BRANCHES.some(b => qLower.includes(b));
+    const isKnownRole = VALID_ROLES.some(r => hasWord(qLower, r) || qLower.includes(r));
+    const isKnownPerson = VALID_PERSONNEL.some(p => p.keys.some(k => hasWord(qLower, k) || qLower.includes(k)));
+    const isKnownBranch = VALID_BRANCHES.some(b => hasWord(qLower, b) || qLower.includes(b));
 
     if (!isKnownRole && !isKnownPerson && !isKnownBranch) {
       return {

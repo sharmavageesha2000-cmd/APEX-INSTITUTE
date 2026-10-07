@@ -73,6 +73,19 @@ INSTITUTE INFORMATION:
 UPCOMING EVENTS & WORKSHOPS:
 ${eventSummaries}
 
+LEADERSHIP & KEY PERSONNEL DIRECTORY:
+- Founder & Managing Director (MD): Dr. Arvind R. Singhania (Desk Ext: 101, arvind.singhania@apexbangalore.in)
+- Chief Executive Officer (CEO): Rajeshwari K. Nair (Desk Ext: 102, rajeshwari.nair@apexbangalore.in)
+- Chief Operating Officer (COO): Vikramaditya Sen (Desk Ext: 103, vikram.sen@apexbangalore.in)
+- Head of Human Resources (HR Head): Sunita Deshmukh (Desk Ext: 301, sunita.d@apexbangalore.in, HSR Layout HQ) - Oversees institutional HR policy, staff compensation, labor law compliance, and chairs the POSH committee.
+- HR Manager (Talent Acquisition & Hiring): Divya Swaminathan (Desk Ext: 302, divya.s@apexbangalore.in) - Leads trainer recruitment, technical interviews, and onboarding.
+- Assistant HR Manager (Payroll & Welfare): Tanya Kapoor (Desk Ext: 303, tanya.k@apexbangalore.in) - Handles employee payroll, deductions, attendance, and welfare.
+- Head of Academics & Delivery: Prof. Harishankar Murthy (Ext: 201, h.murthy@apexbangalore.in)
+- Head of Placements & Corporate Relations: Ananya Roy (Ext: 202, ananya.roy@apexbangalore.in)
+- Head of IT & Infrastructure: Dr. Farhan Akhtar Qureshi (Ext: 203, farhan.qureshi@apexbangalore.in)
+- Central Operations Manager: Pradeep V. Kulkarni (Ext: 115, pradeep.k@apexbangalore.in)
+- Center Managers: HSR Layout (Vidyadhar Hegde, Ext: 110), Marathahalli (Suresh Babu M., Ext: 210), Rajajinagar (Manjunath Swamy, Ext: 310), Electronic City (Deepak Chawla, Ext: 410)
+
 AVAILABLE CAREER DOMAINS:
 ${domainSummaries || 'Full Stack Web Dev, Cloud & DevOps, Data Science & AI, Cybersecurity, UI/UX Design, Mobile App Dev, QA Automation, Blockchain, Embedded & IoT, Product Management'}
 
@@ -94,7 +107,10 @@ COUNSELING GUIDELINES:
    - Reassure them with high confidence! Over 60% of successful tech bootcampers come from non-IT backgrounds.
    - Explain that Apex provides foundational bridge modules from ground zero (no coding prerequisites required).
    - Recommend 2-3 ideal transition pathways: Full Stack Web Development, UI/UX Design, or Data Analytics.
-6. Keep answers concise, highly engaging, beautifully formatted with markdown bullet points, bold headings, and actionable next steps.`;
+6. If the user asks about the HR head, HR team, recruiter, leadership, or staff members:
+   - Provide accurate, official details from the LEADERSHIP & KEY PERSONNEL DIRECTORY above.
+   - For HR inquiries: Clearly state that **Sunita Deshmukh** is the Head of Human Resources (HR Head), **Divya Swaminathan** is the HR Manager for Talent Acquisition / Recruitment, and **Tanya Kapoor** is the Assistant HR Manager for Payroll & Welfare.
+7. Keep answers concise, highly engaging, beautifully formatted with markdown bullet points, bold headings, and actionable next steps.`;
 
   cachedSystemPrompt = {
     prompt: basePrompt,
@@ -348,7 +364,50 @@ Master modern cloud infrastructure and continuous delivery:
 👉 Would you like to view the certification readiness breakdown or book a demo class?`;
   }
 
-  // 10. Default helpful response
+  // 10. HR & Human Resources Directory
+  if (
+    /\b(hr|human resources?|recruiter|recruitment|talent acquisition|payroll|posh)\b/i.test(q)
+  ) {
+    return `### 👥 Human Resources (HR) Department at Apex Tech Institute
+
+At Apex Tech Institute, the Human Resources department is headed by:
+
+- **Head of Human Resources (HR Head):** **Sunita Deshmukh**
+  - **Email:** sunita.d@apexbangalore.in
+  - **Desk Extension:** Ext. 301
+  - **Location:** HSR Layout Headquarters (Sector 1, Bangalore)
+  - **Core Responsibilities:** Oversees institutional HR policy, recruitment guidelines, compensation scales, labor law compliance, and chairs the POSH / Internal Grievance committee.
+
+- **HR Manager – Talent Acquisition & Recruitment:** **Divya Swaminathan**
+  - **Email:** divya.s@apexbangalore.in
+  - **Desk Extension:** Ext. 302
+  - **Responsibilities:** Leads technical trainer recruitment, instructor screening, interview coordination, and onboarding.
+
+- **Assistant HR Manager – Payroll & Welfare:** **Tanya Kapoor**
+  - **Email:** tanya.k@apexbangalore.in
+  - **Desk Extension:** Ext. 303
+  - **Responsibilities:** Monthly employee payroll, health benefits, attendance, and staff welfare.
+
+Would you like to connect with our HR team or explore open trainer & staff positions?`;
+  }
+
+  // 11. Executive Leadership Team
+  if (
+    /\b(ceo|coo|md|founder|director|leadership)\b/i.test(q)
+  ) {
+    return `### 🏛️ Executive Leadership Team at Apex Tech Institute
+
+- **Founder & Managing Director (MD):** **Dr. Arvind R. Singhania** (Ext: 101 | arvind.singhania@apexbangalore.in)
+- **Chief Executive Officer (CEO):** **Rajeshwari K. Nair** (Ext: 102 | rajeshwari.nair@apexbangalore.in)
+- **Chief Operating Officer (COO):** **Vikramaditya Sen** (Ext: 103 | vikram.sen@apexbangalore.in)
+- **Head of Human Resources (HR Head):** **Sunita Deshmukh** (Ext: 301 | sunita.d@apexbangalore.in)
+- **Head of Academics & Delivery:** **Prof. Harishankar Murthy** (Ext: 201 | h.murthy@apexbangalore.in)
+- **Head of Placements:** **Ananya Roy** (Ext: 202 | ananya.roy@apexbangalore.in)
+
+How can I assist you with our leadership or academic tracks today?`;
+  }
+
+  // 12. Default helpful response
   return `### 👋 Welcome to Apex Tech Institute Career Advisory!
 
 I am **ApexBot**, your personal AI Academic Counselor. Here are the most popular topics students explore with me:
