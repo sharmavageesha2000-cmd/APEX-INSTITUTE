@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDomains, getCourses, getEvents, getSiteSettings } from '@/lib/store';
-import { resolveCompanyDirectoryRAG, isCompanyPersonnelQuery } from '@/lib/chromaRAG';
+import { resolveCompanyDirectoryRAG, isCompanyPersonnelQuery, queryChromaDB, ChromaSearchResult } from '@/lib/chromaRAG';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,6 +9,9 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
 // Verified ultra-fast & high-availability Gemini models in order of speed and stability
 const CANDIDATE_MODELS = [
   'gemini-3.5-flash-lite',
+  'gemini-3.1-flash-lite',
+  'gemini-3.6-flash',
+  'gemini-3.7-flash',
   'gemini-flash-lite-latest',
 ];
 
@@ -442,39 +445,48 @@ export async function POST(req: NextRequest) {
     const lastUserMsgObj = chatMessages[chatMessages.length - 1];
     const lastUserQuery = (lastUserMsgObj?.content || '').trim();
 
-    // 1. Company Personnel & Directory RAG (ChromaDB Vector Database)
+    // 1. Check personnel security guard for queries about unlisted private individuals
     if (isCompanyPersonnelQuery(lastUserQuery)) {
       try {
-        const ragResult = await resolveCompanyDirectoryRAG(lastUserQuery);
-        if (ragResult.isCompanyQuery) {
-          if (!ragResult.found || !ragResult.answer) {
-            return NextResponse.json({
-              reply: 'There is no such information available to your query.',
-              model: 'chromadb-vector-rag',
-              success: true,
-            });
-          }
-
+        const guardCheck = await resolveCompanyDirectoryRAG(lastUserQuery);
+        if (guardCheck.isCompanyQuery && !guardCheck.found) {
           return NextResponse.json({
-            reply: ragResult.answer,
+            reply: 'There is no such information available to your query.',
             model: 'chromadb-vector-rag',
             success: true,
           });
         }
-      } catch (ragErr) {
-        console.warn('ChromaDB RAG query handled safely:', ragErr);
-        return NextResponse.json({
-          reply: 'There is no such information available to your query.',
-          model: 'chromadb-vector-rag',
-          success: true,
-        });
+      } catch (guardErr) {
+        console.warn('Personnel security guard check:', guardErr);
       }
     }
 
-    // 2. Fetch or retrieve cached system instruction (instant 0ms on cache hit)
-    const systemInstruction = await getCachedSystemInstruction(pageContext);
+    // 2. Dynamic RAG: Retrieve context from ChromaDB Vector Database
+    let ragContextText = '';
+    let ragSources: ChromaSearchResult[] = [];
+    try {
+      const chromaResults = await queryChromaDB(lastUserQuery, 3);
+      if (Array.isArray(chromaResults) && chromaResults.length > 0) {
+        const relevant = chromaResults.filter((r) => r.distance <= 1.25);
+        if (relevant.length > 0) {
+          ragSources = relevant;
+          ragContextText = relevant
+            .map((r, i) => `[Source ${i + 1} (${r.metadata?.category || 'fact'})]: ${r.text}`)
+            .join('\n\n');
+        }
+      }
+    } catch (ragErr) {
+      console.warn('ChromaDB RAG search notice:', ragErr);
+    }
 
-    // 3. Format conversation history for Gemini API
+    // 3. Fetch base system instruction and augment with dynamic RAG context
+    const baseInstruction = await getCachedSystemInstruction(pageContext);
+    let fullSystemInstruction = baseInstruction;
+    if (ragContextText) {
+      fullSystemInstruction += `\n\n=== RETRIEVED OFFICIAL APEX KNOWLEDGE BASE (RAG CONTEXT) ===\nUse the following official records and verified facts from the vector database to ground your answer with 100% accuracy:\n${ragContextText}\n=============================================================`;
+    }
+
+    // 4. Format conversation history for Gemini API
     const geminiContents: Array<{ role: 'user' | 'model'; parts: [{ text: string }] }> = [];
     const filteredMessages = chatMessages.filter((m) => m.content && m.content.trim() !== '');
 
@@ -505,7 +517,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 4. Try fastest verified Gemini model with tight 1600ms latency budget
+    // 5. Invoke Gemini LLM with dynamic RAG context and 6500ms budget
     let selectedModel = '';
     let responseText = '';
 
@@ -513,8 +525,7 @@ export async function POST(req: NextRequest) {
       try {
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
         const controller = new AbortController();
-        // 1600ms timeout guarantees answers in ~1-1.6 seconds
-        const timeoutId = setTimeout(() => controller.abort(), 1600);
+        const timeoutId = setTimeout(() => controller.abort(), 6500); // 6.5s generous budget
 
         const res = await fetch(url, {
           method: 'POST',
@@ -522,14 +533,14 @@ export async function POST(req: NextRequest) {
           signal: controller.signal,
           body: JSON.stringify({
             system_instruction: {
-              parts: [{ text: systemInstruction }],
+              parts: [{ text: fullSystemInstruction }],
             },
             contents: geminiContents,
             generationConfig: {
               temperature: 0.65,
               topK: 40,
               topP: 0.95,
-              maxOutputTokens: 500,
+              maxOutputTokens: 600,
             },
           }),
         });
@@ -542,29 +553,29 @@ export async function POST(req: NextRequest) {
           selectedModel = modelName;
           break;
         } else {
-          // If rate-limited (429) or high-demand (503), immediately serve intelligent domain response without cascading delay
-          break;
+          continue;
         }
       } catch {
-        // If timed out after 1600ms or network error, immediately serve intelligent domain response
-        break;
+        continue;
       }
     }
 
-    // 5. If external LLM is temporarily unreachable, respond instantly via intelligent domain knowledge engine
-    if (!responseText) {
-      console.warn('Serving intelligent instant domain response for query:', lastUserQuery);
-      const instantReply = getIntelligentFallbackResponse(lastUserQuery);
+    // 6. Return dynamic Gemini LLM response
+    if (responseText) {
       return NextResponse.json({
-        reply: instantReply,
-        model: 'apex-knowledge-engine',
+        reply: responseText,
+        model: selectedModel,
+        ragRetrieved: ragSources.length > 0,
         success: true,
       });
     }
 
+    // 7. If external LLM is temporarily unreachable, respond via intelligent knowledge engine
+    console.warn('Serving intelligent instant domain response for query:', lastUserQuery);
+    const instantReply = getIntelligentFallbackResponse(lastUserQuery);
     return NextResponse.json({
-      reply: responseText,
-      model: selectedModel,
+      reply: instantReply,
+      model: 'apex-knowledge-engine',
       success: true,
     });
   } catch (err: any) {
